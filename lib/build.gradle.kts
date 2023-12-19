@@ -8,6 +8,8 @@ plugins {
     signing
 }
 
+version = versionString
+
 android {
     namespace = "de.sipgate.federmappe"
     compileSdk = 34
@@ -41,28 +43,24 @@ tasks.withType<Test>().configureEach {
     outputs.upToDateWhen { false }
 }
 
-fun Project.setupVersionInfo(): Properties {
+val Project.versionString: String
+    get() {
     val versionProperties = File(project.rootDir, "version.properties")
     return versionProperties.inputStream().use { inputStream ->
-        Properties().apply {
+        Properties().run {
             load(inputStream)
-            project.version = getVersionName()
+            "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
         }
     }
 }
 
-fun Properties.getVersionName(): String {
-    val major = (get("majorVersion") as String).toInt()
-    val minor = (get("minorVersion") as String).toInt()
-    val patch = (get("patchVersion") as String).toInt()
-    return "$major.$minor.$patch"
-}
+fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 
 publishing {
     publications.withType<MavenPublication> {
         groupId = "de.sipgate"
         artifactId = "federmappe"
-        version = setupVersionInfo().getVersionName()
+        version = project.version.toString()
 
         pom {
             name.set("Federmappe")
