@@ -57,7 +57,7 @@ val Project.versionString: String
 fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 
 publishing {
-    publications.withType<MavenPublication> {
+    publications.register<MavenPublication>("release") {
         groupId = "de.sipgate"
         artifactId = "federmappe"
         version = project.version.toString()
