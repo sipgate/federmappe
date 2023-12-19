@@ -60,6 +60,17 @@ publishing {
             from(components["release"])
         }
     }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/sipgate/federmappe")
+            credentials {
+                username = "sipgate"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
 
 signing {
