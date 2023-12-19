@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -39,11 +41,28 @@ tasks.withType<Test>().configureEach {
     outputs.upToDateWhen { false }
 }
 
+fun Project.setupVersionInfo(): Properties {
+    val versionProperties = File(project.rootDir, "version.properties")
+    return versionProperties.inputStream().use { inputStream ->
+        Properties().apply {
+            load(inputStream)
+            project.version = getVersionName()
+        }
+    }
+}
+
+fun Properties.getVersionName(): String {
+    val major = (get("majorVersion") as String).toInt()
+    val minor = (get("minorVersion") as String).toInt()
+    val patch = (get("patchVersion") as String).toInt()
+    return "$major.$minor.$patch"
+}
+
 publishing {
     publications.withType<MavenPublication> {
         groupId = "de.sipgate"
-        artifactId = project.name
-        version = project.version.toString()
+        artifactId = "federmappe"
+        version = setupVersionInfo().getVersionName()
 
         pom {
             name.set("Federmappe")
