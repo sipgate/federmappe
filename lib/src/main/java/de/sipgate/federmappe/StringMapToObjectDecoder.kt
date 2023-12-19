@@ -1,6 +1,5 @@
 package de.sipgate.federmappe
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -38,7 +37,6 @@ class StringMapToObjectDecoder(
                 }
 
             if (nextIndex == CompositeDecoder.UNKNOWN_NAME) {
-                Log.w("StringMapToObjectDecoder", "encountered unknown key while decoding $key")
                 skippedValues.add(nextKey)
                 continue
             }
