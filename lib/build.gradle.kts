@@ -31,10 +31,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.serialization)
-    implementation(libs.firebase.firestore)
+    compileOnly(libs.kotlinx.serialization)
+    compileOnly(libs.firebase.firestore)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.serialization)
+    testImplementation(libs.firebase.firestore)
 }
 
 tasks.withType<Test>().configureEach {
