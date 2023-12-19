@@ -33,6 +33,12 @@ dependencies {
     testImplementation(libs.junit)
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+
+    outputs.upToDateWhen { false }
+}
+
 publishing {
     publications.withType<MavenPublication> {
         groupId = "de.sipgate"
