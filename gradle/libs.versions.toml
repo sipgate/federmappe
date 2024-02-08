@@ -3,7 +3,7 @@ agp = "8.2.2"
 kotlin = "1.9.22"
 junit = "5.10.1"
 serialization = "1.6.2"
-firebase-firestore = "24.10.1"
+firebase-firestore = "24.10.2"
 
 [libraries]
 junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
