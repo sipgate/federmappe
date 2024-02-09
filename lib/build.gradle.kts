@@ -13,7 +13,7 @@ version = versionString
 android {
     namespace = "de.sipgate.federmappe"
     compileSdk = 34
-    defaultConfig.minSdk = 24
+    defaultConfig.minSdk = 23
 
     buildTypes {
         release {
