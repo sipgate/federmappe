@@ -87,7 +87,7 @@ class StringMapToObjectDecoder(
             )
         }
 
-        throw SerializationException("Given value is neither a list nor a type $value")
+        throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")
     }
 
     override fun endStructure(descriptor: SerialDescriptor) {
