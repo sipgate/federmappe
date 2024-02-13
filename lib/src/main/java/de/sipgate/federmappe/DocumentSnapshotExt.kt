@@ -1,10 +1,13 @@
 package de.sipgate.federmappe
 
 import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.serialization.modules.SerializersModule
 
-inline fun <reified T : Any> DocumentSnapshot.toObject(errorHandler: (Throwable) -> T? = { throw it }): T? =
+inline fun <reified T : Any> DocumentSnapshot.toObject(
+    customSerializers: SerializersModule = DefaultSerializersModule,
+    errorHandler: (Throwable) -> T? = { throw it }): T? =
     try {
-        data?.toObjectWithSerializer<T>()
+        data?.toObjectWithSerializer<T>(customSerializers = customSerializers)
     } catch (ex: Throwable) {
         errorHandler(ex)
     }
