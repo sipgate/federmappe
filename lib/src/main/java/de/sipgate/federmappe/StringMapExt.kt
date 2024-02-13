@@ -1,5 +1,6 @@
 package de.sipgate.federmappe
 
+import de.sipgate.federmappe.serializers.DateSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual

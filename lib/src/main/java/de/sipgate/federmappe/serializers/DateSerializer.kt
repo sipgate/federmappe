@@ -1,4 +1,4 @@
-package de.sipgate.federmappe
+package de.sipgate.federmappe.serializers
 
 import java.util.Date
 import kotlinx.serialization.KSerializer

@@ -1,6 +1,7 @@
 package de.sipgate.federmappe
 
 import com.google.firebase.Timestamp
+import de.sipgate.federmappe.serializers.DateSerializer
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
