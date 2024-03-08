@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
-@OptIn(ExperimentalSerializationApi::class)
+@ExperimentalSerializationApi
 class ListDecoder(
     private val list: ArrayDeque<Any>,
     private val elementsCount: Int = 0,

@@ -10,7 +10,7 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
-@OptIn(ExperimentalSerializationApi::class)
+@ExperimentalSerializationApi
 class MapDecoder(
     private val map: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
