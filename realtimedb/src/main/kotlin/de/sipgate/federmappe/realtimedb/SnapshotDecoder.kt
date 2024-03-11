@@ -18,7 +18,7 @@ class SnapshotDecoder(
 
     private val keysIterator = dataSnapshot.children.mapNotNull { it.key }.iterator()
     private var index: Int? = null
-    var key: String? = null
+    private var key: String? = null
 
     private val skippedValues = mutableSetOf<String>()
 

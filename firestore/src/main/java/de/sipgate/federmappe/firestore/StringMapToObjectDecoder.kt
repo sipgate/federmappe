@@ -18,7 +18,7 @@ class StringMapToObjectDecoder(
 ) : AbstractDecoder() {
     private val keysIterator = data.keys.iterator()
     private var index: Int? = null
-    var key: String? = null
+    private var key: String? = null
 
     private val skippedValues = mutableSetOf<String>()
 
