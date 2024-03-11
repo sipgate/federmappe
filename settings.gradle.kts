@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Federmappe"
 include(":firestore")
+include(":realtimedb")

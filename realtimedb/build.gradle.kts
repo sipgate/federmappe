@@ -11,7 +11,7 @@ plugins {
 version = versionString
 
 android {
-    namespace = "de.sipgate.federmappe.firestore"
+    namespace = "de.sipgate.federmappe.realtimedb"
     compileSdk = 34
     defaultConfig.minSdk = 23
 
@@ -33,11 +33,11 @@ android {
 dependencies {
     compileOnly(libs.kotlinx.serialization)
     implementation(libs.kotlinx.datetime)
-    compileOnly(libs.firebase.firestore)
+    compileOnly(libs.firebase.database)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
-    testImplementation(libs.firebase.firestore)
+    testImplementation(libs.firebase.database)
 }
 
 tasks.withType<Test>().configureEach {
@@ -48,21 +48,21 @@ tasks.withType<Test>().configureEach {
 
 val Project.versionString: String
     get() {
-    val versionProperties = File(project.rootDir, "version.properties")
-    return versionProperties.inputStream().use { inputStream ->
-        Properties().run {
-            load(inputStream)
-            "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
+        val versionProperties = File(project.rootDir, "version.properties")
+        return versionProperties.inputStream().use { inputStream ->
+            Properties().run {
+                load(inputStream)
+                "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
+            }
         }
     }
-}
 
 fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 
 publishing {
     publications.register<MavenPublication>("release") {
         groupId = "de.sipgate"
-        artifactId = "federmappe-firestore"
+        artifactId = "federmappe-realtimedb"
         version = project.version.toString()
 
         pom {
