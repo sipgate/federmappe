@@ -38,6 +38,9 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
     testImplementation(libs.firebase.database)
+
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
 }
 
 tasks.withType<Test>().configureEach {
