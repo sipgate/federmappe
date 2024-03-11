@@ -5,6 +5,7 @@ import de.sipgate.federmappe.firestore.serializers.DateSerializer
 import java.util.Date
 import java.util.GregorianCalendar
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
@@ -12,6 +13,7 @@ import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalSerializationApi::class)
 class DateTests {
     @Test
     fun deserializeBasicDataClassWithDateFieldSetToFirstDayOfYear2000() {

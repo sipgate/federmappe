@@ -1,10 +1,12 @@
 package de.sipgate.federmappe.firestore
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalSerializationApi::class)
 class StringListTests {
 
     @Test

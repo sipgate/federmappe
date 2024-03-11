@@ -3,12 +3,14 @@ package de.sipgate.federmappe.realtimedb
 import com.google.firebase.database.DataSnapshot
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalSerializationApi::class)
 class StringTests {
     @Test
     fun testStringWithMatchingName() {

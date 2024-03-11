@@ -3,10 +3,12 @@ package de.sipgate.federmappe.realtimedb
 import com.google.firebase.database.DataSnapshot
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalSerializationApi::class)
 class WholeNumberTests {
     @Test
     fun integerDecodingTest() {

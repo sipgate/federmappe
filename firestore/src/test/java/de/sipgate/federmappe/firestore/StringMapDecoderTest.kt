@@ -3,6 +3,7 @@ package de.sipgate.federmappe.firestore
 import java.util.stream.Stream
 import kotlin.reflect.KClass
 import kotlin.reflect.cast
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions
@@ -11,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
+@OptIn(ExperimentalSerializationApi::class)
 class StringMapDecoderTest {
 
     @Test

@@ -1,5 +1,6 @@
 package de.sipgate.federmappe.firestore
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions
@@ -11,6 +12,7 @@ enum class TestEnum {
     B,
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 class EnumTests {
     @Test
     fun deserializeDataClassWithEnum() {
