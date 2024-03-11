@@ -45,6 +45,10 @@ class SnapshotDecoder(
         return CompositeDecoder.DECODE_DONE
     }
 
+    override fun decodeInt(): Int {
+        return (decodeValue() as Long).toInt()
+    }
+
     override fun decodeValue(): Any {
         return dataSnapshot.child(key!!).value!!
     }

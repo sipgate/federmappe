@@ -14,7 +14,7 @@ class WholeNumberTests {
         data class Asdf(val someValue: Int)
 
         val expectedProperty = mockk<DataSnapshot> {
-            every { value } returns 1234
+            every { value } returns 1234L
             every { key } returns "someValue"
             every { children } returns emptyList()
         }
