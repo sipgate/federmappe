@@ -17,7 +17,7 @@ import kotlinx.serialization.serializer
 inline fun <reified T: Any> DatabaseReference.toObject(
     serializer: KSerializer<T> = serializer<T>(),
     crossinline errorHandler: (Throwable) -> T? = { throw it }
-): Flow<T> {
+): Flow<T?> {
     return callbackFlow {
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
@@ -32,9 +32,7 @@ inline fun <reified T: Any> DatabaseReference.toObject(
                         errorHandler(ex)
                     }
 
-                if (decodedAppData != null) {
-                    trySend(decodedAppData)
-                }
+                trySend(decodedAppData)
             }
         }
 
