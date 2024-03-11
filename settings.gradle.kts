@@ -20,4 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Federmappe"
-include(":lib")
+include(":firestore")
