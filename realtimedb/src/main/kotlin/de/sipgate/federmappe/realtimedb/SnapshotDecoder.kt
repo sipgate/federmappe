@@ -2,7 +2,9 @@ package de.sipgate.federmappe.realtimedb
 
 import com.google.firebase.database.DataSnapshot
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.SerializersModule
@@ -38,6 +40,32 @@ class SnapshotDecoder(
         }
 
         return CompositeDecoder.DECODE_DONE
+    }
+
+    override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
+        if (key == null) return this
+
+        val value = dataSnapshot.child(key!!)
+        val valueDescriptor = descriptor.kind
+        if (valueDescriptor == StructureKind.CLASS) {
+            return SnapshotDecoder(
+                dataSnapshot = value,
+                ignoreUnknownProperties = ignoreUnknownProperties,
+                serializersModule = this.serializersModule,
+            )
+        }
+
+        throw SerializationException(
+            "Given value is neither a list nor a type! value: $value, type: ${value::class.qualifiedName}"
+        )
+    }
+
+    override fun endStructure(descriptor: SerialDescriptor) {
+        if (skippedValues.isNotEmpty() && !ignoreUnknownProperties) {
+            throw SerializationException("found unhandled properties: $skippedValues")
+        }
+
+        super.endStructure(descriptor)
     }
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
