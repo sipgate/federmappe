@@ -17,28 +17,26 @@ import kotlinx.serialization.serializer
 inline fun <reified T: Any> DatabaseReference.toObject(
     serializer: KSerializer<T> = serializer<T>(),
     crossinline errorHandler: (Throwable) -> T? = { throw it }
-): Flow<T?> {
-    return callbackFlow {
-        val valueEventListener = object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-                close(IllegalStateException(error.toException()))
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val decodedAppData =
-                    try {
-                        dataSnapshot.toObjectWithSerializer(serializer)
-                    } catch (ex: SerializationException) {
-                        errorHandler(ex)
-                    }
-
-                trySend(decodedAppData)
-            }
+): Flow<T?> = callbackFlow {
+    val valueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            close(IllegalStateException(error.toException()))
         }
 
-        this@toObject.addValueEventListener(valueEventListener)
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val decodedAppData =
+                try {
+                    dataSnapshot.toObjectWithSerializer(serializer)
+                } catch (ex: SerializationException) {
+                    errorHandler(ex)
+                }
 
-        awaitClose { this@toObject.removeEventListener(valueEventListener) }
+            trySend(decodedAppData)
+        }
     }
+
+    this@toObject.addValueEventListener(valueEventListener)
+
+    awaitClose { this@toObject.removeEventListener(valueEventListener) }
 }
 

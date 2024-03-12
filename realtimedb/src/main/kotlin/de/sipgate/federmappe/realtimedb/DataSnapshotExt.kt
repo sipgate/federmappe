@@ -8,26 +8,23 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 
 @ExperimentalSerializationApi
-inline fun <reified T : Any> Iterable<DataSnapshot>.toObject(
+inline fun <reified T : Any> DataSnapshot.toObject(
     customSerializers: SerializersModule = EmptySerializersModule(),
     crossinline errorHandler: (Throwable) -> T? = { throw it }
-): List<T?> = map {
-    try {
-        it.toObjectWithSerializer(customSerializers = customSerializers)
-    } catch (ex: Throwable) {
-        errorHandler(ex)
-    }
+): T? = try {
+    toObjectWithSerializer(customSerializers = customSerializers)
+} catch (ex: Throwable) {
+    errorHandler(ex)
 }
 
 @ExperimentalSerializationApi
 inline fun <reified T : Any> DataSnapshot.toObjectWithSerializer(
     serializer: KSerializer<T> = serializer<T>(),
     customSerializers: SerializersModule = EmptySerializersModule()
-): T =
-    serializer.deserialize(
-        SnapshotDecoder(
-            this,
-            ignoreUnknownProperties = true,
-            serializersModule = customSerializers,
-        ),
-    )
+): T = serializer.deserialize(
+    SnapshotDecoder(
+        this,
+        ignoreUnknownProperties = true,
+        serializersModule = customSerializers,
+    ),
+)
