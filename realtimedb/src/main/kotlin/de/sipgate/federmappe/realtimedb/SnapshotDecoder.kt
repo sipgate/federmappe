@@ -45,6 +45,10 @@ class SnapshotDecoder(
         return CompositeDecoder.DECODE_DONE
     }
 
+    override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
+        return decodeEnum(enumDescriptor, ::decodeValue)
+    }
+
     override fun decodeInt(): Int {
         return (decodeValue() as Long).toInt()
     }
