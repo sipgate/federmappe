@@ -49,6 +49,10 @@ class SnapshotDecoder(
         return (decodeValue() as Long).toInt()
     }
 
+    override fun decodeFloat(): Float {
+        return (decodeValue() as Double).toFloat()
+    }
+
     override fun decodeValue(): Any {
         return dataSnapshot.child(key!!).value!!
     }
