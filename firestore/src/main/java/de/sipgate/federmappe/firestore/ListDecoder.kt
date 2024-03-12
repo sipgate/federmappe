@@ -2,7 +2,9 @@ package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
@@ -39,23 +41,24 @@ class ListDecoder(
     @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val value = list.removeFirst()
-        if (value is Map<*, *>) {
-            return StringMapToObjectDecoder(
-                data = value as Map<String, Any>,
-                ignoreUnknownProperties = true,
-                serializersModule = this.serializersModule,
-            )
-        }
-
-        if (value is Iterable<*>) {
-            val subList = (value as Iterable<Any>).toCollection(mutableListOf())
-            return ListDecoder(ArrayDeque(subList), subList.size, serializersModule)
-        }
 
         if (value is Timestamp) {
             return FirebaseTimestampDecoder(timestamp = value)
         }
 
-        return ListDecoder(list, descriptor.elementsCount)
+        when (descriptor.kind) {
+            StructureKind.CLASS -> return StringMapToObjectDecoder(
+                data = value as Map<String, Any>,
+                ignoreUnknownProperties = true,
+                serializersModule = this.serializersModule,
+            )
+
+            StructureKind.LIST -> {
+                val subList = (value as Iterable<Any>).toCollection(mutableListOf())
+                return ListDecoder(ArrayDeque(subList), subList.size, serializersModule)
+            }
+
+            else -> throw SerializationException("Type is not a list ${descriptor.serialName}")
+        }
     }
 }

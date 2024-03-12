@@ -56,33 +56,30 @@ class StringMapToObjectDecoder(
 
         val value = data[key]
         val valueDescriptor = descriptor.kind
-        if (value is Map<*, *> && valueDescriptor == StructureKind.CLASS) {
-            return StringMapToObjectDecoder(
+
+        if (value is Timestamp) {
+            return FirebaseTimestampDecoder(timestamp = value)
+        }
+
+        when (valueDescriptor) {
+            StructureKind.CLASS -> return StringMapToObjectDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
             )
-        }
 
-        if (value is Map<*, *> && valueDescriptor == StructureKind.MAP) {
-            return MapDecoder(
+            StructureKind.MAP -> return MapDecoder(
                 map = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
             )
-        }
 
-        if (value is Iterable<*>) {
-            val list = (value as Iterable<Any>).toCollection(mutableListOf())
-            return ListDecoder(ArrayDeque(list), list.size, serializersModule)
-        }
+            StructureKind.LIST -> {
+                val list = (value as Iterable<Any>).toCollection(mutableListOf())
+                return ListDecoder(ArrayDeque(list), list.size, serializersModule)
+            }
 
-        if (value is Timestamp) {
-            return FirebaseTimestampDecoder(
-                timestamp = value,
-            )
+            else -> throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")
         }
-
-        throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")
     }
 
     override fun endStructure(descriptor: SerialDescriptor) {
