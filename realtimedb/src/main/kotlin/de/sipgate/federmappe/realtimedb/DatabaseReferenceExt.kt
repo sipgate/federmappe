@@ -8,13 +8,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.serializer
 
 @ExperimentalSerializationApi
 inline fun <reified T : Any> DatabaseReference.toObject(
-    serializer: KSerializer<T> = serializer<T>(),
     crossinline errorHandler: (Throwable) -> T? = { throw it }
 ): Flow<T?> = callbackFlow {
     val valueEventListener = object : ValueEventListener {
@@ -23,14 +19,7 @@ inline fun <reified T : Any> DatabaseReference.toObject(
         }
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            val decodedAppData =
-                try {
-                    dataSnapshot.toObjectWithSerializer(serializer)
-                } catch (ex: SerializationException) {
-                    errorHandler(ex)
-                }
-
-            trySend(decodedAppData)
+            trySend(dataSnapshot.toObject<T>(errorHandler = errorHandler))
         }
     }
 
@@ -41,7 +30,6 @@ inline fun <reified T : Any> DatabaseReference.toObject(
 
 @ExperimentalSerializationApi
 inline fun <reified T : Any> DatabaseReference.toObjects(
-    serializer: KSerializer<T> = serializer<T>(),
     crossinline errorHandler: (Throwable) -> T? = { throw it }
 ): Flow<List<T>> = callbackFlow {
     val valueEventListener = object : ValueEventListener {
@@ -50,15 +38,9 @@ inline fun <reified T : Any> DatabaseReference.toObjects(
         }
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            val decodedAppData = dataSnapshot.children.mapNotNull { childSnapshot ->
-                try {
-                    childSnapshot.toObjectWithSerializer(serializer)
-                } catch (ex: SerializationException) {
-                    errorHandler(ex)
-                }
-            }
-
-            trySend(decodedAppData)
+            trySend(dataSnapshot.children.mapNotNull { childSnapshot ->
+                childSnapshot.toObject<T>(errorHandler = errorHandler)
+            })
         }
     }
 
