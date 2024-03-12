@@ -28,12 +28,7 @@ class SnapshotDecoder(
         while (keysIterator.hasNext()) {
             val nextKey = keysIterator.next().also { key = it }
 
-            val nextIndex =
-                when (descriptor.kind) {
-//                    StructureKind.MAP -> dataSnapshot.children.indexOf(nextKey)
-                    else -> descriptor.getElementIndex(nextKey)
-                }
-
+            val nextIndex = descriptor.getElementIndex(nextKey)
             if (nextIndex == CompositeDecoder.UNKNOWN_NAME) {
                 skippedValues.add(nextKey)
                 continue
