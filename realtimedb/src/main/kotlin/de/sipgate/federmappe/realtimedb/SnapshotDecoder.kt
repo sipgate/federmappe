@@ -1,13 +1,12 @@
 package de.sipgate.federmappe.realtimedb
 
 import com.google.firebase.database.DataSnapshot
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
-import kotlinx.serialization.descriptors.capturedKClass
 import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.SerializersModule
@@ -58,6 +57,7 @@ class SnapshotDecoder(
                     serializersModule = this.serializersModule,
                 )
             }
+
             PolymorphicKind.SEALED -> {
                 return PolymorphicDecoder(
                     dataSnapshot = value,
@@ -66,6 +66,7 @@ class SnapshotDecoder(
                     type = descriptor.serialName
                 )
             }
+
             StructureKind.MAP -> {
                 return MapDecoder(
                     list = value.children.map { it },
@@ -73,10 +74,12 @@ class SnapshotDecoder(
                     serializersModule = serializersModule,
                 )
             }
+
             StructureKind.LIST -> {
                 val list = value.children.map { it }
                 return ListDecoder(ArrayDeque(list), list.size, serializersModule)
             }
+
             else -> throw SerializationException(
                 "Given value is neither a list nor a type! value: $value, type: ${value::class.qualifiedName}"
             )
@@ -106,4 +109,17 @@ class SnapshotDecoder(
     override fun decodeValue(): Any {
         return dataSnapshot.child(key!!).value!!
     }
+
+    fun decodeValue(descriptor: SerialDescriptor, index: Int): Any {
+        val key = descriptor.getElementName(index)
+        return dataSnapshot.child(key).value!!
+    }
+
+//    override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
+//        return deserializer.deserialize(SnapshotDecoder(
+//            dataSnapshot= decodeValue() as DataSnapshot,
+//            ignoreUnknownProperties = ignoreUnknownProperties,
+//            serializersModule = serializersModule
+//        ))
+//    }
 }
