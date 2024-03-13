@@ -31,17 +31,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
     compileOnly(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.datetime)
-    compileOnly(libs.firebase.database)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
-    testImplementation(libs.firebase.database)
 
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
+    testImplementation(project(":firestore"))
 }
 
 tasks.withType<Test>().configureEach {
