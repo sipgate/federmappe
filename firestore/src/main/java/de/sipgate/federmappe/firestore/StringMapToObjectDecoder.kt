@@ -1,6 +1,7 @@
 package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
+import de.sipgate.federmappe.common.decodeEnum
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -46,7 +47,8 @@ class StringMapToObjectDecoder(
 
     override fun decodeNotNullMark(): Boolean = data[key] != null
 
-    override fun decodeEnum(enumDescriptor: SerialDescriptor): Int = decodeEnum(enumDescriptor, ::decodeValue)
+    override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
+        decodeEnum(enumDescriptor, ::decodeValue)
 
     @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {

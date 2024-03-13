@@ -47,17 +47,29 @@ class SnapshotDecoder(
 
         val value = dataSnapshot.child(key!!)
         val valueDescriptor = descriptor.kind
-        if (valueDescriptor == StructureKind.CLASS) {
-            return SnapshotDecoder(
-                dataSnapshot = value,
-                ignoreUnknownProperties = ignoreUnknownProperties,
-                serializersModule = this.serializersModule,
+        when (valueDescriptor) {
+            StructureKind.CLASS -> {
+                return SnapshotDecoder(
+                    dataSnapshot = value,
+                    ignoreUnknownProperties = ignoreUnknownProperties,
+                    serializersModule = this.serializersModule,
+                )
+            }
+            StructureKind.MAP -> {
+                return MapDecoder(
+                    list = value.children.map { it },
+                    ignoreUnknownProperties = ignoreUnknownProperties,
+                    serializersModule = serializersModule,
+                )
+            }
+            StructureKind.LIST -> {
+                val list = value.children.map { it }
+                return ListDecoder(ArrayDeque(list), list.size, serializersModule)
+            }
+            else -> throw SerializationException(
+                "Given value is neither a list nor a type! value: $value, type: ${value::class.qualifiedName}"
             )
         }
-
-        throw SerializationException(
-            "Given value is neither a list nor a type! value: $value, type: ${value::class.qualifiedName}"
-        )
     }
 
     override fun endStructure(descriptor: SerialDescriptor) {

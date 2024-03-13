@@ -2,6 +2,7 @@ package de.sipgate.federmappe.firestore.serializers
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.firestore.StringMapToObjectDecoder
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions
@@ -15,6 +16,7 @@ class DateSerializerTest {
     /* Nanos will be ignored, because java.util.Date isn't precise enough. */
     private val date = Date( epochSeconds + nanos)
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Test
     fun testDeserialization() {
         @Serializable

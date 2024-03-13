@@ -3,6 +3,7 @@ package de.sipgate.federmappe.common.serializers
 import de.sipgate.federmappe.firestore.StringMapToObjectDecoder
 import de.sipgate.federmappe.firestore.serializers.UriSerializer
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
@@ -16,6 +17,7 @@ class UriSerializerTest {
     private val uriString = "https://sipgate.de:443/some/path?with=multiple&query=args"
     private val uri = URI.create(uriString)
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Test
     fun testDeserialization() {
         @Serializable

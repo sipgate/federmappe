@@ -1,9 +1,7 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.realtimedb
 
-import com.google.firebase.Timestamp
-import de.sipgate.federmappe.common.decodeEnum
+import com.google.firebase.database.DataSnapshot
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
@@ -13,7 +11,7 @@ import kotlinx.serialization.modules.SerializersModule
 
 @ExperimentalSerializationApi
 class ListDecoder(
-    private val list: ArrayDeque<Any>,
+    private val list: ArrayDeque<DataSnapshot>,
     private val elementsCount: Int = 0,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
 ) : AbstractDecoder() {
@@ -23,7 +21,7 @@ class ListDecoder(
 
     override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = elementsCount
 
-    override fun decodeValue(): Any = list.removeFirst()
+    override fun decodeValue(): Any = list.removeFirst().value!!
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int =
         when (index) {
@@ -36,7 +34,7 @@ class ListDecoder(
 
     override fun decodeNotNullMark(): Boolean =
         when {
-            list.firstOrNull() != null -> true
+            list.firstOrNull()?.value != null -> true
             else -> false.also { list.removeFirst() }
         }
 
@@ -44,23 +42,20 @@ class ListDecoder(
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val value = list.removeFirst()
 
-        if (value is Timestamp) {
-            return FirebaseTimestampDecoder(timestamp = value)
-        }
-
         when (descriptor.kind) {
-            StructureKind.CLASS -> return StringMapToObjectDecoder(
-                data = value as Map<String, Any>,
-                ignoreUnknownProperties = true,
-                serializersModule = this.serializersModule,
-            )
-
+            StructureKind.CLASS ->
+                return SnapshotDecoder(
+                    dataSnapshot = value,
+                    ignoreUnknownProperties = true,
+                    serializersModule = this.serializersModule,
+                )
             StructureKind.LIST -> {
-                val subList = (value as Iterable<Any>).toCollection(mutableListOf())
+                val subList = (value as Iterable<DataSnapshot>).toCollection(mutableListOf())
                 return ListDecoder(ArrayDeque(subList), subList.size, serializersModule)
             }
-
-            else -> throw SerializationException("Type is not a list ${descriptor.serialName}")
+            else -> {}
         }
+
+        return ListDecoder(list, descriptor.elementsCount)
     }
 }
