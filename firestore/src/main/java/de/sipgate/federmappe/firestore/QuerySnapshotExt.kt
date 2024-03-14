@@ -2,6 +2,8 @@ package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
+import de.sipgate.federmappe.common.DefaultSerializersModule
+import de.sipgate.federmappe.common.toObjectWithSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
 

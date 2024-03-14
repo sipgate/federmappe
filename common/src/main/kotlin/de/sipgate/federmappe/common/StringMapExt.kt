@@ -1,6 +1,5 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
-import com.google.firebase.Timestamp
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.encoding.CompositeDecoder

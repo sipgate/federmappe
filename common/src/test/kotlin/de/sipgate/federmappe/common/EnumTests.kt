@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable

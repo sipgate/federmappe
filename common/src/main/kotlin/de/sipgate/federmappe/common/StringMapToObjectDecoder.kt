@@ -1,6 +1,5 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
-import de.sipgate.federmappe.common.decodeEnum
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -77,8 +76,14 @@ class StringMapToObjectDecoder(
             )
 
             StructureKind.LIST -> {
-                val list = (value as Iterable<Any>).toCollection(mutableListOf())
-                return ListDecoder(ArrayDeque(list), list.size, serializersModule, subtypeDecoder)
+                val list = (value as Iterable<Any>)
+                    .toCollection(mutableListOf())
+
+                return ListDecoder(
+                    list = ArrayDeque(list),
+                    elementsCount = list.size,
+                    serializersModule = serializersModule,
+                    subtypeDecoder = subtypeDecoder)
             }
 
             else -> throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")

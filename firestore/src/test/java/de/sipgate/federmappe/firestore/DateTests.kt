@@ -1,7 +1,8 @@
 package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
-import de.sipgate.federmappe.firestore.serializers.DateSerializer
+import de.sipgate.federmappe.common.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.serializers.DateSerializer
 import java.util.Date
 import java.util.GregorianCalendar
 import kotlinx.serialization.Contextual
@@ -157,6 +158,7 @@ class DateTests {
                     data,
                     ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(DateSerializer) },
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 

@@ -1,7 +1,6 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
 import android.util.Log
-import de.sipgate.federmappe.common.decodeEnum
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor

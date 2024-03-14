@@ -2,7 +2,8 @@ package de.sipgate.federmappe.firestore.serializers
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.firestore.FirebaseTimestampDecoder
-import de.sipgate.federmappe.firestore.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.serializers.DateSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
