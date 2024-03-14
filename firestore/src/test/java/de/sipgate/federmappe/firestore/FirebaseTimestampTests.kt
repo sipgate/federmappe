@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalSerializationApi::class)
-class DateTests {
+class FirebaseTimestampTests {
     @Test
     fun deserializeBasicDataClassWithDateFieldSetToFirstDayOfYear2000() {
         // Arrange
