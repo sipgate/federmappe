@@ -14,7 +14,7 @@ class StringMapToObjectDecoder(
     private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-    private val subtypeDecoder: (Any?) -> CompositeDecoder? = {null}
+    private val subtypeDecoder: (Any?) -> CompositeDecoder? = { null }
 ) : AbstractDecoder() {
     private val keysIterator = data.keys.iterator()
     private var index: Int? = null
@@ -83,10 +83,11 @@ class StringMapToObjectDecoder(
                     list = ArrayDeque(list),
                     elementsCount = list.size,
                     serializersModule = serializersModule,
-                    subtypeDecoder = subtypeDecoder)
+                    subtypeDecoder = subtypeDecoder
+                )
             }
 
-            else -> throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")
+            else -> throw SerializationException("${key ?: "root"} was expected to be of type $valueDescriptor, but was $value")
         }
     }
 
