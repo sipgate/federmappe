@@ -1,9 +1,8 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
-import com.google.firebase.Timestamp
-import de.sipgate.federmappe.common.decodeEnum
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
@@ -16,7 +15,8 @@ class StringMapToObjectDecoder(
     private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-) : AbstractDecoder() {
+    private val subtypeDecoder: (Any?) -> CompositeDecoder? = { null }
+) : AbstractDecoder(), TypeAwareDecoder {
     private val keysIterator = data.keys.iterator()
     private var index: Int? = null
     private var key: String? = null
@@ -59,12 +59,13 @@ class StringMapToObjectDecoder(
         val value = data[key]
         val valueDescriptor = descriptor.kind
 
-        if (value is Timestamp) {
-            return FirebaseTimestampDecoder(timestamp = value)
+        val decoder = subtypeDecoder(value)
+        if (decoder != null) {
+            return decoder
         }
 
         when (valueDescriptor) {
-            StructureKind.CLASS -> return StringMapToObjectDecoder(
+            StructureKind.CLASS, PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
@@ -76,11 +77,18 @@ class StringMapToObjectDecoder(
             )
 
             StructureKind.LIST -> {
-                val list = (value as Iterable<Any>).toCollection(mutableListOf())
-                return ListDecoder(ArrayDeque(list), list.size, serializersModule)
+                val list = (value as Iterable<Any>)
+                    .toCollection(mutableListOf())
+
+                return ListDecoder(
+                    list = ArrayDeque(list),
+                    elementsCount = list.size,
+                    serializersModule = serializersModule,
+                    subtypeDecoder = subtypeDecoder
+                )
             }
 
-            else -> throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")
+            else -> throw SerializationException("${key ?: "root"} was expected to be of type $valueDescriptor, but was $value")
         }
     }
 
@@ -90,5 +98,11 @@ class StringMapToObjectDecoder(
         }
 
         super.endStructure(descriptor)
+    }
+
+    override fun <T> decodeType(typeKey: String): T? {
+        @Suppress("UNCHECKED_CAST")
+        val currentData = (data[key] as? Map<String, Any>) ?: return null
+        return (currentData[typeKey] as? T)
     }
 }

@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.firestore.serializers
+package de.sipgate.federmappe.common.serializers
 
 import java.util.Date
 import kotlinx.serialization.KSerializer

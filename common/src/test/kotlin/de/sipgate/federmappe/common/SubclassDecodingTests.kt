@@ -1,9 +1,8 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalSerializationApi::class)
 class SubclassDecodingTests {
     @Serializable
-    data class A(val b: String)
+    internal data class A(val b: String)
 
     @Test
     fun deserializeNestedDataClass() {

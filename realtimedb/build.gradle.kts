@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
+    api(project(":common"))
     compileOnly(libs.kotlinx.serialization)
     implementation(libs.kotlinx.datetime)
     compileOnly(libs.firebase.database)

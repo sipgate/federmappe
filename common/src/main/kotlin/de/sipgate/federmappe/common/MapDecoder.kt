@@ -1,7 +1,6 @@
-package de.sipgate.federmappe.realtimedb
+package de.sipgate.federmappe.common
 
 import android.util.Log
-import com.google.firebase.database.DataSnapshot
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -13,23 +12,28 @@ import kotlinx.serialization.modules.SerializersModule
 
 @ExperimentalSerializationApi
 class MapDecoder(
-    private val list: List<DataSnapshot?>,
+    private val map: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
 ) : AbstractDecoder() {
-    private val keysIterator = list.iterator()
+    private val flattenedData =
+        map.entries.fold(emptyList<Any?>()) { acc, (key, value) ->
+            acc + listOf(key, value)
+        }
+
+    private val keysIterator = flattenedData.iterator()
     private var index: Int = -2
 
     private val skippedValues = mutableSetOf<String>()
 
-    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = list.size
+    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = map.size
 
-    override fun decodeValue(): Any = list[index]!!.value!!
+    override fun decodeValue(): Any = flattenedData[index] ?: throw SerializationException("error decoding")
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
-       decodeEnum(enumDescriptor, ::decodeValue)
+        decodeEnum(enumDescriptor, ::decodeValue)
 
-    override fun decodeNotNullMark(): Boolean = list[index] != null
+    override fun decodeNotNullMark(): Boolean = flattenedData[index] != null
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
         while (keysIterator.hasNext()) {
@@ -42,13 +46,13 @@ class MapDecoder(
             }
             val nextIndex =
                 if (descriptor.kind == StructureKind.MAP) {
-                    list.indexOf(nextKey)
+                    flattenedData.indexOf(nextKey)
                 } else {
-                    descriptor.getElementIndex(nextKey!!.key!!)
+                    descriptor.getElementIndex(nextKey as String)
                 }
             if (nextIndex == CompositeDecoder.UNKNOWN_NAME) {
                 Log.w("MapDecoder", "encountered unknown key while decoding")
-                skippedValues.add(nextKey!!.key!!)
+                skippedValues.add(nextKey as String)
                 continue
             }
 
@@ -63,29 +67,31 @@ class MapDecoder(
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val value =
             if (index % 2 == 0) {
-                list[index + 1]
+                flattenedData[index + 1]
             } else {
-                list[index]
-            }!!
+                flattenedData[index]
+            }
 
-        when (descriptor.kind) {
-            StructureKind.CLASS -> {
-                return SnapshotDecoder(
-                    dataSnapshot = value,
-                    ignoreUnknownProperties = ignoreUnknownProperties,
-                    serializersModule = serializersModule,
-                )
-            }
-            StructureKind.MAP -> {
-                return MapDecoder(
-                    list = value.children.map { it },
-                    ignoreUnknownProperties = ignoreUnknownProperties,
-                )
-            }
+        val valueDescriptor = descriptor.kind
+
+
+        when (valueDescriptor) {
+            StructureKind.CLASS -> return StringMapToObjectDecoder(
+                data = value as Map<String, Any>,
+                ignoreUnknownProperties = ignoreUnknownProperties,
+                serializersModule = this.serializersModule,
+            )
+
+            StructureKind.MAP -> return MapDecoder(
+                map = value as Map<String, Any>,
+                ignoreUnknownProperties = ignoreUnknownProperties,
+            )
+
             StructureKind.LIST -> {
-                val list = value.children.map { it }
+                val list = (value as Iterable<Any>).toCollection(mutableListOf())
                 return ListDecoder(ArrayDeque(list), list.size, serializersModule)
             }
+
             else -> throw SerializationException("Given value is neither a list nor a type $value")
         }
     }

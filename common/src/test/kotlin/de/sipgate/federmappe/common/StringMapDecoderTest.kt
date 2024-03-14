@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
 import java.util.stream.Stream
 import kotlin.reflect.KClass

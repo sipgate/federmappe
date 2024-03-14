@@ -11,7 +11,7 @@ plugins {
 version = versionString
 
 android {
-    namespace = "de.sipgate.federmappe.realtimedb"
+    namespace = "de.sipgate.federmappe.common"
     compileSdk = 34
     defaultConfig.minSdk = 23
 
@@ -63,7 +63,7 @@ fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 publishing {
     publications.register<MavenPublication>("release") {
         groupId = "de.sipgate"
-        artifactId = "federmappe-realtimedb"
+        artifactId = "federmappe-common"
         version = project.version.toString()
 
         pom {

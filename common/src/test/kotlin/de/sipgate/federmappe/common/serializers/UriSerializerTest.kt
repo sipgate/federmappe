@@ -1,7 +1,6 @@
 package de.sipgate.federmappe.common.serializers
 
-import de.sipgate.federmappe.firestore.StringMapToObjectDecoder
-import de.sipgate.federmappe.firestore.serializers.UriSerializer
+import de.sipgate.federmappe.common.StringMapToObjectDecoder
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable

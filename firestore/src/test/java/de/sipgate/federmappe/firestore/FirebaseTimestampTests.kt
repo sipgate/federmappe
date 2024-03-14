@@ -1,7 +1,8 @@
 package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
-import de.sipgate.federmappe.firestore.serializers.DateSerializer
+import de.sipgate.federmappe.common.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.serializers.DateSerializer
 import java.util.Date
 import java.util.GregorianCalendar
 import kotlinx.serialization.Contextual
@@ -14,7 +15,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalSerializationApi::class)
-class DateTests {
+class FirebaseTimestampTests {
     @Test
     fun deserializeBasicDataClassWithDateFieldSetToFirstDayOfYear2000() {
         // Arrange
@@ -36,6 +37,7 @@ class DateTests {
                     data,
                     ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(DateSerializer) },
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 
@@ -64,6 +66,7 @@ class DateTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 
@@ -93,6 +96,7 @@ class DateTests {
                     data,
                     ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(DateSerializer) },
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 
@@ -154,6 +158,7 @@ class DateTests {
                     data,
                     ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(DateSerializer) },
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 
