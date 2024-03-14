@@ -1,34 +1,44 @@
 package de.sipgate.federmappe.common
 
+import de.sipgate.federmappe.common.SealedTypeTests.BaseType
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.Polymorphic
-import kotlinx.serialization.SerialName
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 
-@OptIn(ExperimentalSerializationApi::class)
-class SealedTypeTests {
-
-    enum class TypeDecl {
-        @SerialName("A_TYPE") A,
-        @SerialName("B_TYPE") B
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+internal class CustomSerializer : SealedClassWithTypeSerializer<BaseType, String>(BaseType::class) {
+    override fun selectDeserializer(element: String): DeserializationStrategy<BaseType> {
+        return when (element) {
+            "A" -> BaseType.A.serializer()
+            "B" -> BaseType.B.serializer()
+            else -> throw IllegalArgumentException("unknown element $element")
+        }
     }
+}
 
-    @Serializable
+@OptIn(ExperimentalSerializationApi::class)
+internal class SealedTypeTests {
+
+    @Serializable(with = CustomSerializer::class)
     sealed interface BaseType {
-        val type: TypeDecl
+        val type: String
 
         @Serializable
-        data class A(val value: String): BaseType {
-            override val type = TypeDecl.A
+        data class A(val value: String) : BaseType {
+            override val type = "A"
         }
 
         @Serializable
-        data class B(val value: Boolean): BaseType {
-            override val type = TypeDecl.B
+        data class B(val value: Boolean) : BaseType {
+            override val type = "B"
         }
     }
 
@@ -39,10 +49,12 @@ class SealedTypeTests {
         data class TestClass(val a: BaseType)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>("a" to mapOf(
-            "type" to "A_TYPE",
-            "value" to "some string"
-        ))
+        val data = mapOf<String, Any?>(
+            "a" to mapOf(
+                "type" to "A",
+                "value" to "some string"
+            )
+        )
 
         // Act
         val result =
@@ -50,6 +62,12 @@ class SealedTypeTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
+                    serializersModule = SerializersModule {
+                        polymorphic(BaseType::class) {
+                            subclass(BaseType.A::class)
+                            subclass(BaseType.B::class)
+                        }
+                    }
                 ),
             )
 

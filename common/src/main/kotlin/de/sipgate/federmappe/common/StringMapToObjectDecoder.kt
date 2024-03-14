@@ -2,6 +2,7 @@ package de.sipgate.federmappe.common
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
@@ -15,7 +16,7 @@ class StringMapToObjectDecoder(
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
     private val subtypeDecoder: (Any?) -> CompositeDecoder? = { null }
-) : AbstractDecoder() {
+) : AbstractDecoder(), TypeAwareDecoder {
     private val keysIterator = data.keys.iterator()
     private var index: Int? = null
     private var key: String? = null
@@ -64,7 +65,7 @@ class StringMapToObjectDecoder(
         }
 
         when (valueDescriptor) {
-            StructureKind.CLASS -> return StringMapToObjectDecoder(
+            StructureKind.CLASS, PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
@@ -97,5 +98,11 @@ class StringMapToObjectDecoder(
         }
 
         super.endStructure(descriptor)
+    }
+
+    override fun <T> decodeType(typeKey: String): T? {
+        @Suppress("UNCHECKED_CAST")
+        val currentData = (data[key] as? Map<String, Any>) ?: return null
+        return (currentData[typeKey] as? T)
     }
 }

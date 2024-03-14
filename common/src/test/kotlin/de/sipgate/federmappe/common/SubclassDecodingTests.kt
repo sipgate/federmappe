@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalSerializationApi::class)
 class SubclassDecodingTests {
     @Serializable
-    data class A(val b: String)
+    internal data class A(val b: String)
 
     @Test
     fun deserializeNestedDataClass() {
