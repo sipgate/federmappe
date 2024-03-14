@@ -36,6 +36,7 @@ class DateTests {
                     data,
                     ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(DateSerializer) },
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 
@@ -64,6 +65,7 @@ class DateTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 
@@ -93,6 +95,7 @@ class DateTests {
                     data,
                     ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(DateSerializer) },
+                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
 

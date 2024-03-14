@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.firestore
 
-import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.decodeEnum
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -16,6 +15,7 @@ class StringMapToObjectDecoder(
     private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
+    private val subtypeDecoder: (Any?) -> CompositeDecoder? = {null}
 ) : AbstractDecoder() {
     private val keysIterator = data.keys.iterator()
     private var index: Int? = null
@@ -59,8 +59,9 @@ class StringMapToObjectDecoder(
         val value = data[key]
         val valueDescriptor = descriptor.kind
 
-        if (value is Timestamp) {
-            return FirebaseTimestampDecoder(timestamp = value)
+        val decoder = subtypeDecoder(value)
+        if (decoder != null) {
+            return decoder
         }
 
         when (valueDescriptor) {
@@ -77,7 +78,7 @@ class StringMapToObjectDecoder(
 
             StructureKind.LIST -> {
                 val list = (value as Iterable<Any>).toCollection(mutableListOf())
-                return ListDecoder(ArrayDeque(list), list.size, serializersModule)
+                return ListDecoder(ArrayDeque(list), list.size, serializersModule, subtypeDecoder)
             }
 
             else -> throw SerializationException("Given value is neither a list nor a type! value: $value, type: ${value?.let { it::class.qualifiedName } ?: "null"}")

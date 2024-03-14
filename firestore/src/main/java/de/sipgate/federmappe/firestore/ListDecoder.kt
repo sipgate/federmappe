@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.firestore
 
-import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.decodeEnum
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -16,6 +15,7 @@ class ListDecoder(
     private val list: ArrayDeque<Any>,
     private val elementsCount: Int = 0,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
+    private val subtypeDecoder: (Any?) -> CompositeDecoder? = {null}
 ) : AbstractDecoder() {
     private var index = 0
 
@@ -44,8 +44,9 @@ class ListDecoder(
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val value = list.removeFirst()
 
-        if (value is Timestamp) {
-            return FirebaseTimestampDecoder(timestamp = value)
+        val decoder = subtypeDecoder(value)
+        if (decoder != null) {
+            return decoder
         }
 
         when (descriptor.kind) {
