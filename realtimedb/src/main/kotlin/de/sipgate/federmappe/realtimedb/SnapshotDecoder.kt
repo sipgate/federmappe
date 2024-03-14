@@ -2,9 +2,12 @@ package de.sipgate.federmappe.realtimedb
 
 import com.google.firebase.database.DataSnapshot
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
+import kotlinx.serialization.descriptors.capturedKClass
 import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.SerializersModule
@@ -13,7 +16,7 @@ import kotlinx.serialization.modules.SerializersModule
 class SnapshotDecoder(
     private val dataSnapshot: DataSnapshot,
     private val ignoreUnknownProperties: Boolean,
-    override val serializersModule: SerializersModule
+    override val serializersModule: SerializersModule,
 ) : AbstractDecoder() {
 
     private val keysIterator = dataSnapshot.children.mapNotNull { it.key }.iterator()
@@ -53,6 +56,14 @@ class SnapshotDecoder(
                     dataSnapshot = value,
                     ignoreUnknownProperties = ignoreUnknownProperties,
                     serializersModule = this.serializersModule,
+                )
+            }
+            PolymorphicKind.SEALED -> {
+                return PolymorphicDecoder(
+                    dataSnapshot = value,
+                    ignoreUnknownProperties = ignoreUnknownProperties,
+                    serializersModule = this.serializersModule,
+                    type = descriptor.serialName
                 )
             }
             StructureKind.MAP -> {

@@ -1,7 +1,7 @@
 package de.sipgate.federmappe.firestore
 
 import de.sipgate.federmappe.firestore.serializers.DateSerializer
-import de.sipgate.federmappe.firestore.serializers.UriSerializer
+import de.sipgate.federmappe.common.serializers.UriSerializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
