@@ -53,6 +53,7 @@ class StringMapToObjectDecoder(
     override fun decodeInt(): Int = (decodeValue() as Long).toInt()
     override fun decodeShort(): Short = (decodeValue() as Long).toShort()
     override fun decodeByte(): Byte = (decodeValue() as Long).toByte()
+    override fun decodeFloat(): Float = (decodeValue() as Double).toFloat()
 
     @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {

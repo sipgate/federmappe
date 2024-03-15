@@ -240,4 +240,27 @@ class FloatingPointNumberTests {
         Assertions.assertEquals(listOf(-1.5, 0.0, 1.5), result.a)
         Assertions.assertInstanceOf(TestClass::class.java, result)
     }
+
+    @Test
+    fun testDownCastingToFloat() {
+        // Arrange
+        @Serializable
+        data class TestClass(val a: Float)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to 0.8)
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data,
+                    ignoreUnknownProperties = true,
+                ),
+            )
+
+        // Assert
+        Assertions.assertEquals(0.8f, result.a)
+        Assertions.assertInstanceOf(TestClass::class.java, result)
+    }
 }
