@@ -194,4 +194,73 @@ class WholeNumberTests {
         Assertions.assertEquals(listOf(-1L, 0L, 1L), result.a)
         Assertions.assertInstanceOf(TestClass::class.java, result)
     }
+
+    @Test
+    fun testDownCastingToInt() {
+        // Arrange
+        @Serializable
+        data class TestClass(val a: Int)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to 45767L)
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data,
+                    ignoreUnknownProperties = true,
+                ),
+            )
+
+        // Assert
+        Assertions.assertEquals(45767, result.a)
+        Assertions.assertInstanceOf(TestClass::class.java, result)
+    }
+
+    @Test
+    fun testDownCastingToShort() {
+        // Arrange
+        @Serializable
+        data class TestClass(val a: Short)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to 3072L)
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data,
+                    ignoreUnknownProperties = true,
+                ),
+            )
+
+        // Assert
+        Assertions.assertEquals(3072, result.a)
+        Assertions.assertInstanceOf(TestClass::class.java, result)
+    }
+
+    @Test
+    fun testDownCastingToByte() {
+        // Arrange
+        @Serializable
+        data class TestClass(val a: Byte)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to 99L)
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data,
+                    ignoreUnknownProperties = true,
+                ),
+            )
+
+        // Assert
+        Assertions.assertEquals(99, result.a)
+        Assertions.assertInstanceOf(TestClass::class.java, result)
+    }
 }

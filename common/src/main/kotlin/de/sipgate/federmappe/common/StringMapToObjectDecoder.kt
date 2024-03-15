@@ -50,6 +50,10 @@ class StringMapToObjectDecoder(
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
         decodeEnum(enumDescriptor, ::decodeValue)
 
+    override fun decodeInt(): Int = (decodeValue() as Long).toInt()
+    override fun decodeShort(): Short = (decodeValue() as Long).toShort()
+    override fun decodeByte(): Byte = (decodeValue() as Long).toByte()
+
     @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         if (key == null) {
