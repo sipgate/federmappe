@@ -1,6 +1,7 @@
 package de.sipgate.federmappe.realtimedb
 
 import com.google.firebase.database.DataSnapshot
+import de.sipgate.federmappe.common.ErrorHandler
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -11,7 +12,7 @@ import kotlinx.serialization.serializer
 @ExperimentalSerializationApi
 inline fun <reified T : Any> DataSnapshot.toObject(
     customSerializers: SerializersModule = EmptySerializersModule(),
-    crossinline errorHandler: (Throwable) -> T? = { throw it }
+    crossinline errorHandler: ErrorHandler<T> = { throw it }
 ): T? = try {
     toObjectWithSerializer(customSerializers = customSerializers)
 } catch (ex: Throwable) {
