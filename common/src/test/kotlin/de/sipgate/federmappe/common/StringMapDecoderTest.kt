@@ -22,7 +22,7 @@ class StringMapDecoderTest {
         data class TestClass(val a: String, val b: Int)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf("a" to "test", "b" to 1)
+        val data = mapOf("a" to "test", "b" to 1L)
 
         // Act
         val result =
