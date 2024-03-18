@@ -12,9 +12,13 @@ import kotlinx.serialization.serializer
 @ExperimentalSerializationApi
 inline fun <reified T : Any> DataSnapshot.toObject(
     customSerializers: SerializersModule = EmptySerializersModule(),
+    ignoreUnknownProperties: Boolean = false,
     crossinline errorHandler: ErrorHandler<T> = { throw it }
 ): T? = try {
-    toObjectWithSerializer(customSerializers = customSerializers)
+    toObjectWithSerializer(
+        ignoreUnknownProperties = ignoreUnknownProperties,
+        customSerializers = customSerializers
+    )
 } catch (ex: Throwable) {
     errorHandler(ex)
 }
@@ -22,8 +26,15 @@ inline fun <reified T : Any> DataSnapshot.toObject(
 @ExperimentalSerializationApi
 inline fun <reified T : Any> DataSnapshot.toObjectWithSerializer(
     serializer: KSerializer<T> = serializer<T>(),
+    ignoreUnknownProperties: Boolean = false,
     customSerializers: SerializersModule = EmptySerializersModule()
-): T = serializer.deserialize(StringMapToObjectDecoder(toObjectMap().unwrapRoot(), customSerializers))
+): T = serializer.deserialize(
+    StringMapToObjectDecoder(
+        data = toObjectMap().unwrapRoot(),
+        serializersModule = customSerializers,
+        ignoreUnknownProperties = ignoreUnknownProperties
+    )
+)
 
 @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
 fun DataSnapshot.toObjectMap(): Pair<String, Any> =
