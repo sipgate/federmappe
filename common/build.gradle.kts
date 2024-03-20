@@ -33,6 +33,8 @@ android {
 dependencies {
     compileOnly(libs.kotlinx.serialization)
 
+    implementation(libs.kotlinx.datetime)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
 
