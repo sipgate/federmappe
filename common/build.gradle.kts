@@ -38,9 +38,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
 
-    testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
-    testImplementation(project(":firestore"))
 }
 
 tasks.withType<Test>().configureEach {
