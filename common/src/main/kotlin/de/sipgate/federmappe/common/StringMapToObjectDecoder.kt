@@ -105,8 +105,8 @@ class StringMapToObjectDecoder(
         super.endStructure(descriptor)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T> decodeType(typeKey: String): T? {
-        @Suppress("UNCHECKED_CAST")
         val currentData = (data[key] as? Map<String, Any>) ?: return null
         return (currentData[typeKey] as? T)
     }
