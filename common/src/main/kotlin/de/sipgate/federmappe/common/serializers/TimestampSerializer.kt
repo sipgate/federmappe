@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-object DateSerializer : KSerializer<Date> {
+object TimestampSerializer : KSerializer<Date> {
     override val descriptor = buildClassSerialDescriptor(serialName = "FirebaseTimestamp") {
         element<Long>("seconds")
         element<Int>("nanoseconds")
