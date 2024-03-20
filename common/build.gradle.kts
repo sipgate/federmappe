@@ -1,34 +1,13 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     `maven-publish`
     signing
 }
 
 version = versionString
-
-android {
-    namespace = "de.sipgate.federmappe.common"
-    compileSdk = 34
-    defaultConfig.minSdk = 23
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
 
 dependencies {
     compileOnly(libs.kotlinx.serialization)
@@ -84,7 +63,7 @@ publishing {
         }
 
         afterEvaluate {
-            from(components["release"])
+            from(components["java"])
         }
     }
 
@@ -98,6 +77,10 @@ publishing {
             }
         }
     }
+}
+
+kotlin {
+    jvmToolchain(8)
 }
 
 signing {

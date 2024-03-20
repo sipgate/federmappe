@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common
 
-import android.util.Log
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -51,7 +50,6 @@ class MapDecoder(
                     descriptor.getElementIndex(nextKey as String)
                 }
             if (nextIndex == CompositeDecoder.UNKNOWN_NAME) {
-                Log.w("MapDecoder", "encountered unknown key while decoding")
                 skippedValues.add(nextKey as String)
                 continue
             }
