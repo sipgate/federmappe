@@ -9,7 +9,7 @@ import kotlinx.serialization.serializer
 @ExperimentalSerializationApi
 inline fun <reified T : Any> Map<String, Any>.toObjectWithSerializer(
     serializer: KSerializer<T> = serializer<T>(),
-    customSerializers: SerializersModule,
+    customSerializers: SerializersModule = DefaultSerializersModule,
     noinline subtypeDecoder: (Any?) -> CompositeDecoder? = {null}
 ): T = serializer.deserialize(
     StringMapToObjectDecoder(
