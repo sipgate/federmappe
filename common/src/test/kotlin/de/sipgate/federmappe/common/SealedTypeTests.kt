@@ -1,9 +1,8 @@
 package de.sipgate.federmappe.common
 
 import de.sipgate.federmappe.common.SealedTypeTests.BaseType
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -13,33 +12,19 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 
-@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-internal class CustomSerializer : SealedClassWithTypeSerializer<BaseType, String>(BaseType::class) {
-    override fun selectDeserializer(element: String): DeserializationStrategy<BaseType> {
-        return when (element) {
-            "A" -> BaseType.A.serializer()
-            "B" -> BaseType.B.serializer()
-            else -> throw IllegalArgumentException("unknown element $element")
-        }
-    }
-}
-
 @OptIn(ExperimentalSerializationApi::class)
 internal class SealedTypeTests {
 
-    @Serializable(with = CustomSerializer::class)
+    @Serializable
     sealed interface BaseType {
-        val type: String
 
         @Serializable
-        data class A(val value: String) : BaseType {
-            override val type = "A"
-        }
+        @SerialName("A")
+        data class A(val value: String): BaseType
 
         @Serializable
-        data class B(val value: Boolean) : BaseType {
-            override val type = "B"
-        }
+        @SerialName("B")
+        data class B(val value: Boolean) : BaseType
     }
 
     @Test
@@ -62,12 +47,6 @@ internal class SealedTypeTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule {
-                        polymorphic(BaseType::class) {
-                            subclass(BaseType.A::class)
-                            subclass(BaseType.B::class)
-                        }
-                    }
                 ),
             )
 

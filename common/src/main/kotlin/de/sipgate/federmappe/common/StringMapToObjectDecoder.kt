@@ -12,14 +12,12 @@ import kotlinx.serialization.modules.SerializersModule
 
 @ExperimentalSerializationApi
 class StringMapToObjectDecoder(
-    data: Map<String, Any?>,
+    private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
     private val subtypeDecoder: (Any?) -> CompositeDecoder? = { null }
 ) : AbstractDecoder(), TypeAwareDecoder {
-    private val sanitizedData = data.sortByPrio()
-
-    private val keysIterator = sanitizedData.keys.iterator()
+    private val keysIterator = data.sortByPrio().keys.iterator()
     private var index: Int? = null
     private var key: String? = null
 
@@ -27,7 +25,7 @@ class StringMapToObjectDecoder(
 
     override fun decodeSequentially() = false
 
-    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = sanitizedData.size
+    override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = data.size
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
         while (keysIterator.hasNext()) {
@@ -45,9 +43,9 @@ class StringMapToObjectDecoder(
         return CompositeDecoder.DECODE_DONE
     }
 
-    override fun decodeValue(): Any = sanitizedData[key] ?: throw SerializationException("error decoding $key")
+    override fun decodeValue(): Any = data[key] ?: throw SerializationException("error decoding $key")
 
-    override fun decodeNotNullMark(): Boolean = sanitizedData[key] != null
+    override fun decodeNotNullMark(): Boolean = data[key] != null
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
         decodeEnum(enumDescriptor, ::decodeValue)
@@ -63,7 +61,7 @@ class StringMapToObjectDecoder(
             return this
         }
 
-        val value = sanitizedData[key]
+        val value = data[key]
         val valueDescriptor = descriptor.kind
 
         val decoder = subtypeDecoder(value)
@@ -72,7 +70,13 @@ class StringMapToObjectDecoder(
         }
 
         when (valueDescriptor) {
-            StructureKind.CLASS, PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
+            StructureKind.CLASS -> return StringMapToObjectDecoder(
+                data = (value as? Map<String, Any>) ?: data,
+                ignoreUnknownProperties = ignoreUnknownProperties,
+                serializersModule = this.serializersModule,
+            )
+
+            PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
@@ -109,7 +113,7 @@ class StringMapToObjectDecoder(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> decodeType(typeKey: String): T? {
-        val currentData = (sanitizedData[key] as? Map<String, Any>) ?: return null
+        val currentData = (data[key] as? Map<String, Any>) ?: return null
         return (currentData[typeKey] as? T)
     }
 }
