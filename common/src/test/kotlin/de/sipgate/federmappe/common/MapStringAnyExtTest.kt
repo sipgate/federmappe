@@ -1,34 +1,34 @@
 package de.sipgate.federmappe.common
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class MapStringAnyExtTest {
     @Test
     fun mapThatBeginsWithTypeIsReturnedAsIs() {
-        val sortedMap = linkedMapOf(
+        val input = mapOf(
             "type" to "typeValue",
             "payload" to "payloadValue"
         )
 
-        val input = sortedMap.toMap()
         val result = input.sortByPrio()
 
-        Assertions.assertEquals("type", result.keys.first())
-        Assertions.assertEquals(sortedMap.keys, result.keys)
+        assertEquals("type", input.keys.first())
+        assertEquals("type", result.keys.first())
+        assertEquals(input.keys, result.keys)
     }
 
     @Test
     fun mapThatDoesNotBeginWithTypeIsReorderd() {
-        val sortedMap = linkedMapOf(
+        val input = mapOf(
             "payload" to "payloadValue",
             "type" to "typeValue"
         )
 
-        val input = sortedMap.toMap()
         val result = input.sortByPrio()
 
-        Assertions.assertEquals("type", result.keys.first())
-        Assertions.assertEquals(sortedMap.keys, result.keys)
+        assertEquals("payload", input.keys.first())
+        assertEquals("type", result.keys.first())
+        assertEquals(input.keys, result.keys)
     }
 }
