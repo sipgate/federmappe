@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common
 
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PolymorphicKind
@@ -55,24 +54,6 @@ class StringMapToObjectDecoder(
     override fun decodeShort(): Short = (decodeValue() as Long).toShort()
     override fun decodeByte(): Byte = (decodeValue() as Long).toByte()
     override fun decodeFloat(): Float = (decodeValue() as Double).toFloat()
-
-    override fun <T> decodeSerializableElement(
-        descriptor: SerialDescriptor,
-        index: Int,
-        deserializer: DeserializationStrategy<T>,
-        previousValue: T?
-    ): T = if (descriptor.kind is PolymorphicKind) {
-        @Suppress("UNCHECKED_CAST")
-        deserializer.deserialize(
-            StringMapToObjectDecoder(
-                (data[key] as? Map<String, Any?>) ?: data,
-                serializersModule,
-                ignoreUnknownProperties
-            )
-        )
-    } else {
-        decodeSerializableValue(deserializer, previousValue)
-    }
 
     @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {

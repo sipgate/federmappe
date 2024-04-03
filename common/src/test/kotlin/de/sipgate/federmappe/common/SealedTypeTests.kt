@@ -1,14 +1,28 @@
 package de.sipgate.federmappe.common
 
+import de.sipgate.federmappe.common.SealedTypeTests.BaseType
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+internal object SealedTypeSerializer : SealedClassWithTypeSerializer<BaseType, String>(BaseType::class) {
+    override fun selectDeserializer(element: String): DeserializationStrategy<BaseType> {
+        return when (element) {
+            "A" -> BaseType.A.serializer()
+            "B" -> BaseType.B.serializer()
+            "C" -> BaseType.C.serializer()
+            else -> throw IllegalArgumentException("wah")
+        }
+    }
+}
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class SealedTypeTests {
@@ -16,7 +30,7 @@ internal class SealedTypeTests {
     @Serializable
     data class InnerData(val inner: String)
 
-    @Serializable
+    @Serializable(with = SealedTypeSerializer::class)
     sealed interface BaseType {
 
         @Serializable
@@ -79,7 +93,6 @@ internal class SealedTypeTests {
         assertTrue((result.a as BaseType.B).value)
     }
 
-    @Disabled
     @Test
     fun deserializeNestedDataClass() {
         // Arrange
@@ -97,7 +110,12 @@ internal class SealedTypeTests {
         )
 
         // Act
-        val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(
+            StringMapToObjectDecoder(
+                data,
+                ignoreUnknownProperties = true
+            )
+        )
 
         // Assert
         assertInstanceOf(TestClass::class.java, result)
