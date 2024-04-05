@@ -1,5 +1,7 @@
 # Federmappe
 
+![Build Status](https://github.com/sipgate/federmappe/actions/workflows/ci.yml/badge.svg)
+
 Painless Firebase Object Mapper that was developed with Kotlin in mind.
 
 We rely on the Kotlin Serialization compiler plugin to generate the De-/Serialization
