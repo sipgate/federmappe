@@ -2,7 +2,7 @@ package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
-import de.sipgate.federmappe.common.serializers.TimestampSerializer
+import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
 import java.util.Date
 import java.util.GregorianCalendar
 import kotlinx.serialization.Contextual
@@ -36,7 +36,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampSerializer) },
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
                     subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
@@ -51,7 +51,7 @@ class FirebaseTimestampTests {
         // Arrange
         @Serializable
         data class TestClass(
-            @Serializable(with = TimestampSerializer::class) val a: Date,
+            @Serializable(with = TimestampToDateSerializer::class) val a: Date,
         )
 
         val serializer = serializer<TestClass>()
@@ -95,7 +95,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampSerializer) },
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
                     subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
@@ -125,7 +125,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampSerializer) },
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
                 ),
             )
 
@@ -157,7 +157,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampSerializer) },
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
                     subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
                 ),
             )
