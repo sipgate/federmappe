@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/sipgate/federmappe/actions/workflows/ci.yml/badge.svg)](https://github.com/sipgate/federmappe/actions/workflows/ci.yml)
 [![GitHub License](https://img.shields.io/github/license/sipgate/federmappe)](https://github.com/sipgate/federmappe/blob/main/LICENSE)
+[![GitHub Tag](https://img.shields.io/github/v/tag/sipgate/federmappe)](https://github.com/sipgate/federmappe/tags)
 
 Painless Firebase Object Mapper that was developed with Kotlin in mind.
 
