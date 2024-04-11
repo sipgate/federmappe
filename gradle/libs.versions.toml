@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.23"
-agp = "8.3.1"
+agp = "8.3.2"
 
 firebase-firestore = "24.11.0"
 firebase-database = "20.3.1"
