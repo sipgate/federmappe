@@ -2,7 +2,7 @@
 kotlin = "1.9.23"
 agp = "8.3.2"
 
-firebase-firestore = "24.11.0"
+firebase-firestore = "24.11.1"
 firebase-database = "20.3.1"
 junit = "5.10.2"
 kotlinx-datetime = "0.5.0"
