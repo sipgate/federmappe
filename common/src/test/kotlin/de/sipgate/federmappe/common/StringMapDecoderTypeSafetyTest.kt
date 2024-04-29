@@ -3,225 +3,466 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalSerializationApi::class)
 class StringMapDecoderTypeSafetyTest {
 
     @Test
     fun testClassCastExceptionIsThrownWhenBooleanIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Boolean, String>("String")
+        @Serializable
+        data class TestData(val value: Boolean)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenIntIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Int, String>("String")
+        @Serializable
+        data class TestData(val value: Int)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Long, String>("String")
+        @Serializable
+        data class TestData(val value: Long)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Float, String>("String")
+        @Serializable
+        data class TestData(val value: Float)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Double, String>("String")
+        @Serializable
+        data class TestData(val value: Double)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Char, String>("String")
+        @Serializable
+        data class TestData(val value: Char)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsString() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Byte, String>("String")
+        @Serializable
+        data class TestData(val value: Byte)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenIntIsExpectedButInputIsBoolean() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Int, Boolean>(true)
+        @Serializable
+        data class TestData(val value: Int)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsBoolean() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Long, Boolean>(true)
+        @Serializable
+        data class TestData(val value: Long)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsBoolean() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Float, Boolean>(true)
+        @Serializable
+        data class TestData(val value: Float)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsBoolean() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Double, Boolean>(true)
+        @Serializable
+        data class TestData(val value: Double)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsBoolean() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Byte, Boolean>(true)
+        @Serializable
+        data class TestData(val value: Byte)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsBoolean() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Char, Boolean>(true)
+        @Serializable
+        data class TestData(val value: Char)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenStringIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<String, Int>(0)
+        @Serializable
+        data class TestData(val value: String)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenBooleanIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Boolean, Int>(0)
+        @Serializable
+        data class TestData(val value: Boolean)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Long, Int>(0)
+        @Serializable
+        data class TestData(val value: Long)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Float, Int>(0)
+        @Serializable
+        data class TestData(val value: Float)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Double, Int>(0)
+        @Serializable
+        data class TestData(val value: Double)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Char, Int>(0)
+        @Serializable
+        data class TestData(val value: Char)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsInt() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Byte, Int>(0)
+        @Serializable
+        data class TestData(val value: Byte)
+
+        val data = mapOf("value" to 0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenStringIsExpectedButInputIsLong() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<String, Long>(0L)
+        @Serializable
+        data class TestData(val value: String)
+
+        val data = mapOf("value" to 0L)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenBooleanIsExpectedButInputIsLong() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Boolean, Long>(0L)
+        @Serializable
+        data class TestData(val value: Boolean)
+
+        val data = mapOf("value" to 0L)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
 
     @Test
     fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsLong() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Double, Long>(0L)
-    }
+        @Serializable
+        data class TestData(val value: Double)
 
-    @Test
-    fun testClassCastExceptionIsThrownWhenIntIsExpectedButInputIsLong() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Int, Long>(0L)
+        val data = mapOf("value" to 0L)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsLong() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Float, Long>(0L)
+        @Serializable
+        data class TestData(val value: Float)
+
+        val data = mapOf("value" to 0L)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsLong() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Char, Long>(0L)
+        @Serializable
+        data class TestData(val value: Char)
+
+        val data = mapOf("value" to 0L)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenBooleanIsExpectedButInputIsDouble() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Boolean, Double>(0.0)
+        @Serializable
+        data class TestData(val value: Boolean)
+
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsDouble() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Long, Double>(0.0)
+        @Serializable
+        data class TestData(val value: Long)
+
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenIntIsExpectedButInputIsDouble() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Int, Double>(0.0)
-    }
+        @Serializable
+        data class TestData(val value: Int)
 
-    @Test
-    fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsDouble() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Float, Double>(0.0)
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsDouble() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Char, Double>(0.0)
+        @Serializable
+        data class TestData(val value: Char)
+
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsDouble() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Byte, Double>(0.0)
+        @Serializable
+        data class TestData(val value: Byte)
+
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenStringIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<String, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: String)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenBooleanIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Boolean, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: Boolean)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Double, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: Double)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenIntIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Int, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: Int)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Float, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: Float)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Char, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: Char)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Byte, Map<String, String>>(emptyMap())
+        @Serializable
+        data class TestData(val value: Byte)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
     }
 
     @Test
     fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsMap() {
-        expectClassCastExceptionWhenWrongTypeIsGiven<Long, Map<String, String>>(emptyMap())
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun <E, A> expectClassCastExceptionWhenWrongTypeIsGiven(actual: A) {
         @Serializable
-        data class TestData<T>(val value: T)
+        data class TestData(val value: Long)
 
-        val data = mapOf("value" to actual)
-
-        val serializer = serializer<TestData<E>>()
-
-        Assertions.assertThrows(ClassCastException::class.java) {
-            serializer.deserialize(
-                StringMapToObjectDecoder(data, ignoreUnknownProperties = true)
-            )
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertThrows(ClassCastException::class.java) {
+            serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
 }
