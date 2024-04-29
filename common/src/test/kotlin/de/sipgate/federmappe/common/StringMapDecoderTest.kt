@@ -1,16 +1,10 @@
 package de.sipgate.federmappe.common
 
-import java.util.stream.Stream
-import kotlin.reflect.KClass
-import kotlin.reflect.cast
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
 
 @OptIn(ExperimentalSerializationApi::class)
 class StringMapDecoderTest {
@@ -224,100 +218,5 @@ class StringMapDecoderTest {
         Assertions.assertNull(result.a.first().a?.a)
         Assertions.assertEquals("some-string", result.a[1].a?.a)
         Assertions.assertInstanceOf(TestClass::class.java, result)
-    }
-
-    data class ClassCastExceptionInput(
-        val valueInMap: Any?,
-        val expectedValue: KClass<*>,
-    )
-
-    @ParameterizedTest
-    @MethodSource("classCastInput")
-    fun classCastExceptionIsThrownWhenTheMapContainsTheWrongType(input: ClassCastExceptionInput) {
-        Assertions.assertThrows(ClassCastException::class.java) { input.expectedValue.cast(input.valueInMap) }
-    }
-
-    companion object {
-        private fun classCastExceptionArg(
-            valueInMap: Any?,
-            expectedValue: KClass<*>,
-        ) = Arguments.of(
-            ClassCastExceptionInput(
-                valueInMap = valueInMap,
-                expectedValue = expectedValue,
-            ),
-        )
-
-        @JvmStatic
-        private fun classCastInput(): Stream<Arguments> =
-            Stream.of(
-                classCastExceptionArg(valueInMap = "string", expectedValue = Boolean::class),
-                classCastExceptionArg(valueInMap = "string", expectedValue = Int::class),
-                classCastExceptionArg(valueInMap = "string", expectedValue = Double::class),
-                classCastExceptionArg(valueInMap = "string", expectedValue = Long::class),
-                classCastExceptionArg(valueInMap = "string", expectedValue = Float::class),
-                classCastExceptionArg(valueInMap = "string", expectedValue = Char::class),
-                classCastExceptionArg(valueInMap = "string", expectedValue = Byte::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = String::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = Int::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = Double::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = Long::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = Float::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = Char::class),
-                classCastExceptionArg(valueInMap = true, expectedValue = Byte::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = String::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = Boolean::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = Double::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = Long::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = Float::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = Char::class),
-                classCastExceptionArg(valueInMap = 0, expectedValue = Byte::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = String::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = Boolean::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = Double::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = Int::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = Float::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = Char::class),
-                classCastExceptionArg(valueInMap = 0L, expectedValue = Byte::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = String::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = Boolean::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = Long::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = Int::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = Float::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = Char::class),
-                classCastExceptionArg(valueInMap = 0.4, expectedValue = Byte::class),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = String::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Boolean::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Double::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Int::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Float::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Char::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Byte::class,
-                ),
-                classCastExceptionArg(
-                    valueInMap = mapOf<String, String>(),
-                    expectedValue = Long::class,
-                ),
-            )
     }
 }
