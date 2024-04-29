@@ -3,8 +3,10 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
 
 @Serializable
 enum class TestEnum {
@@ -33,8 +35,8 @@ class EnumTests {
             )
 
         // Assert
-        Assertions.assertEquals(TestEnum.A, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(TestEnum.A, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -56,8 +58,8 @@ class EnumTests {
             )
 
         // Assert
-        Assertions.assertEquals(TestEnum.A, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(TestEnum.A, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -79,8 +81,8 @@ class EnumTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -105,8 +107,8 @@ class EnumTests {
             )
 
         // Assert
-        Assertions.assertEquals(TestEnum.A, result.a.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(TestEnum.A, result.a.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -128,7 +130,7 @@ class EnumTests {
             )
 
         // Assert
-        Assertions.assertEquals(TestEnum.A, result.a.values.first())
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(TestEnum.A, result.a.values.first())
+        assertIs<TestClass>(result)
     }
 }

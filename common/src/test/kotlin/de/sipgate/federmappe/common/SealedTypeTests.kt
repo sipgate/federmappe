@@ -7,10 +7,10 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertInstanceOf
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 internal object SealedTypeSerializer : SealedClassWithTypeSerializer<BaseType, String>(BaseType::class) {
@@ -65,9 +65,9 @@ internal class SealedTypeTests {
         val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        assertInstanceOf(TestClass::class.java, result)
-        assertInstanceOf(BaseType.A::class.java, result.a)
-        assertEquals("some string", (result.a as BaseType.A).value)
+        assertIs<TestClass>(result)
+        assertIs<BaseType.A>(result.a)
+        assertEquals("some string", result.a.value)
     }
 
     @Test
@@ -88,9 +88,9 @@ internal class SealedTypeTests {
         val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        assertInstanceOf(TestClass::class.java, result)
-        assertInstanceOf(BaseType.B::class.java, result.a)
-        assertTrue((result.a as BaseType.B).value)
+        assertIs<TestClass>(result)
+        assertIs<BaseType.B>(result.a)
+        assertTrue(result.a.value)
     }
 
     @Test
@@ -118,10 +118,10 @@ internal class SealedTypeTests {
         )
 
         // Assert
-        assertInstanceOf(TestClass::class.java, result)
-        assertInstanceOf(BaseType.C::class.java, result.a)
-        val inner = (result.a as BaseType.C).innerValue
-        assertInstanceOf(InnerData::class.java, inner)
+        assertIs<TestClass>(result)
+        assertIs<BaseType.C>(result.a)
+        val inner = result.a.innerValue
+        assertIs<InnerData>(inner)
         assertEquals("it works!", inner.inner)
     }
 }

@@ -3,8 +3,10 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class)
 class StringTests {
@@ -30,8 +32,8 @@ class StringTests {
             )
 
         // Assert
-        Assertions.assertTrue(result.a.isEmpty())
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertTrue(result.a.isEmpty())
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -56,8 +58,8 @@ class StringTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf("a", "b", "c"), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf("a", "b", "c"), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -82,7 +84,7 @@ class StringTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf("a", null, "c"), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf("a", null, "c"), result.a)
+        assertIs<TestClass>(result)
     }
 }

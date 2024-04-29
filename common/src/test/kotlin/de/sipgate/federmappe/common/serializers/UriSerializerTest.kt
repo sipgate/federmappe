@@ -7,9 +7,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import java.net.URI
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 
 class UriSerializerTest {
@@ -35,7 +36,7 @@ class UriSerializerTest {
             )
 
         // Assert
-        Assertions.assertEquals(uri, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(uri, result.a)
+        assertIs<TestClass>(result)
     }
 }

@@ -3,8 +3,10 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalSerializationApi::class)
 class StringMapDecoderTest {
@@ -23,9 +25,9 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals("test", result.a)
-        Assertions.assertEquals(1, result.b)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals("test", result.a)
+        assertEquals(1, result.b)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -42,9 +44,9 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertNull(result.b)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertNull(result.b)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -61,8 +63,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals("testString", result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals("testString", result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -79,8 +81,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals(emptyList<String>(), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(emptyList<String>(), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -97,8 +99,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals(listOf("testString", "testString2"), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf("testString", "testString2"), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -115,8 +117,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals(mapOf("test" to mapOf("test2" to "testString2")), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(mapOf("test" to mapOf("test2" to "testString2")), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -134,8 +136,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals(mapOf("test" to "testString", "test2" to "testString2"), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(mapOf("test" to "testString", "test2" to "testString2"), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -155,8 +157,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals(TestClass2("testString"), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(TestClass2("testString"), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -182,8 +184,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertEquals("some-string", result.a.first().a.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals("some-string", result.a.first().a.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -215,8 +217,8 @@ class StringMapDecoderTest {
             serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
-        Assertions.assertNull(result.a.first().a?.a)
-        Assertions.assertEquals("some-string", result.a[1].a?.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a.first().a?.a)
+        assertEquals("some-string", result.a[1].a?.a)
+        assertIs<TestClass>(result)
     }
 }
