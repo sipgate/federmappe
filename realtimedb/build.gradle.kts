@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     testImplementation(libs.firebase.database)
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.serialization)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)

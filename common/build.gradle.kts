@@ -14,7 +14,7 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.serialization)
     testImplementation(libs.mockk.agent)
 }
