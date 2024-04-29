@@ -3,8 +3,8 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 @OptIn(ExperimentalSerializationApi::class)
 class StringMapDecoderTypeSafetyTest {
@@ -16,7 +16,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -28,7 +28,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -40,7 +40,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -52,7 +52,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -64,7 +64,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -76,7 +76,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -88,7 +88,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to "String")
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -100,7 +100,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to true)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -112,7 +112,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to true)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -124,7 +124,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to true)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -136,7 +136,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to true)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -148,7 +148,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to true)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -160,7 +160,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to true)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -172,7 +172,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -184,7 +184,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -196,7 +196,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -208,7 +208,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -220,7 +220,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -232,7 +232,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -244,7 +244,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -256,7 +256,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0L)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -268,7 +268,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0L)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -281,7 +281,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0L)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -293,7 +293,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0L)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -305,7 +305,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0L)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -317,7 +317,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -329,7 +329,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -341,7 +341,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -353,7 +353,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -365,7 +365,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -377,7 +377,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -389,7 +389,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -401,7 +401,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -413,7 +413,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -425,7 +425,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -437,7 +437,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -449,7 +449,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
@@ -461,7 +461,7 @@ class StringMapDecoderTypeSafetyTest {
 
         val data = mapOf<String, Map<String, String>>("value" to emptyMap())
         val serializer = serializer<TestData>()
-        assertThrows(ClassCastException::class.java) {
+        assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }

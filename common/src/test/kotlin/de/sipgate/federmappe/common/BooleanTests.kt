@@ -3,8 +3,12 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertIs
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class)
 class BooleanTests {
@@ -27,8 +31,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertTrue(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertTrue(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -50,8 +54,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertFalse(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertFalse(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -73,8 +77,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -96,8 +100,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(true, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(true, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -119,8 +123,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(false, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(false, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -145,8 +149,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf(true, false, true), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf(true, false, true), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -171,8 +175,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf(true, false, true), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf(true, false, true), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -197,8 +201,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -223,8 +227,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf(true, null, false), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf(true, null, false), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -249,8 +253,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf(true, null, false), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf(true, null, false), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -275,8 +279,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -301,8 +305,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(mapOf("a" to true, "b" to false, "c" to true), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(mapOf("a" to true, "b" to false, "c" to true), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -327,8 +331,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(mapOf("a" to true, "b" to null, "c" to false), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(mapOf("a" to true, "b" to null, "c" to false), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -353,8 +357,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(mapOf("a" to true, null to false, "c" to true), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(mapOf("a" to true, null to false, "c" to true), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -379,8 +383,8 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertEquals(mapOf("a" to true, "b" to false, "c" to true), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(mapOf("a" to true, "b" to false, "c" to true), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -405,7 +409,7 @@ class BooleanTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 }

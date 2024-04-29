@@ -3,10 +3,10 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertInstanceOf
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 
 @OptIn(ExperimentalSerializationApi::class)
 class SubclassDecodingTests {
@@ -32,7 +32,7 @@ class SubclassDecodingTests {
             )
 
         // Assert
-        assertInstanceOf(TestClass::class.java, result)
+        assertIs<TestClass>(result)
         assertNotNull(result.a)
         assertEquals("Some String", result.a.b)
     }

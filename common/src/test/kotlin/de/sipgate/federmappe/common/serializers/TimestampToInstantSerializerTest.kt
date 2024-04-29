@@ -1,13 +1,13 @@
 package de.sipgate.federmappe.common.serializers
 
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
-import java.util.Date
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 
 class TimestampToInstantSerializerTest {
@@ -34,7 +34,7 @@ class TimestampToInstantSerializerTest {
         val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
-        Assertions.assertEquals(instant, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(instant, result.a)
+        assertIs<TestClass>(result)
     }
 }

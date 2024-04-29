@@ -3,16 +3,18 @@ package de.sipgate.federmappe.firestore
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
-import java.util.Date
-import java.util.GregorianCalendar
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import java.util.Date
+import java.util.GregorianCalendar
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalSerializationApi::class)
 class FirebaseTimestampTests {
@@ -42,8 +44,8 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        Assertions.assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -71,8 +73,8 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        Assertions.assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -101,8 +103,8 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        Assertions.assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -130,8 +132,8 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -163,7 +165,7 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        Assertions.assertEquals(
+        assertEquals(
             listOf(
                 GregorianCalendar(2000, 0, 1).time,
                 GregorianCalendar(2000, 0, 2).time,
@@ -171,6 +173,6 @@ class FirebaseTimestampTests {
             ),
             result.a,
         )
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertIs<TestClass>(result)
     }
 }

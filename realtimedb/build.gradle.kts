@@ -32,14 +32,15 @@ android {
 
 dependencies {
     api(project(":common"))
-    compileOnly(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.datetime)
+
     compileOnly(libs.firebase.database)
+    compileOnly(libs.kotlinx.serialization)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.datetime)
+
     testImplementation(libs.firebase.database)
-
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlinx.serialization)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
 }

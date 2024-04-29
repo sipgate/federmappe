@@ -3,8 +3,10 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalSerializationApi::class)
 class WholeNumberTests {
@@ -27,8 +29,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(0L, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(0L, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -50,8 +52,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(1L, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(1L, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -73,8 +75,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(-1L, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(-1L, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -96,8 +98,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertNull(result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertNull(result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -119,8 +121,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(0L, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(0L, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -142,8 +144,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(1L, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(1L, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -165,8 +167,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(-1L, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(-1L, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -191,8 +193,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(listOf(-1L, 0L, 1L), result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(listOf(-1L, 0L, 1L), result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -214,8 +216,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(45767, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(45767, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -237,8 +239,8 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(3072, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(3072, result.a)
+        assertIs<TestClass>(result)
     }
 
     @Test
@@ -260,7 +262,7 @@ class WholeNumberTests {
             )
 
         // Assert
-        Assertions.assertEquals(99, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(99, result.a)
+        assertIs<TestClass>(result)
     }
 }

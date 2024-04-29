@@ -1,15 +1,16 @@
 package de.sipgate.federmappe.firestore.serializers
 
 import com.google.firebase.Timestamp
-import de.sipgate.federmappe.firestore.FirebaseTimestampDecoder
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
+import de.sipgate.federmappe.firestore.FirebaseTimestampDecoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import java.util.Date
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 
 class TimestampToDateSerializerTest {
@@ -34,7 +35,7 @@ class TimestampToDateSerializerTest {
         )
 
         // Assert
-        Assertions.assertEquals(date, result.a)
-        Assertions.assertInstanceOf(TestClass::class.java, result)
+        assertEquals(date, result.a)
+        assertIs<TestClass>(result)
     }
 }

@@ -3,8 +3,11 @@ package de.sipgate.federmappe.common
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class)
 class StringListTests {
@@ -22,9 +25,9 @@ class StringListTests {
         val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
-        Assertions.assertInstanceOf(TestClass::class.java, result)
-        Assertions.assertEquals("A", result.a.first())
-        Assertions.assertEquals("B", result.a.last())
+        assertIs<TestClass>(result)
+        assertEquals("A", result.a.first())
+        assertEquals("B", result.a.last())
     }
 
     @Test
@@ -40,9 +43,9 @@ class StringListTests {
         val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
-        Assertions.assertInstanceOf(TestClass::class.java, result)
-        Assertions.assertTrue(result.a.isEmpty())
-        Assertions.assertEquals("a is missing", result.b)
+        assertIs<TestClass>(result)
+        assertTrue(result.a.isEmpty())
+        assertEquals("a is missing", result.b)
     }
 
     @Test
@@ -58,8 +61,8 @@ class StringListTests {
         val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
-        Assertions.assertInstanceOf(TestClass::class.java, result)
-        Assertions.assertNull(result.a)
-        Assertions.assertEquals("a is missing", result.b)
+        assertIs<TestClass>(result)
+        assertNull(result.a)
+        assertEquals("a is missing", result.b)
     }
 }
