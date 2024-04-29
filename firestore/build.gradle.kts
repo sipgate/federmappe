@@ -32,13 +32,15 @@ android {
 
 dependencies {
     api(project(":common"))
-    compileOnly(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.datetime)
-    compileOnly(libs.firebase.firestore)
 
+    compileOnly(libs.firebase.firestore)
+    compileOnly(libs.kotlinx.serialization)
+
+    implementation(libs.kotlinx.datetime)
+
+    testImplementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
-    testImplementation(libs.firebase.firestore)
 }
 
 tasks.withType<Test>().configureEach {

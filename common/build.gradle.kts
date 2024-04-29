@@ -16,7 +16,6 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.serialization)
-
     testImplementation(libs.mockk.agent)
 }
 
