@@ -36,9 +36,8 @@ inline fun <reified T : Any> DataSnapshot.toObjectWithSerializer(
     )
 )
 
-@Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-fun DataSnapshot.toObjectMap(): Pair<String, Any> =
-    (key ?: "root") to (if (hasChildren()) children.associate { it.toObjectMap() } else value)!!
+fun DataSnapshot.toObjectMap(): Pair<String, Any?> =
+    (key ?: "root") to (if (hasChildren()) children.associate { it.toObjectMap() } else value)
 
 @Suppress("UNCHECKED_CAST")
-fun Pair<String, Any>.unwrapRoot() = second as Map<String, Any>
+fun Pair<String, Any?>.unwrapRoot() = second as Map<String, Any?>
