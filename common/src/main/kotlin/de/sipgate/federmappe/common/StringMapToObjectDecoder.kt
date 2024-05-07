@@ -113,7 +113,7 @@ class StringMapToObjectDecoder(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> decodeType(typeKey: String): T? {
-        val currentData = (data[key] as? Map<String, Any>) ?: return null
+        val currentData = (data[key] as? Map<String, Any>) ?: data
         return (currentData[typeKey] as? T)
     }
 }
