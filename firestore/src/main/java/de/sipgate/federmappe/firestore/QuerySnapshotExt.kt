@@ -9,7 +9,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
 
 @ExperimentalSerializationApi
-inline fun <reified T : Any> QuerySnapshot.toObject(
+inline fun <reified T : Any> QuerySnapshot.toObjects(
     customSerializers: SerializersModule = DefaultSerializersModule,
     errorHandler: ErrorHandler<T> = { throw it }
 ): List<T?> = map { documentSnapshot ->
