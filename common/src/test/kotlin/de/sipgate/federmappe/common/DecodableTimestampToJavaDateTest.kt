@@ -58,9 +58,7 @@ class DecodableTimestampToJavaDateTest {
     fun deserializeBasicDataClassWithDateFieldAndFixedSerializer() {
         // Arrange
         @Serializable
-        data class TestClass(
-            @Serializable(with = TimestampToDateSerializer::class) val a: Date,
-        )
+        data class TestClass(@Serializable(with = TimestampToDateSerializer::class) val a: Date)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to createDecodableTimestamp(date))
@@ -139,6 +137,23 @@ class DecodableTimestampToJavaDateTest {
 
         // Assert
         assertEquals(listDate.map { Date.from(it.toJavaInstant()) }, result.a)
+        assertIs<TestClass>(result)
+    }
+
+    @Test
+    fun deserializeDecodableTimestampWithMissingNanosecondPrecision() {
+        // Arrange
+        @Serializable
+        data class TestClass(@Serializable(with = TimestampToDateSerializer::class) val a: Date)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to mapOf("epochSeconds" to date.epochSeconds))
+
+        // Act
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        // Assert
+        assertEquals(Date.from(date.toJavaInstant()), result.a)
         assertIs<TestClass>(result)
     }
 

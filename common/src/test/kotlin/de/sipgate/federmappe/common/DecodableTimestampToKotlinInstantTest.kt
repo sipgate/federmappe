@@ -140,6 +140,25 @@ class DecodableTimestampToKotlinInstantTest {
         assertIs<TestClass>(result)
     }
 
+
+    @Test
+    fun deserializeDecodableTimestampWithMissingNanosecondPrecision() {
+        // Arrange
+        @Serializable
+        data class TestClass(@Serializable(with = InstantComponentSerializer::class) val a: Instant)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to mapOf("epochSeconds" to date.epochSeconds))
+
+        // Act
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        // Assert
+        assertEquals(date, result.a)
+        assertIs<TestClass>(result)
+    }
+
+
     private fun createFakeInstant(day: Int) = LocalDateTime(
         year = 2000,
         month = Month.JANUARY,
