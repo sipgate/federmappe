@@ -9,11 +9,12 @@ import kotlinx.serialization.serializer
 @ExperimentalSerializationApi
 inline fun <reified T : Any> Map<String, Any>.toObjectWithSerializer(
     serializer: KSerializer<T> = serializer<T>(),
-    customSerializers: SerializersModule = DefaultSerializersModule
+    customSerializers: SerializersModule = DefaultSerializersModule,
+    ignoreUnknownProperties: Boolean = true,
 ): T = serializer.deserialize(
     StringMapToObjectDecoder(
         this,
-        ignoreUnknownProperties = true,
+        ignoreUnknownProperties = ignoreUnknownProperties,
         serializersModule = customSerializers
     ),
 )

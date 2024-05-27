@@ -15,19 +15,18 @@ inline fun <reified T : Any> QuerySnapshot.toObjects(
     errorHandler: ErrorHandler<T> = { throw it }
 ): List<T?> = map { documentSnapshot ->
     try {
-        documentSnapshot.data.normalizeStringMap()
+        documentSnapshot.data
+            .normalizeStringMap()
             .toObjectWithSerializer<T>(customSerializers = customSerializers)
     } catch (ex: Throwable) {
         errorHandler(ex)
     }
 }
 
-fun Map<String, Any>.normalizeStringMap(): Map<String, Any> {
-    return mapValues {
-        when (val value = it.value) {
-            is Timestamp -> value.toDecodableTimestamp()
-            else -> value
-        }
+fun Map<String, Any>.normalizeStringMap(): Map<String, Any> = mapValues {
+    when (val value = it.value) {
+        is Timestamp -> value.toDecodableTimestamp()
+        else -> value
     }
 }
 
