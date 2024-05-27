@@ -1,6 +1,6 @@
-package de.sipgate.federmappe.common.decoder
+package de.sipgate.federmappe.common
 
-import de.sipgate.federmappe.common.createDecodableTimestamp
+import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
@@ -20,69 +20,31 @@ import kotlin.test.assertIs
 import kotlin.test.assertNull
 
 @OptIn(ExperimentalSerializationApi::class)
-class DecodableTimestampToDateTest {
+class DecodableTimestampToJavaDateTest {
 
-    private val date = LocalDateTime(
-        year = 2000,
-        month = Month.JANUARY,
-        dayOfMonth = 1,
-        hour = 1,
-        minute = 1,
-        second = 1,
-        nanosecond = 0
-    ).toInstant(TimeZone.UTC)
+    private val date = createFakeInstant(1)
 
     private val listDate = listOf(
-        LocalDateTime(
-            year = 2000,
-            month = Month.JANUARY,
-            dayOfMonth = 1,
-            hour = 1,
-            minute = 1,
-            second = 1,
-            nanosecond = 0
-        ).toInstant(TimeZone.UTC),
-        LocalDateTime(
-            year = 2000,
-            month = Month.FEBRUARY,
-            dayOfMonth = 1,
-            hour = 1,
-            minute = 1,
-            second = 1,
-            nanosecond = 0
-        ).toInstant(TimeZone.UTC),
-        LocalDateTime(
-            year = 2000,
-            month = Month.MARCH,
-            dayOfMonth = 1,
-            hour = 1,
-            minute = 1,
-            second = 1,
-            nanosecond = 0
-        ).toInstant(TimeZone.UTC),
+        createFakeInstant(1),
+        createFakeInstant(2),
+        createFakeInstant(3),
     )
 
     @Test
     fun deserializeBasicDataClassWithDateFieldSetToFirstDayOfYear2000() {
         // Arrange
         @Serializable
-        data class TestClass(
-            @Contextual val a: Date,
-        )
+        data class TestClass(@Contextual val a: Date)
 
         val serializer = serializer<TestClass>()
 
-        val data =
-            mapOf<String, Any?>(
-                "a" to createDecodableTimestamp(date.epochSeconds),
-            )
+        val data = mapOf<String, Any?>("a" to createDecodableTimestamp(date))
 
         // Act
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
                     data,
-                    ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(TimestampToDateSerializer) }
                 ),
             )
@@ -101,19 +63,10 @@ class DecodableTimestampToDateTest {
         )
 
         val serializer = serializer<TestClass>()
-        val data =
-            mapOf<String, Any?>(
-                "a" to createDecodableTimestamp(date.epochSeconds),
-            )
+        val data = mapOf<String, Any?>("a" to createDecodableTimestamp(date))
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(Date.from(date.toJavaInstant()), result.a)
@@ -124,22 +77,16 @@ class DecodableTimestampToDateTest {
     fun deserializeBasicDataClassWithNullableDateField() {
         // Arrange
         @Serializable
-        data class TestClass(
-            @Contextual val a: Date?,
-        )
+        data class TestClass(@Contextual val a: Date?)
 
         val serializer = serializer<TestClass>()
-        val data =
-            mapOf<String, Any?>(
-                "a" to createDecodableTimestamp(date.epochSeconds),
-            )
+        val data = mapOf<String, Any?>("a" to createDecodableTimestamp(date))
 
         // Act
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
                     data,
-                    ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(TimestampToDateSerializer) }
                 ),
             )
@@ -153,22 +100,16 @@ class DecodableTimestampToDateTest {
     fun deserializeBasicDataClassWithNullDateField() {
         // Arrange
         @Serializable
-        data class TestClass(
-            @Contextual val a: Date?,
-        )
+        data class TestClass(@Contextual val a: Date?)
 
         val serializer = serializer<TestClass>()
-        val data =
-            mapOf<String, Any?>(
-                "a" to null,
-            )
+        val data = mapOf<String, Any?>("a" to null)
 
         // Act
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
                     data,
-                    ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
                 ),
             )
@@ -185,27 +126,29 @@ class DecodableTimestampToDateTest {
         data class TestClass(val a: List<@Contextual Date>)
 
         val serializer = serializer<TestClass>()
-        val data =
-            mapOf<String, Any?>(
-                "a" to listDate.map { createDecodableTimestamp(it.epochSeconds) }
-
-            )
+        val data = mapOf<String, Any?>("a" to listDate.map { createDecodableTimestamp(it) })
 
         // Act
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
                     data,
-                    ignoreUnknownProperties = true,
                     serializersModule = SerializersModule { contextual(TimestampToDateSerializer) }
                 ),
             )
 
         // Assert
-        assertEquals(
-            listDate.map { Date.from(it.toJavaInstant()) },
-            result.a,
-        )
+        assertEquals(listDate.map { Date.from(it.toJavaInstant()) }, result.a)
         assertIs<TestClass>(result)
     }
+
+    private fun createFakeInstant(day: Int) = LocalDateTime(
+        year = 2000,
+        month = Month.JANUARY,
+        dayOfMonth = day,
+        hour = 1,
+        minute = 1,
+        second = 1,
+        nanosecond = 0
+    ).toInstant(TimeZone.UTC)
 }
