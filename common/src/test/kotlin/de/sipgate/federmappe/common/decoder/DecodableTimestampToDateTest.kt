@@ -1,5 +1,6 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.decoder
 
+import de.sipgate.federmappe.common.createDecodableTimestamp
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month

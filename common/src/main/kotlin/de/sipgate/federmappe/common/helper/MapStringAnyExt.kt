@@ -1,6 +1,7 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.helper
 
 import java.util.SortedMap
+import kotlin.collections.toSortedMap
 
 private val prioritizeTypeKey =  Comparator<String> { a, b ->
     when {

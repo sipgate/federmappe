@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.decoder
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException

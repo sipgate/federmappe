@@ -2,7 +2,7 @@ package de.sipgate.federmappe.realtimedb
 
 import com.google.firebase.database.DataSnapshot
 import de.sipgate.federmappe.common.ErrorHandler
-import de.sipgate.federmappe.common.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.EmptySerializersModule

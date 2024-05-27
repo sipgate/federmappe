@@ -1,6 +1,6 @@
 package de.sipgate.federmappe.common
 
-import kotlin.reflect.KClass
+import de.sipgate.federmappe.common.decoder.TypeAwareDecoder
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
@@ -12,6 +12,7 @@ import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.serializerOrNull
+import kotlin.reflect.KClass
 
 @ExperimentalSerializationApi
 @InternalSerializationApi

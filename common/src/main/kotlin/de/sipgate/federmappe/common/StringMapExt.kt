@@ -1,8 +1,8 @@
 package de.sipgate.federmappe.common
 
+import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 

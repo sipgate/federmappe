@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.decoder
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -8,6 +8,8 @@ import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
+import kotlin.also
+import kotlin.collections.toCollection
 
 @ExperimentalSerializationApi
 class ListDecoder(

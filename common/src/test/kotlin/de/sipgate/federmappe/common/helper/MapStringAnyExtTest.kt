@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.helper
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

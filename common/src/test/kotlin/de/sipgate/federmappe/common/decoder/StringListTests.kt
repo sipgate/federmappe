@@ -1,4 +1,4 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.decoder
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -10,17 +10,13 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class)
-class EnumListTests {
-
-    enum class SomeValue {
-        A, B
-    }
+class StringListTests {
 
     @Test
     fun testStringListDecodes() {
         // Arrange
         @Serializable
-        data class TestClass(val a: List<SomeValue>)
+        data class TestClass(val a: List<String>)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to listOf("A", "B"))
@@ -30,15 +26,15 @@ class EnumListTests {
 
         // Assert
         assertIs<TestClass>(result)
-        assertEquals(SomeValue.A, result.a.first())
-        assertEquals(SomeValue.B, result.a.last())
+        assertEquals("A", result.a.first())
+        assertEquals("B", result.a.last())
     }
 
     @Test
     fun testStringListDecodesDefaultValue() {
         // Arrange
         @Serializable
-        data class TestClass(val a: List<SomeValue> = emptyList(), val b: String)
+        data class TestClass(val a: List<String> = emptyList(), val b: String)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("b" to "a is missing")
@@ -56,7 +52,7 @@ class EnumListTests {
     fun testStringListDecodesDefaultNullValue() {
         // Arrange
         @Serializable
-        data class TestClass(val a: List<SomeValue>? = null, val b: String)
+        data class TestClass(val a: List<String>? = null, val b: String)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("b" to "a is missing")

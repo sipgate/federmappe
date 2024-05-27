@@ -1,6 +1,6 @@
-package de.sipgate.federmappe.common
+package de.sipgate.federmappe.common.decoder
 
-import de.sipgate.federmappe.common.SealedTypeTests.BaseType
+import de.sipgate.federmappe.common.SealedClassWithTypeSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
@@ -13,12 +13,13 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-internal object SealedTypeSerializer : SealedClassWithTypeSerializer<BaseType, String>(BaseType::class) {
-    override fun selectDeserializer(element: String): DeserializationStrategy<BaseType> {
+internal object SealedTypeSerializer : SealedClassWithTypeSerializer<SealedTypeTests.BaseType, String>(
+    SealedTypeTests.BaseType::class) {
+    override fun selectDeserializer(element: String): DeserializationStrategy<SealedTypeTests.BaseType> {
         return when (element) {
-            "A" -> BaseType.A.serializer()
-            "B" -> BaseType.B.serializer()
-            "C" -> BaseType.C.serializer()
+            "A" -> SealedTypeTests.BaseType.A.serializer()
+            "B" -> SealedTypeTests.BaseType.B.serializer()
+            "C" -> SealedTypeTests.BaseType.C.serializer()
             else -> throw IllegalArgumentException("wah")
         }
     }
