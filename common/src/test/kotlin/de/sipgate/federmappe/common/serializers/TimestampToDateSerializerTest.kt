@@ -1,6 +1,7 @@
 package de.sipgate.federmappe.common.serializers
 
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.createDecodableTimestamp
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
@@ -12,10 +13,7 @@ import kotlin.test.assertIs
 
 class TimestampToDateSerializerTest {
     private val epochSeconds = 1707833611L * 1000
-    private val nanos = 801 / 1000000
-
-    /* Nanos will be capped at millisecond precision, because java.util.Date isn't precise enough. */
-    private val date = Date(epochSeconds + nanos)
+    private val date = Date(epochSeconds)
 
     @OptIn(ExperimentalSerializationApi::class)
     @Test
@@ -24,12 +22,7 @@ class TimestampToDateSerializerTest {
         data class TestClass(val a: @Serializable(with = TimestampToDateSerializer::class) Date)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>(
-            "a" to mapOf(
-                "epochSeconds" to 1707833611L,
-                "nanosecondsOfSecond" to 801L
-            )
-        )
+        val data = mapOf<String, Any?>("a" to createDecodableTimestamp(1707833611))
 
         val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
