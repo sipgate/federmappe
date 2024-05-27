@@ -29,7 +29,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time),
+                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
             )
 
         // Act
@@ -38,8 +38,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
-                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) }
                 ),
             )
 
@@ -59,7 +58,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time),
+                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
             )
 
         // Act
@@ -67,8 +66,7 @@ class FirebaseTimestampTests {
             serializer.deserialize(
                 StringMapToObjectDecoder(
                     data,
-                    ignoreUnknownProperties = true,
-                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
+                    ignoreUnknownProperties = true
                 ),
             )
 
@@ -88,7 +86,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time),
+                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
             )
 
         // Act
@@ -97,8 +95,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
-                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) }
                 ),
             )
 
@@ -147,9 +144,9 @@ class FirebaseTimestampTests {
             mapOf<String, Any?>(
                 "a" to
                     listOf(
-                        Timestamp(GregorianCalendar(2000, 0, 1).time),
-                        Timestamp(GregorianCalendar(2000, 0, 2).time),
-                        Timestamp(GregorianCalendar(2000, 0, 3).time),
+                        Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
+                        Timestamp(GregorianCalendar(2000, 0, 2).time).decodeFirestoreTimestamp(),
+                        Timestamp(GregorianCalendar(2000, 0, 3).time).decodeFirestoreTimestamp(),
                     ),
             )
 
@@ -159,8 +156,7 @@ class FirebaseTimestampTests {
                 StringMapToObjectDecoder(
                     data,
                     ignoreUnknownProperties = true,
-                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
-                    subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
+                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) }
                 ),
             )
 

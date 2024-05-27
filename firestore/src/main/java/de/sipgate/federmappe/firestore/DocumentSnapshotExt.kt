@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.firestore
 
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import de.sipgate.federmappe.common.DefaultSerializersModule
 import de.sipgate.federmappe.common.ErrorHandler
@@ -13,10 +12,7 @@ inline fun <reified T : Any> DocumentSnapshot.toObject(
     customSerializers: SerializersModule = DefaultSerializersModule,
     errorHandler: ErrorHandler<T> = { throw it }
 ): T? = try {
-    data?.toObjectWithSerializer<T>(
-        customSerializers = customSerializers,
-        subtypeDecoder = { (it as? Timestamp)?.let(::FirebaseTimestampDecoder) }
-    )
+    data?.toObjectWithSerializer<T>(customSerializers = customSerializers)
 } catch (ex: Throwable) {
     errorHandler(ex)
 }

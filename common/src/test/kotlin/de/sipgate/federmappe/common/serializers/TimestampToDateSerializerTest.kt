@@ -26,8 +26,8 @@ class TimestampToDateSerializerTest {
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>(
             "a" to mapOf(
-                "seconds" to 1707833611L,
-                "nanoseconds" to 801L
+                "epochSeconds" to 1707833611L,
+                "nanosecondsOfSecond" to 801L
             )
         )
 

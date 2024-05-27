@@ -64,11 +64,6 @@ class StringMapToObjectDecoder(
         val value = data[key]
         val valueDescriptor = descriptor.kind
 
-        val decoder = subtypeDecoder(value)
-        if (decoder != null) {
-            return decoder
-        }
-
         when (valueDescriptor) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(
                 data = value as Map<String, Any>,
