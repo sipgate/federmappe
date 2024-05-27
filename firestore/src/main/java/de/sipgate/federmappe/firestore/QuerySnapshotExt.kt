@@ -4,8 +4,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
 import de.sipgate.federmappe.common.DefaultSerializersModule
 import de.sipgate.federmappe.common.ErrorHandler
-import de.sipgate.federmappe.common.createDecodableTimestamp
 import de.sipgate.federmappe.common.toObjectWithSerializer
+import de.sipgate.federmappe.firestore.types.toDecodableTimestamp
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
 
@@ -29,6 +29,3 @@ fun Map<String, Any>.normalizeStringMap(): Map<String, Any> = mapValues {
         else -> value
     }
 }
-
-fun Timestamp.toDecodableTimestamp() =
-    createDecodableTimestamp(seconds, nanoseconds)
