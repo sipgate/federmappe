@@ -2,8 +2,10 @@ package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
+import de.sipgate.federmappe.common.DecodableTimestamp
 import de.sipgate.federmappe.common.DefaultSerializersModule
 import de.sipgate.federmappe.common.ErrorHandler
+import de.sipgate.federmappe.common.createDecodableTimestamp
 import de.sipgate.federmappe.common.toObjectWithSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
@@ -14,10 +16,8 @@ inline fun <reified T : Any> QuerySnapshot.toObjects(
     errorHandler: ErrorHandler<T> = { throw it }
 ): List<T?> = map { documentSnapshot ->
     try {
-        val a: Map<String, Any> = documentSnapshot.data
-        val b: Map<String, Any> = a.normalizeStringMap()
-        val c = b.toObjectWithSerializer<T>(customSerializers = customSerializers)
-        c
+        documentSnapshot.data.normalizeStringMap()
+            .toObjectWithSerializer<T>(customSerializers = customSerializers)
     } catch (ex: Throwable) {
         errorHandler(ex)
     }
@@ -26,13 +26,11 @@ inline fun <reified T : Any> QuerySnapshot.toObjects(
 fun Map<String, Any>.normalizeStringMap(): Map<String, Any> {
     return mapValues {
         when (val value = it.value) {
-            is Timestamp -> value.decodeFirestoreTimestamp()
+            is Timestamp -> value.toDecodableTimestamp()
             else -> value
         }
     }
 }
 
-fun Timestamp.decodeFirestoreTimestamp() = mapOf(
-    "epochSeconds" to seconds,
-    "nanosecondsOfSecond" to nanoseconds.toLong(),
-)
+fun Timestamp.toDecodableTimestamp() =
+    createDecodableTimestamp(seconds, nanoseconds)

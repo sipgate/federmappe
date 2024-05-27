@@ -3,7 +3,7 @@ package de.sipgate.federmappe.firestore.serializers
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
-import de.sipgate.federmappe.firestore.decodeFirestoreTimestamp
+import de.sipgate.federmappe.firestore.toDecodableTimestamp
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
@@ -27,7 +27,7 @@ class TimestampToDateSerializerTest {
         data class TestClass(val a: @Serializable(with = TimestampToDateSerializer::class) Date)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>("a" to Timestamp(1707833611, 801).decodeFirestoreTimestamp())
+        val data = mapOf<String, Any?>("a" to Timestamp(1707833611, 801).toDecodableTimestamp())
 
         val result = serializer.deserialize(StringMapToObjectDecoder(data))
 

@@ -29,7 +29,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
+                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
             )
 
         // Act
@@ -58,7 +58,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
+                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
             )
 
         // Act
@@ -86,7 +86,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
+                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
             )
 
         // Act
@@ -144,9 +144,9 @@ class FirebaseTimestampTests {
             mapOf<String, Any?>(
                 "a" to
                     listOf(
-                        Timestamp(GregorianCalendar(2000, 0, 1).time).decodeFirestoreTimestamp(),
-                        Timestamp(GregorianCalendar(2000, 0, 2).time).decodeFirestoreTimestamp(),
-                        Timestamp(GregorianCalendar(2000, 0, 3).time).decodeFirestoreTimestamp(),
+                        Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
+                        Timestamp(GregorianCalendar(2000, 0, 2).time).toDecodableTimestamp(),
+                        Timestamp(GregorianCalendar(2000, 0, 3).time).toDecodableTimestamp(),
                     ),
             )
 
