@@ -3,7 +3,7 @@ package de.sipgate.federmappe.common.helper
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MapStringAnyExtTest {
+class SortByPrioTest {
     @Test
     fun mapThatBeginsWithTypeIsReturnedAsIs() {
         val input = mapOf(
