@@ -28,6 +28,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 }
 
 dependencies {
@@ -41,6 +44,13 @@ dependencies {
     testImplementation(libs.firebase.firestore)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.serialization)
+
+    androidTestImplementation(libs.firebase.firestore)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.kotlinx.serialization)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
 
 tasks.withType<Test>().configureEach {
