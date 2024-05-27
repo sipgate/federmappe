@@ -2,7 +2,6 @@ package de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
-import de.sipgate.federmappe.common.DecodableTimestamp
 import de.sipgate.federmappe.common.DefaultSerializersModule
 import de.sipgate.federmappe.common.ErrorHandler
 import de.sipgate.federmappe.common.createDecodableTimestamp

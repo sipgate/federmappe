@@ -1,8 +1,13 @@
 package de.sipgate.federmappe.firestore
 
-import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.createDecodableTimestamp
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toJavaInstant
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -10,7 +15,6 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.serializer
 import java.util.Date
-import java.util.GregorianCalendar
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -18,6 +22,47 @@ import kotlin.test.assertNull
 
 @OptIn(ExperimentalSerializationApi::class)
 class FirebaseTimestampTests {
+
+    private val date = LocalDateTime(
+        year = 2000,
+        month = Month.JANUARY,
+        dayOfMonth = 1,
+        hour = 1,
+        minute = 1,
+        second = 1,
+        nanosecond = 0
+    ).toInstant(TimeZone.UTC)
+
+    private val listDate = listOf(
+        LocalDateTime(
+            year = 2000,
+            month = Month.JANUARY,
+            dayOfMonth = 1,
+            hour = 1,
+            minute = 1,
+            second = 1,
+            nanosecond = 0
+        ).toInstant(TimeZone.UTC),
+        LocalDateTime(
+            year = 2000,
+            month = Month.FEBRUARY,
+            dayOfMonth = 1,
+            hour = 1,
+            minute = 1,
+            second = 1,
+            nanosecond = 0
+        ).toInstant(TimeZone.UTC),
+        LocalDateTime(
+            year = 2000,
+            month = Month.MARCH,
+            dayOfMonth = 1,
+            hour = 1,
+            minute = 1,
+            second = 1,
+            nanosecond = 0
+        ).toInstant(TimeZone.UTC),
+    )
+
     @Test
     fun deserializeBasicDataClassWithDateFieldSetToFirstDayOfYear2000() {
         // Arrange
@@ -27,9 +72,10 @@ class FirebaseTimestampTests {
         )
 
         val serializer = serializer<TestClass>()
+
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
+                "a" to createDecodableTimestamp(date.epochSeconds),
             )
 
         // Act
@@ -43,7 +89,7 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
+        assertEquals(Date.from(date.toJavaInstant()), result.a)
         assertIs<TestClass>(result)
     }
 
@@ -58,7 +104,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
+                "a" to createDecodableTimestamp(date.epochSeconds),
             )
 
         // Act
@@ -71,7 +117,7 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
+        assertEquals(Date.from(date.toJavaInstant()), result.a)
         assertIs<TestClass>(result)
     }
 
@@ -86,7 +132,7 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
+                "a" to createDecodableTimestamp(date.epochSeconds),
             )
 
         // Act
@@ -100,7 +146,7 @@ class FirebaseTimestampTests {
             )
 
         // Assert
-        assertEquals(GregorianCalendar(2000, 0, 1).time, result.a)
+        assertEquals(Date.from(date.toJavaInstant()), result.a)
         assertIs<TestClass>(result)
     }
 
@@ -142,12 +188,8 @@ class FirebaseTimestampTests {
         val serializer = serializer<TestClass>()
         val data =
             mapOf<String, Any?>(
-                "a" to
-                    listOf(
-                        Timestamp(GregorianCalendar(2000, 0, 1).time).toDecodableTimestamp(),
-                        Timestamp(GregorianCalendar(2000, 0, 2).time).toDecodableTimestamp(),
-                        Timestamp(GregorianCalendar(2000, 0, 3).time).toDecodableTimestamp(),
-                    ),
+                "a" to listDate.map { createDecodableTimestamp(it.epochSeconds) }
+
             )
 
         // Act
@@ -162,11 +204,7 @@ class FirebaseTimestampTests {
 
         // Assert
         assertEquals(
-            listOf(
-                GregorianCalendar(2000, 0, 1).time,
-                GregorianCalendar(2000, 0, 2).time,
-                GregorianCalendar(2000, 0, 3).time,
-            ),
+            listDate.map { Date.from(it.toJavaInstant()) },
             result.a,
         )
         assertIs<TestClass>(result)
