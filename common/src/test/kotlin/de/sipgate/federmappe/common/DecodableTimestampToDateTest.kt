@@ -1,7 +1,5 @@
-package de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.common
 
-import de.sipgate.federmappe.common.StringMapToObjectDecoder
-import de.sipgate.federmappe.common.createDecodableTimestamp
 import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
@@ -21,7 +19,7 @@ import kotlin.test.assertIs
 import kotlin.test.assertNull
 
 @OptIn(ExperimentalSerializationApi::class)
-class FirebaseTimestampTests {
+class DecodableTimestampToDateTest {
 
     private val date = LocalDateTime(
         year = 2000,
