@@ -33,6 +33,19 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.set(
+            freeCompilerArgs.get() +
+                listOf(
+                    "-Xdebug",
+                    "-Xjvm-default=all",
+                    "-Xskip-prerelease-check",
+                )
+        )
+    }
+}
+
 dependencies {
     api(project(":common"))
 
