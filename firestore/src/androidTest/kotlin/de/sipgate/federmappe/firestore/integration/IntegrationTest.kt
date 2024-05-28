@@ -12,25 +12,34 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantComponentSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonClassDiscriminator
 import org.junit.Test
 
 @OptIn(ExperimentalSerializationApi::class)
 class IntegrationTest {
 
-    private val firebaseApp = Firebase.initialize(
-        ApplicationProvider.getApplicationContext<Context>(),
-        options = FirebaseOptions.Builder()
-            .setApplicationId("demo-test")
-            .setProjectId("demo-test")
-            .build()
-    )
-    private val firestore = FirebaseFirestore.getInstance(firebaseApp).apply {
-        useEmulator("10.0.2.2", 8080)
+    companion object {
+        private val firebaseApp by lazy {
+            Firebase.initialize(
+                ApplicationProvider.getApplicationContext<Context>(),
+                options = FirebaseOptions.Builder()
+                    .setApplicationId("demo-test")
+                    .setProjectId("demo-test")
+                    .build()
+            )
+        }
+
+        private val firestore by lazy {
+            FirebaseFirestore.getInstance(firebaseApp).apply {
+                useEmulator("10.0.2.2", 8080)
+            }
+        }
     }
 
     @Test
-    fun asdf(): Unit = runTest {
+    fun simpleUserParsing(): Unit = runTest {
         @Serializable
         data class User(
             val id: String,
@@ -39,6 +48,26 @@ class IntegrationTest {
         )
 
         val a = firestore.collection("users").get().await().toObjects<User>()
+        a
+    }
+
+    @Serializable
+    sealed interface Entity {
+        val id: String
+    }
+
+    @Serializable
+    @SerialName("USER")
+    data class FullUser(
+        override val id: String,
+        @Serializable(with = InstantComponentSerializer::class)
+        val createdAt: Instant,
+        val name: String,
+    ) : Entity
+
+    @Test
+    fun fullUserParsing(): Unit = runTest {
+        val a = firestore.collection("users").get().await().toObjects<Entity>()
         a
     }
 }
