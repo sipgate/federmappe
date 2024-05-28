@@ -16,7 +16,6 @@ class ListDecoder(
     private val list: ArrayDeque<Any>,
     private val elementsCount: Int = 0,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
-    private val subtypeDecoder: (Any?) -> CompositeDecoder? = {null}
 ) : AbstractDecoder() {
     private var index = 0
 
@@ -44,11 +43,6 @@ class ListDecoder(
     @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         val value = list.removeFirst()
-
-        val decoder = subtypeDecoder(value)
-        if (decoder != null) {
-            return decoder
-        }
 
         when (descriptor.kind) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(

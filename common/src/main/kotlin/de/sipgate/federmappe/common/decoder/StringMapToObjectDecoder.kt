@@ -18,8 +18,7 @@ import kotlin.collections.toCollection
 class StringMapToObjectDecoder(
     private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
-    private val ignoreUnknownProperties: Boolean = false,
-    private val subtypeDecoder: (Any?) -> CompositeDecoder? = { null }
+    private val ignoreUnknownProperties: Boolean = false
 ) : AbstractDecoder(), TypeAwareDecoder {
     private val keysIterator = data.sortByPrio().keys.iterator()
     private var index: Int? = null
@@ -93,8 +92,7 @@ class StringMapToObjectDecoder(
                 return ListDecoder(
                     list = ArrayDeque(list),
                     elementsCount = list.size,
-                    serializersModule = serializersModule,
-                    subtypeDecoder = subtypeDecoder
+                    serializersModule = serializersModule
                 )
             }
 
