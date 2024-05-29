@@ -12,9 +12,9 @@ import kotlin.test.assertEquals
 class StringMapDecoderIterationCheck {
 
     @Test
-    fun singleItemIsEmitted() {
+    fun singleAttributeIsDecoded() {
         @Serializable
-        data class Wrapper(val firstKey: String)
+        data class Wrapper(val firstKey: String, val asdf: String? = null)
 
         val data = mapOf("firstKey" to "someValue")
 
@@ -33,9 +33,9 @@ class StringMapDecoderIterationCheck {
     }
 
     @Test
-    fun twoItemsAreEmitted() {
+    fun twoAttributesAreDecoded() {
         @Serializable
-        data class Wrapper(val firstKey: String)
+        data class Wrapper(val firstKey: String, val asdf: String? = null)
 
         val data = mapOf("firstKey" to "someValue", "secondKey" to "someOtherValue")
 
@@ -51,6 +51,44 @@ class StringMapDecoderIterationCheck {
             val secondIndex = decodeElementIndex(descriptor)
             assertEquals("secondKey", descriptor.getElementName(secondIndex))
             assertEquals("someOtherValue", decodeStringElement(descriptor, secondIndex))
+
+            val lastIndex = decodeElementIndex(descriptor)
+            assertEquals(CompositeDecoder.DECODE_DONE, lastIndex)
+        }
+    }
+
+    @Test
+    fun multipleAttributesAreCompletelyDecoded() {
+        @Serializable
+        data class Wrapper(val firstKey: String, val asdf: String? = null)
+
+        val data = mapOf(
+            "firstKey" to "first",
+            "secondKey" to "second",
+            "thirdKey" to "third",
+            "fourthKey" to "fourth"
+        )
+
+        val stringMapDecoder = StringMapToObjectDecoder(data)
+        val serializer = Wrapper.serializer()
+
+        val descriptor = serializer.descriptor
+        stringMapDecoder.decodeStructure(descriptor) {
+            val firstIndex = decodeElementIndex(descriptor)
+            assertEquals("firstKey", descriptor.getElementName(firstIndex))
+            assertEquals("first", decodeStringElement(descriptor, firstIndex))
+
+            val secondIndex = decodeElementIndex(descriptor)
+            assertEquals("secondKey", descriptor.getElementName(secondIndex))
+            assertEquals("second", decodeStringElement(descriptor, secondIndex))
+
+            val thirdIndex = decodeElementIndex(descriptor)
+            assertEquals("thirdKey", descriptor.getElementName(thirdIndex))
+            assertEquals("third", decodeStringElement(descriptor, thirdIndex))
+
+            val fourthIndex = decodeElementIndex(descriptor)
+            assertEquals("fourthKey", descriptor.getElementName(fourthIndex))
+            assertEquals("fourth", decodeStringElement(descriptor, fourthIndex))
 
             val lastIndex = decodeElementIndex(descriptor)
             assertEquals(CompositeDecoder.DECODE_DONE, lastIndex)
