@@ -1,9 +1,6 @@
 package de.sipgate.federmappe.common.decoder
 
-import de.sipgate.federmappe.common.SealedClassWithTypeSerializer
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
@@ -12,26 +9,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
-@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-internal object SealedTypeSerializer : SealedClassWithTypeSerializer<SealedTypeTests.BaseType, String>(
-    SealedTypeTests.BaseType::class) {
-    override fun selectDeserializer(element: String): DeserializationStrategy<SealedTypeTests.BaseType> {
-        return when (element) {
-            "A" -> SealedTypeTests.BaseType.A.serializer()
-            "B" -> SealedTypeTests.BaseType.B.serializer()
-            "C" -> SealedTypeTests.BaseType.C.serializer()
-            else -> throw IllegalArgumentException("wah")
-        }
-    }
-}
-
 @OptIn(ExperimentalSerializationApi::class)
 internal class SealedTypeTests {
 
     @Serializable
     data class InnerData(val inner: String)
 
-    @Serializable(with = SealedTypeSerializer::class)
+    @Serializable
     sealed interface BaseType {
 
         @Serializable
@@ -58,12 +42,13 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "A",
-                "value" to "some string"
+                "value" to mapOf("value" to "some string")
             )
         )
 
         // Act
-        val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result =
+            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
         assertIs<TestClass>(result)
@@ -81,12 +66,13 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "B",
-                "value" to true
+                "value" to mapOf("value" to true)
             )
         )
 
         // Act
-        val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result =
+            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
         assertIs<TestClass>(result)
@@ -104,8 +90,10 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "C",
-                "innerValue" to mapOf(
-                    "inner" to "it works!"
+                "value" to mapOf(
+                    "innerValue" to mapOf(
+                        "inner" to "it works!"
+                    )
                 )
             )
         )

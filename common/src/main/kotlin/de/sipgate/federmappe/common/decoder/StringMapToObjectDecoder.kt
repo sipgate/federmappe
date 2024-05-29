@@ -1,5 +1,6 @@
 package de.sipgate.federmappe.common.decoder
 
+import de.sipgate.federmappe.common.helper.nextOrNull
 import de.sipgate.federmappe.common.helper.sortByPrio
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -32,19 +33,19 @@ class StringMapToObjectDecoder(
     override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = data.size
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        while (keysIterator.hasNext()) {
-            val nextKey = keysIterator.next().also { key = it }
+        val nextKey = keysIterator.nextOrNull().also { key = it }
 
-            val nextIndex = descriptor.getElementIndex(nextKey)
-            if (nextIndex == CompositeDecoder.UNKNOWN_NAME) {
-                skippedValues.add(nextKey)
-                continue
-            }
-
-            return nextIndex.also { index = it }
+        if (nextKey == null) {
+            return CompositeDecoder.DECODE_DONE
         }
 
-        return CompositeDecoder.DECODE_DONE
+        val nextIndex = descriptor.getElementIndex(nextKey)
+        if (nextIndex == CompositeDecoder.UNKNOWN_NAME) {
+            skippedValues.add(nextKey)
+            return decodeElementIndex(descriptor)
+        }
+
+        return nextIndex.also { index = it }
     }
 
     override fun decodeValue(): Any = data[key] ?: throw SerializationException("error decoding $key")
@@ -78,7 +79,7 @@ class StringMapToObjectDecoder(
             )
 
             PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
-                data = value as Map<String, Any>,
+                data = value as Map<String, Any?>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
                 dataNormalizer = dataNormalizer
