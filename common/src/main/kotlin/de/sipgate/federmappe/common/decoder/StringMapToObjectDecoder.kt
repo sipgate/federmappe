@@ -19,7 +19,7 @@ class StringMapToObjectDecoder(
     private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-    private val dataNormalizer: DataNormalizer
+    private val dataNormalizer: DataNormalizer = DummyDataNormalizer()
 ) : AbstractDecoder(), TypeAwareDecoder {
     private val keysIterator = data.sortByPrio().keys.iterator()
     private var index: Int? = null
