@@ -17,6 +17,7 @@ class MapDecoder(
     private val map: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
+    private val dataNormalizer: DataNormalizer
 ) : AbstractDecoder() {
     private val flattenedData =
         map.entries.fold(emptyList<Any?>()) { acc, (key, value) ->
@@ -81,16 +82,23 @@ class MapDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
+                dataNormalizer = dataNormalizer
             )
 
             StructureKind.MAP -> return MapDecoder(
                 map = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
+                dataNormalizer = dataNormalizer
             )
 
             StructureKind.LIST -> {
                 val list = (value as Iterable<Any>).toCollection(mutableListOf())
-                return ListDecoder(ArrayDeque(list), list.size, serializersModule)
+                return ListDecoder(
+                    list = ArrayDeque(list),
+                    elementsCount = list.size,
+                    serializersModule = serializersModule,
+                    dataNormalizer = dataNormalizer
+                )
             }
 
             else -> throw SerializationException("Given value is neither a list nor a type $value")

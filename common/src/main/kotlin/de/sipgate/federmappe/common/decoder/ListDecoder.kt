@@ -16,6 +16,7 @@ class ListDecoder(
     private val list: ArrayDeque<Any>,
     private val elementsCount: Int = 0,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
+    private val dataNormalizer: DataNormalizer
 ) : AbstractDecoder() {
     private var index = 0
 
@@ -49,11 +50,17 @@ class ListDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = true,
                 serializersModule = this.serializersModule,
+                dataNormalizer = dataNormalizer
             )
 
             StructureKind.LIST -> {
                 val subList = (value as Iterable<Any>).toCollection(mutableListOf())
-                return ListDecoder(ArrayDeque(subList), subList.size, serializersModule)
+                return ListDecoder(
+                    list = ArrayDeque(subList),
+                    elementsCount = subList.size,
+                    serializersModule = serializersModule,
+                    dataNormalizer = dataNormalizer
+                )
             }
 
             else -> throw SerializationException("Type is not a list ${descriptor.serialName}")
