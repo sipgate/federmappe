@@ -1,6 +1,8 @@
 package de.sipgate.federmappe.common.decoder
 
 import de.sipgate.federmappe.common.helper.sortByPrio
+import de.sipgate.federmappe.firestore.normalizeStringMap
+import de.sipgate.federmappe.firestore.normalizeStringMapNullable
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PolymorphicKind
@@ -64,7 +66,8 @@ class StringMapToObjectDecoder(
             return this
         }
 
-        val value = data[key]
+        val normalizedData = data.normalizeStringMapNullable()
+        val value = normalizedData[key]
         val valueDescriptor = descriptor.kind
 
         when (valueDescriptor) {

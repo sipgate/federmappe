@@ -29,3 +29,10 @@ fun Map<String, Any>.normalizeStringMap(): Map<String, Any> = mapValues {
         else -> value
     }
 }
+
+fun Map<String, Any?>.normalizeStringMapNullable(): Map<String, Any?> = mapValues {
+    when (val value = it.value) {
+        is Timestamp -> value.toDecodableTimestamp()
+        else -> value
+    }
+}
