@@ -46,7 +46,7 @@ class FirestoreTimestampToDecodableTimestampTest {
 
     @OptIn(ExperimentalSerializationApi::class)
     @Test
-    fun firestoreTimestampIsDecodedCorrectly() {
+    fun firestoreTimestampIsDecodedToKotlinInstantCorrectly() {
         // Arrange
         val expectedInstant = Instant.fromEpochSeconds(1716823455)
         val expectedDate = Date.from(expectedInstant.toJavaInstant())
@@ -74,6 +74,68 @@ class FirestoreTimestampToDecodableTimestampTest {
 
         // Assert
         assertEquals(expectedInstant, result.createdAt)
+        assertIs<MockLocalDataClass>(result)
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    @Test
+    fun firestoreTimestampIsDecodedToNullableKotlinInstantCorrectly() {
+        // Arrange
+        val expectedInstant = Instant.fromEpochSeconds(1716823455)
+        val expectedDate = Date.from(expectedInstant.toJavaInstant())
+        val timestamp = Timestamp(expectedDate)
+
+        @Serializable
+        data class MockLocalDataClass(
+            @Contextual
+            val createdAt: Instant?
+        )
+
+        val serializer = serializer<MockLocalDataClass>()
+
+        val data = mapOf<String, Any?>("createdAt" to timestamp)
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data = data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                    dataNormalizer = FirestoreTimestampDataNormalizer()
+                ),
+            )
+
+        // Assert
+        assertEquals(expectedInstant, result.createdAt)
+        assertIs<MockLocalDataClass>(result)
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    @Test
+    fun nullIsDecodedToNullableKotlinInstantCorrectly() {
+        // Arrange
+        @Serializable
+        data class MockLocalDataClass(
+            @Contextual
+            val createdAt: Instant?
+        )
+
+        val serializer = serializer<MockLocalDataClass>()
+
+        val data = mapOf<String, Any?>("createdAt" to null)
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data = data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                    dataNormalizer = FirestoreTimestampDataNormalizer()
+                ),
+            )
+
+        // Assert
+        assertEquals(null, result.createdAt)
         assertIs<MockLocalDataClass>(result)
     }
 }
