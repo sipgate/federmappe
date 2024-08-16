@@ -48,8 +48,10 @@ class FirestoreTimestampToDecodableTimestampTest {
     fun firestoreTimestampIsDecodedToKotlinInstantCorrectly() {
         // Arrange
         val expectedInstant = Instant.fromEpochSeconds(1716823455)
-        val expectedDate = Date.from(expectedInstant.toJavaInstant())
-        val timestamp = Timestamp(expectedDate)
+        val timestamp = mapOf(
+            "epochSeconds" to expectedInstant.epochSeconds,
+            "nanosecondsOfSecond" to expectedInstant.nanosecondsOfSecond.toLong()
+        )
 
         @Serializable
         data class MockLocalDataClass(
@@ -80,8 +82,10 @@ class FirestoreTimestampToDecodableTimestampTest {
     fun firestoreTimestampIsDecodedToNullableKotlinInstantCorrectly() {
         // Arrange
         val expectedInstant = Instant.fromEpochSeconds(1716823455)
-        val expectedDate = Date.from(expectedInstant.toJavaInstant())
-        val timestamp = Timestamp(expectedDate)
+        val timestamp = mapOf(
+            "epochSeconds" to expectedInstant.epochSeconds,
+            "nanosecondsOfSecond" to expectedInstant.nanosecondsOfSecond.toLong()
+        )
 
         @Serializable
         data class MockLocalDataClass(
