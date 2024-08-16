@@ -17,7 +17,6 @@ class MapDecoder(
     private val map: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-    private val dataNormalizer: DataNormalizer
 ) : AbstractDecoder() {
     private val flattenedData =
         map.entries.fold(emptyList<Any?>()) { acc, (key, value) ->
@@ -31,7 +30,8 @@ class MapDecoder(
 
     override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = map.size
 
-    override fun decodeValue(): Any = flattenedData[index] ?: throw SerializationException("error decoding")
+    override fun decodeValue(): Any =
+        flattenedData[index] ?: throw SerializationException("error decoding")
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
         decodeEnum(enumDescriptor, ::decodeValue)
@@ -82,13 +82,11 @@ class MapDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
-                dataNormalizer = dataNormalizer
             )
 
             StructureKind.MAP -> return MapDecoder(
                 map = value as Map<String, Any>,
-                ignoreUnknownProperties = ignoreUnknownProperties,
-                dataNormalizer = dataNormalizer
+                ignoreUnknownProperties = ignoreUnknownProperties
             )
 
             StructureKind.LIST -> {
@@ -97,7 +95,6 @@ class MapDecoder(
                     list = ArrayDeque(list),
                     elementsCount = list.size,
                     serializersModule = serializersModule,
-                    dataNormalizer = dataNormalizer
                 )
             }
 

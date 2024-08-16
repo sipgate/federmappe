@@ -2,7 +2,6 @@ package de.sipgate.federmappe.firestore.types.de.sipgate.federmappe.firestore
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
-import de.sipgate.federmappe.firestore.FirestoreTimestampDataNormalizer
 import de.sipgate.federmappe.firestore.types.toDecodableTimestamp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantComponentSerializer
@@ -68,7 +67,6 @@ class FirestoreTimestampToDecodableTimestampTest {
                 StringMapToObjectDecoder(
                     data = data,
                     serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
-                    dataNormalizer = FirestoreTimestampDataNormalizer()
                 ),
             )
 
@@ -101,7 +99,6 @@ class FirestoreTimestampToDecodableTimestampTest {
                 StringMapToObjectDecoder(
                     data = data,
                     serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
-                    dataNormalizer = FirestoreTimestampDataNormalizer()
                 ),
             )
 
@@ -130,7 +127,6 @@ class FirestoreTimestampToDecodableTimestampTest {
                 StringMapToObjectDecoder(
                     data = data,
                     serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
-                    dataNormalizer = FirestoreTimestampDataNormalizer()
                 ),
             )
 

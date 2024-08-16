@@ -20,7 +20,6 @@ class StringMapToObjectDecoder(
     private val data: Map<String, Any?>,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-    private val dataNormalizer: DataNormalizer = DummyDataNormalizer()
 ) : AbstractDecoder(), TypeAwareDecoder {
     private val keysIterator = data.sortByPrio().keys.iterator()
     private var index: Int? = null
@@ -66,8 +65,7 @@ class StringMapToObjectDecoder(
             return this
         }
 
-        val normalizedData = dataNormalizer.normalize(data)
-        val value = normalizedData[key]
+        val value = data[key]
         val valueDescriptor = descriptor.kind
 
         when (valueDescriptor) {
@@ -75,20 +73,17 @@ class StringMapToObjectDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
-                dataNormalizer = dataNormalizer
             )
 
             PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
                 data = value as Map<String, Any?>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
-                dataNormalizer = dataNormalizer
             )
 
             StructureKind.MAP -> return MapDecoder(
                 map = value as Map<String, Any>,
                 ignoreUnknownProperties = ignoreUnknownProperties,
-                dataNormalizer = dataNormalizer
             )
 
             StructureKind.LIST -> {
@@ -102,7 +97,6 @@ class StringMapToObjectDecoder(
                     list = ArrayDeque(list),
                     elementsCount = list.size,
                     serializersModule = serializersModule,
-                    dataNormalizer = dataNormalizer
                 )
             }
 

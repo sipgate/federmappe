@@ -16,7 +16,6 @@ class ListDecoder(
     private val list: ArrayDeque<Any>,
     private val elementsCount: Int = 0,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
-    private val dataNormalizer: DataNormalizer
 ) : AbstractDecoder() {
     private var index = 0
 
@@ -50,7 +49,6 @@ class ListDecoder(
                 data = value as Map<String, Any>,
                 ignoreUnknownProperties = true,
                 serializersModule = this.serializersModule,
-                dataNormalizer = dataNormalizer
             )
 
             StructureKind.LIST -> {
@@ -59,7 +57,6 @@ class ListDecoder(
                     list = ArrayDeque(subList),
                     elementsCount = subList.size,
                     serializersModule = serializersModule,
-                    dataNormalizer = dataNormalizer
                 )
             }
 
