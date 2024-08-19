@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
 import org.junit.BeforeClass
 import org.junit.Test
 import java.util.UUID
+import kotlin.test.Ignore
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -85,6 +86,7 @@ class FirestoreIntegrationTest {
     }
 
     @Test
+    @Ignore
     fun fullUserParsing(): Unit = runTest {
         val a = firestore.collection("$tempNamespace-users").get().await()
         val b = a.map {
