@@ -1,8 +1,7 @@
-package de.sipgate.federmappe.firestore.types.de.sipgate.federmappe.firestore
+package de.sipgate.federmappe.firestore.types
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
-import de.sipgate.federmappe.firestore.types.toDecodableTimestamp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantComponentSerializer
 import kotlinx.datetime.toJavaInstant
