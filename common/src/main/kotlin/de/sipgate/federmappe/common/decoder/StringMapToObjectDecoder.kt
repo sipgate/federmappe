@@ -1,5 +1,6 @@
 package de.sipgate.federmappe.common.decoder
 
+import de.sipgate.federmappe.common.StringMap
 import de.sipgate.federmappe.common.helper.nextOrNull
 import de.sipgate.federmappe.common.helper.sortByPrio
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -17,7 +18,7 @@ import kotlin.collections.toCollection
 
 @ExperimentalSerializationApi
 class StringMapToObjectDecoder(
-    private val data: Map<String, Any?>,
+    private val data: StringMap,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
 ) : AbstractDecoder(), TypeAwareDecoder {
@@ -70,19 +71,19 @@ class StringMapToObjectDecoder(
 
         when (valueDescriptor) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(
-                data = value as Map<String, Any>,
+                data = value as StringMap,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
             )
 
             PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
-                data = value as Map<String, Any?>,
+                data = value as StringMap,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
             )
 
             StructureKind.MAP -> return MapDecoder(
-                map = value as Map<String, Any>,
+                map = value as StringMap,
                 ignoreUnknownProperties = ignoreUnknownProperties,
             )
 
@@ -114,7 +115,7 @@ class StringMapToObjectDecoder(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> decodeType(typeKey: String): T? {
-        val currentData = (data[key] as? Map<String, Any>) ?: data
+        val currentData = (data[key] as? StringMap) ?: data
         return (currentData[typeKey] as? T)
     }
 }

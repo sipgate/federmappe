@@ -1,5 +1,6 @@
 package de.sipgate.federmappe.common.helper
 
+import de.sipgate.federmappe.common.StringMap
 import java.util.SortedMap
 import kotlin.collections.toSortedMap
 
@@ -11,6 +12,6 @@ private val prioritizeTypeKey =  Comparator<String> { a, b ->
     }
 }
 
-internal fun Map<String, Any?>.sortByPrio(): SortedMap<String, Any?> {
+internal fun StringMap.sortByPrio(): SortedMap<String, Any?> {
     return toSortedMap(prioritizeTypeKey)
 }

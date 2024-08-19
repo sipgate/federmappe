@@ -3,7 +3,7 @@ package de.sipgate.federmappe.common
 import kotlinx.datetime.Instant
 
 
-typealias DecodableTimestamp = Map<String, Any>
+typealias DecodableTimestamp = StringMap
 
 fun createDecodableTimestamp(seconds: Long, nanoseconds: Int = 0): DecodableTimestamp =
     mapOf(

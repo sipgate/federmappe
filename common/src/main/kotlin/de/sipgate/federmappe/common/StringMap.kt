@@ -6,8 +6,10 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 
+typealias StringMap = Map<String, Any?>
+
 @ExperimentalSerializationApi
-inline fun <reified T : Any> Map<String, Any>.toObjectWithSerializer(
+inline fun <reified T : Any> StringMap.toObjectWithSerializer(
     serializer: KSerializer<T> = serializer<T>(),
     customSerializers: SerializersModule = DefaultSerializersModule,
     ignoreUnknownProperties: Boolean = true,

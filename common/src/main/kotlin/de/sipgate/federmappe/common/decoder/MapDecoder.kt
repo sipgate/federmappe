@@ -1,5 +1,6 @@
 package de.sipgate.federmappe.common.decoder
 
+import de.sipgate.federmappe.common.StringMap
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -14,7 +15,7 @@ import kotlin.collections.toCollection
 
 @ExperimentalSerializationApi
 class MapDecoder(
-    private val map: Map<String, Any?>,
+    private val map: StringMap,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
 ) : AbstractDecoder() {
@@ -79,13 +80,13 @@ class MapDecoder(
 
         when (valueDescriptor) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(
-                data = value as Map<String, Any>,
+                data = value as StringMap,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
             )
 
             StructureKind.MAP -> return MapDecoder(
-                map = value as Map<String, Any>,
+                map = value as StringMap,
                 ignoreUnknownProperties = ignoreUnknownProperties
             )
 

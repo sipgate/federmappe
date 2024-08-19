@@ -1,5 +1,6 @@
 package de.sipgate.federmappe.common.decoder
 
+import de.sipgate.federmappe.common.StringMap
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -46,7 +47,7 @@ class ListDecoder(
 
         when (descriptor.kind) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(
-                data = value as Map<String, Any>,
+                data = value as StringMap,
                 ignoreUnknownProperties = true,
                 serializersModule = this.serializersModule,
             )
