@@ -99,7 +99,7 @@ firebase emulators:start --project demo-test --only database,firestore
 and then once both the Firestore Emulator as well as the Realtime DB Emulator have started, you can proceed by running the integration tests:
 
 ```shell
-./gradlew connectedCheck
+./gradlew pixel2api30Check
 ```
 
 ## Contributions
