@@ -6,7 +6,7 @@ firebase-firestore = "25.1.0"
 firebase-database = "21.0.0"
 kotlinx-datetime = "0.6.1"
 kotlinx-serialization = "1.7.3"
-mockk = "1.13.12"
+mockk = "1.13.13"
 
 [libraries]
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore" }
