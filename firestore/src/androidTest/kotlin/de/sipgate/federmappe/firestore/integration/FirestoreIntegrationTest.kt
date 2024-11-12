@@ -17,9 +17,10 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.junit.Test
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class)
-class IntegrationTest {
+class FirestoreIntegrationTest {
 
     companion object {
         private val firebaseApp by lazy {
@@ -49,7 +50,7 @@ class IntegrationTest {
         )
 
         val a = firestore.collection("users").get().await().toObjects<User>()
-        a
+        assertTrue(a.isNotEmpty())
     }
 
     @Serializable
@@ -79,6 +80,6 @@ class IntegrationTest {
                 throw ex
             }
         }
-        b
+        assertTrue(b.isNotEmpty())
     }
 }

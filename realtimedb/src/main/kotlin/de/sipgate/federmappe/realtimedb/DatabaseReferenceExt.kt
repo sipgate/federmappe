@@ -18,9 +18,12 @@ suspend inline fun <reified T : Any> DatabaseReference.toObject(
 suspend inline fun <reified T : Any> DatabaseReference.toObjects(
     ignoreUnknownProperties: Boolean = false,
     crossinline errorHandler: ErrorHandler<T> = { throw it }
-): List<T> = get().await().children.mapNotNull { childSnapshot ->
-    childSnapshot.toObject<T>(
-        errorHandler = errorHandler,
-        ignoreUnknownProperties = ignoreUnknownProperties
-    )
+): List<T> {
+    val await = get().await()
+    return await.children.mapNotNull { childSnapshot ->
+        childSnapshot.toObject<T>(
+            errorHandler = errorHandler,
+            ignoreUnknownProperties = ignoreUnknownProperties
+        )
+    }
 }
