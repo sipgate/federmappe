@@ -91,8 +91,11 @@ class StringMapToObjectDecoder(
             )
 
             StructureKind.LIST -> {
-                val list = (value as Iterable<Any>)
-                    .toCollection(mutableListOf())
+                val list = when (value) {
+                    is Iterable<*> -> (value as Iterable<Any>).toCollection(mutableListOf())
+                    is Map<*, *> -> (value.values as Iterable<Any>).toCollection(mutableListOf())
+                    else -> emptyList<Any>()
+                }
 
                 return ListDecoder(
                     list = ArrayDeque(list),
