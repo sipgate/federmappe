@@ -28,6 +28,20 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    testOptions {
+        managedDevices {
+            localDevices {
+                create("pixel2api30") {
+                    device = "Pixel 2"
+                    apiLevel = 30
+                    systemImageSource = "aosp-atd"
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -43,6 +57,13 @@ dependencies {
     testImplementation(libs.kotlinx.serialization)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
+
+    androidTestImplementation(libs.firebase.database)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.kotlinx.serialization)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
 
 tasks.withType<Test>().configureEach {

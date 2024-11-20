@@ -76,6 +76,32 @@ val voyager = firestore.collection("spaceships")
     }
 ```
 
+## Testing
+
+### Unit tests
+
+The unit tests ship with everything needed to run.
+
+```shell
+./gradlew test
+```
+
+### Integration Tests
+
+For the integration tests a running [Firebase Emulator](https://firebase.google.com/docs/emulator-suite) needs to be present.
+
+Once installed, start the emulator using:
+
+```shell
+firebase emulators:start --project demo-test --only database,firestore
+```
+
+and then once both the Firestore Emulator as well as the Realtime DB Emulator have started, you can proceed by running the integration tests:
+
+```shell
+./gradlew pixel2api30Check
+```
+
 ## Contributions
 
 This lib is used in production and works for most of our cases (Primitives, Lists, Nested Types, Sealed Classes, …).

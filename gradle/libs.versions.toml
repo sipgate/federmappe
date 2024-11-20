@@ -8,6 +8,10 @@ kotlinx-datetime = "0.6.1"
 kotlinx-serialization = "1.7.3"
 mockk = "1.13.13"
 
+androidx-test = "1.5.0"
+androidx-test-runner = "1.5.2"
+kotlinx-coroutines = "1.8.1"
+
 [libraries]
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebase-database" }
@@ -16,6 +20,10 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
+
+androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
