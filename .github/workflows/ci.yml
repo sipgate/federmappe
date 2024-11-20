@@ -35,7 +35,7 @@ jobs:
         run: npm install -g firebase-tools
 
       - name: Run Integration Tests
-        run: firebase emulators:exec --project demo-test --only database,firestore './gradlew pixel2api30Check'
+        run: firebase emulators:exec --project demo-test --only database,firestore './gradlew pixel2api30Check --no-parallel'
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
