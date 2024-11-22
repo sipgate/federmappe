@@ -19,5 +19,5 @@ fun decodeEnum(
         }
     }
 
-    throw SerializationException("Couldn't find matching value for enum $enumNamespace")
+    throw SerializationException("Couldn't find matching $enumNamespace enum for value $decodedValue")
 }
