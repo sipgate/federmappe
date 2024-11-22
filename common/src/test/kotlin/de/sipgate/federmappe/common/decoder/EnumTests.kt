@@ -23,7 +23,7 @@ class EnumTests {
         data class TestClass(val a: TestEnum)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>("a" to TestEnum.A)
+        val data = mapOf<String, Any?>("a" to "A")
 
         // Act
         val result =
@@ -35,8 +35,8 @@ class EnumTests {
             )
 
         // Assert
-        assertEquals(TestEnum.A, result.a)
         assertIs<TestClass>(result)
+        assertEquals(TestEnum.A, result.a)
     }
 
     @Test
@@ -46,7 +46,7 @@ class EnumTests {
         data class TestClass(val a: TestEnum?)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>("a" to TestEnum.A)
+        val data = mapOf<String, Any?>("a" to "A")
 
         // Act
         val result =
@@ -58,8 +58,8 @@ class EnumTests {
             )
 
         // Assert
-        assertEquals(TestEnum.A, result.a)
         assertIs<TestClass>(result)
+        assertEquals(TestEnum.A, result.a)
     }
 
     @Test
@@ -81,8 +81,8 @@ class EnumTests {
             )
 
         // Assert
-        assertNull(result.a)
         assertIs<TestClass>(result)
+        assertNull(result.a)
     }
 
     @Test
@@ -95,7 +95,7 @@ class EnumTests {
         data class TestClass(val a: TestClass2)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>("a" to mapOf("a" to TestEnum.A))
+        val data = mapOf<String, Any?>("a" to mapOf("a" to "A"))
 
         // Act
         val result =
@@ -107,8 +107,8 @@ class EnumTests {
             )
 
         // Assert
-        assertEquals(TestEnum.A, result.a.a)
         assertIs<TestClass>(result)
+        assertEquals(TestEnum.A, result.a.a)
     }
 
     @Test
@@ -118,7 +118,7 @@ class EnumTests {
         data class TestClass(val a: Map<String, TestEnum>)
 
         val serializer = serializer<TestClass>()
-        val data = mapOf<String, Any?>("a" to mapOf("a" to TestEnum.A))
+        val data = mapOf<String, Any?>("a" to mapOf("a" to "A"))
 
         // Act
         val result =
@@ -130,7 +130,7 @@ class EnumTests {
             )
 
         // Assert
-        assertEquals(TestEnum.A, result.a.values.first())
         assertIs<TestClass>(result)
+        assertEquals(TestEnum.A, result.a.values.first())
     }
 }
