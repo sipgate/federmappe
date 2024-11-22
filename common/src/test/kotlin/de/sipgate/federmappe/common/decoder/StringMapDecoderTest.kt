@@ -57,7 +57,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to "testString", "b" to 1)
 
         // Act
-        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
 
         // Assert
         assertEquals("testString", result.a)
