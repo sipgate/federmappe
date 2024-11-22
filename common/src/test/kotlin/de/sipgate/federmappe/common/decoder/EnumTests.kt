@@ -103,4 +103,21 @@ class EnumTests {
         assertIs<TestClass>(result)
         assertEquals(TestEnum.A, result.a.values.first())
     }
+
+    @Test
+    fun deserializeDataClassWithDefaultEnumValue() {
+        // Arrange
+        @Serializable
+        data class TestClass(val a: TestEnum = TestEnum.B)
+
+        val serializer = serializer<TestClass>()
+        val data = emptyMap<String, Any?>()
+
+        // Act
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        // Assert
+        assertIs<TestClass>(result)
+        assertEquals(TestEnum.B, result.a)
+    }
 }
