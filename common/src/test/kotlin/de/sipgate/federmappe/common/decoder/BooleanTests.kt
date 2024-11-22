@@ -22,13 +22,7 @@ class BooleanTests {
         val data = mapOf<String, Any?>("a" to true)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertTrue(result.a)
@@ -45,13 +39,7 @@ class BooleanTests {
         val data = mapOf<String, Any?>("a" to false)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertFalse(result.a)
@@ -68,13 +56,7 @@ class BooleanTests {
         val data = mapOf<String, Any?>("a" to null)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)
@@ -91,13 +73,7 @@ class BooleanTests {
         val data = mapOf<String, Any?>("a" to true)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(true, result.a)
@@ -114,13 +90,7 @@ class BooleanTests {
         val data = mapOf<String, Any?>("a" to false)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(false, result.a)
@@ -140,13 +110,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf(true, false, true), result.a)
@@ -166,13 +130,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf(true, false, true), result.a)
@@ -192,13 +150,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)
@@ -218,13 +170,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf(true, null, false), result.a)
@@ -244,13 +190,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf(true, null, false), result.a)
@@ -270,13 +210,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)
@@ -296,13 +230,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(mapOf("a" to true, "b" to false, "c" to true), result.a)
@@ -322,13 +250,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(mapOf("a" to true, "b" to null, "c" to false), result.a)
@@ -348,13 +270,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(mapOf("a" to true, null to false, "c" to true), result.a)
@@ -374,13 +290,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(mapOf("a" to true, "b" to false, "c" to true), result.a)
@@ -400,13 +310,7 @@ class BooleanTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)

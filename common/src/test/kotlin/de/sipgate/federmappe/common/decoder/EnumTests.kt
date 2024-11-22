@@ -26,13 +26,7 @@ class EnumTests {
         val data = mapOf<String, Any?>("a" to "A")
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
@@ -49,13 +43,7 @@ class EnumTests {
         val data = mapOf<String, Any?>("a" to "A")
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
@@ -72,13 +60,7 @@ class EnumTests {
         val data = mapOf<String, Any?>("a" to null)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
@@ -98,13 +80,7 @@ class EnumTests {
         val data = mapOf<String, Any?>("a" to mapOf("a" to "A"))
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
@@ -121,13 +97,7 @@ class EnumTests {
         val data = mapOf<String, Any?>("a" to mapOf("a" to "A"))
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)

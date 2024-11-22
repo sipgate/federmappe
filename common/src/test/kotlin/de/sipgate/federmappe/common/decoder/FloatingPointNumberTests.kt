@@ -20,13 +20,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to 0.0)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(0.0, result.a)
@@ -43,13 +37,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to 1.5)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(1.5, result.a)
@@ -66,13 +54,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to -1.5)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(-1.5, result.a)
@@ -89,13 +71,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to Double.NaN)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(Double.NaN, result.a)
@@ -112,13 +88,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to null)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)
@@ -135,13 +105,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to 0.0)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(0.0, result.a)
@@ -158,13 +122,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to 1.5)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(1.5, result.a)
@@ -181,13 +139,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to -1.5)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(-1.5, result.a)
@@ -204,13 +156,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to Double.NaN)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(Double.NaN, result.a)
@@ -230,13 +176,7 @@ class FloatingPointNumberTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf(-1.5, 0.0, 1.5), result.a)
@@ -253,13 +193,7 @@ class FloatingPointNumberTests {
         val data = mapOf<String, Any?>("a" to 0.8)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(0.8f, result.a)

@@ -23,13 +23,7 @@ class SubclassDecodingTests {
         val data = mapOf<String, Any?>("a" to mapOf("b" to "Some String"))
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)

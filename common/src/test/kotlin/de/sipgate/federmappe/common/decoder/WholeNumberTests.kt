@@ -20,13 +20,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 0L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(0L, result.a)
@@ -43,13 +37,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 1L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(1L, result.a)
@@ -66,13 +54,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to -1L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(-1L, result.a)
@@ -89,13 +71,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to null)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)
@@ -112,13 +88,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 0L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(0L, result.a)
@@ -135,13 +105,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 1L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(1L, result.a)
@@ -158,13 +122,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to -1L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(-1L, result.a)
@@ -184,13 +142,7 @@ class WholeNumberTests {
             )
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf(-1L, 0L, 1L), result.a)
@@ -207,13 +159,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 45767L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(45767, result.a)
@@ -230,13 +176,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 3072L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(3072, result.a)
@@ -253,13 +193,7 @@ class WholeNumberTests {
         val data = mapOf<String, Any?>("a" to 99L)
 
         // Act
-        val result =
-            serializer.deserialize(
-                StringMapToObjectDecoder(
-                    data,
-                    ignoreUnknownProperties = true,
-                ),
-            )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(99, result.a)

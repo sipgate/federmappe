@@ -21,8 +21,7 @@ class StringMapDecoderTest {
         val data = mapOf("a" to "test", "b" to 1L)
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals("test", result.a)
@@ -40,8 +39,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to null, "b" to null)
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a)
@@ -59,8 +57,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to "testString", "b" to 1)
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals("testString", result.a)
@@ -77,8 +74,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to emptyList<String>())
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(emptyList<String>(), result.a)
@@ -95,8 +91,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to listOf("testString", "testString2"))
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(listOf("testString", "testString2"), result.a)
@@ -113,8 +108,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to mapOf("test" to mapOf("test2" to "testString2")))
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(mapOf("test" to mapOf("test2" to "testString2")), result.a)
@@ -132,8 +126,7 @@ class StringMapDecoderTest {
             mapOf<String, Any?>("a" to mapOf("test" to "testString", "test2" to "testString2"))
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(mapOf("test" to "testString", "test2" to "testString2"), result.a)
@@ -153,8 +146,7 @@ class StringMapDecoderTest {
         val data = mapOf<String, Any?>("a" to mapOf("a" to "testString"))
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals(TestClass2("testString"), result.a)
@@ -180,8 +172,7 @@ class StringMapDecoderTest {
             )
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertEquals("some-string", result.a.first().a.a)
@@ -213,8 +204,7 @@ class StringMapDecoderTest {
             )
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertNull(result.a.first().a?.a)

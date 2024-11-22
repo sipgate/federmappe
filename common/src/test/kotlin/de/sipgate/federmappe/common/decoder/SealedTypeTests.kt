@@ -47,8 +47,7 @@ internal class SealedTypeTests {
         )
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
@@ -71,8 +70,7 @@ internal class SealedTypeTests {
         )
 
         // Act
-        val result =
-            serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = true))
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
@@ -99,12 +97,7 @@ internal class SealedTypeTests {
         )
 
         // Act
-        val result = serializer.deserialize(
-            StringMapToObjectDecoder(
-                data,
-                ignoreUnknownProperties = true
-            )
-        )
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
 
         // Assert
         assertIs<TestClass>(result)
