@@ -58,7 +58,7 @@ enum class Universe {
 @Serializable
 data class Spaceship(
     val name: String,
-    
+
     @SerialName("max_occupants")
     val maxOccupants: Long,
 
@@ -90,16 +90,10 @@ The unit tests ship with everything needed to run.
 
 For the integration tests a running [Firebase Emulator](https://firebase.google.com/docs/emulator-suite) needs to be present.
 
-Once installed, start the emulator using:
+Once installed, start the tests (together with the emulators) using:
 
 ```shell
-firebase emulators:start --project demo-test --only database,firestore
-```
-
-and then once both the Firestore Emulator as well as the Realtime DB Emulator have started, you can proceed by running the integration tests:
-
-```shell
-./gradlew pixel2api30Check
+firebase emulators:exec --project demo-test --only database,firestore './gradlew pixel2api30Check --no-parallel'
 ```
 
 ## Contributions
