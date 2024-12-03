@@ -96,6 +96,14 @@ Once installed, start the tests (together with the emulators) using:
 firebase emulators:exec --project demo-test --only database,firestore './gradlew pixel2api30Check --no-parallel'
 ```
 
+#### Development
+
+Alternatively during development the emulator can be started persistently in the background for the tests to be run against:
+
+```shell
+firebase emulators:start --project demo-test --only database,firestore
+```
+
 ## Contributions
 
 This lib is used in production and works for most of our cases (Primitives, Lists, Nested Types, Sealed Classes, …).
