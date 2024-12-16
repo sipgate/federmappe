@@ -50,10 +50,13 @@ class FirestoreIntegrationTest {
         @JvmStatic
         fun initializeTestData(): Unit = runTest {
             val users = firestore.collection("$tempNamespace-users")
-            val root = users.add(mapOf<String, Any?>(
-                "name" to "root",
-                "createdAt" to Timestamp(1720794610L, 0),
-            )).await()
+            val root = users.add(
+                mapOf<String, Any?>(
+                    "name" to "root",
+                    "createdAt" to Timestamp(1720794610L, 0),
+                    "nested" to mapOf<String, Any?>("updatedAt" to Timestamp(1720794610L, 0))
+                )
+            ).await()
             root.update("id", root.id).await()
         }
     }
@@ -100,6 +103,6 @@ class FirestoreIntegrationTest {
             }
         }
         assertTrue(b.isNotEmpty())
-        assertIs< Entity.FullUser>(b.first())
+        assertIs<Entity.FullUser>(b.first())
     }
 }
