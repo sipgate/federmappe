@@ -2,6 +2,8 @@ package de.sipgate.federmappe.firestore.types
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
+import de.sipgate.federmappe.firestore.normalizeStringMap
+import de.sipgate.federmappe.firestore.normalizeStringMapNullable
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantComponentSerializer
 import kotlinx.datetime.toJavaInstant
@@ -135,6 +137,84 @@ class FirestoreTimestampToDecodableTimestampTest {
 
         // Assert
         assertEquals(null, result.createdAt)
+        assertIs<MockLocalDataClass>(result)
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    @Test
+    fun nestedFirestoreTimestampIsNormalizedAndDecodedToKotlinInstantCorrectly() {
+        // Arrange
+        val expectedInstant = Instant.fromEpochSeconds(1716823455)
+        val expectedDate = Date.from(expectedInstant.toJavaInstant())
+        val timestamp = Timestamp(expectedDate)
+
+        @Serializable
+        data class MockNestedDataClass(
+            @Contextual
+            val createdAt: Instant
+        )
+
+        @Serializable
+        data class MockLocalDataClass(
+            @Contextual
+            val nested: MockNestedDataClass
+        )
+
+        val serializer = serializer<MockLocalDataClass>()
+
+        val data =
+            mapOf<String, Any>("nested" to mapOf<String, Any>("createdAt" to timestamp)).normalizeStringMap()
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data = data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                ),
+            )
+
+        // Assert
+        assertEquals(expectedInstant, result.nested.createdAt)
+        assertIs<MockLocalDataClass>(result)
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    @Test
+    fun nestedFirestoreTimestampIsNormalizedAndDecodedToKotlinInstantCorrectlyNullable() {
+        // Arrange
+        val expectedInstant = Instant.fromEpochSeconds(1716823455)
+        val expectedDate = Date.from(expectedInstant.toJavaInstant())
+        val timestamp = Timestamp(expectedDate)
+
+        @Serializable
+        data class MockNestedDataClass(
+            @Contextual
+            val createdAt: Instant
+        )
+
+        @Serializable
+        data class MockLocalDataClass(
+            @Contextual
+            val nested: MockNestedDataClass
+        )
+
+        val serializer = serializer<MockLocalDataClass>()
+
+        val data =
+            mapOf<String, Any?>("nested" to mapOf<String, Any?>("createdAt" to timestamp)).normalizeStringMapNullable()
+
+        // Act
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data = data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                ),
+            )
+
+        // Assert
+        assertEquals(expectedInstant, result.nested.createdAt)
         assertIs<MockLocalDataClass>(result)
     }
 }
