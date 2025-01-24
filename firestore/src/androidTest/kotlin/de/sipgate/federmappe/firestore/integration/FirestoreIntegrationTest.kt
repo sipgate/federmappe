@@ -8,6 +8,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.initialize
 import de.sipgate.federmappe.common.toObjectWithSerializer
+import de.sipgate.federmappe.firestore.integration.FirestoreIntegrationTest.Entity.FullUser
 import de.sipgate.federmappe.firestore.normalizeStringMap
 import de.sipgate.federmappe.firestore.toObjects
 import kotlinx.coroutines.tasks.await
@@ -20,7 +21,6 @@ import kotlinx.serialization.Serializable
 import org.junit.BeforeClass
 import org.junit.Test
 import java.util.UUID
-import kotlin.test.Ignore
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -54,7 +54,8 @@ class FirestoreIntegrationTest {
                 mapOf<String, Any?>(
                     "name" to "root",
                     "createdAt" to Timestamp(1720794610L, 0),
-                    "nested" to mapOf<String, Any?>("updatedAt" to Timestamp(1720794610L, 0))
+                    "nested" to mapOf<String, Any?>("updatedAt" to Timestamp(1720794610L, 0)),
+                    "type" to "USER",
                 )
             ).await()
             root.update("id", root.id).await()
@@ -70,8 +71,10 @@ class FirestoreIntegrationTest {
             val createdAt: Instant,
         )
 
-        val a = firestore.collection("$tempNamespace-users").get().await().toObjects<User>()
-        assertTrue(a.isNotEmpty())
+        val user = firestore.collection("$tempNamespace-users").get()
+            .await().toObjects<User>()
+
+        assertTrue(user.isNotEmpty())
     }
 
     @Serializable
@@ -89,20 +92,12 @@ class FirestoreIntegrationTest {
     }
 
     @Test
-    @Ignore
     fun fullUserParsing(): Unit = runTest {
-        val a = firestore.collection("$tempNamespace-users").get().await()
-        val b = a.map {
-            try {
-                val c = it.data
-                val d = c.normalizeStringMap()
-                val e = d.toObjectWithSerializer<Entity>()
-                e
-            } catch (ex: Throwable) {
-                throw ex
-            }
-        }
-        assertTrue(b.isNotEmpty())
-        assertIs<Entity.FullUser>(b.first())
+        val user = firestore.collection("${tempNamespace}-users")
+            .get().await()
+            .map { it.data.normalizeStringMap().toObjectWithSerializer<Entity>() }
+
+        assertTrue(user.isNotEmpty())
+        assertIs<FullUser>(user.first())
     }
 }

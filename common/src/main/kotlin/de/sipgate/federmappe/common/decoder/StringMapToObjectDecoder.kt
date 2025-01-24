@@ -12,9 +12,6 @@ import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
-import kotlin.also
-import kotlin.collections.isNotEmpty
-import kotlin.collections.toCollection
 
 @ExperimentalSerializationApi
 class StringMapToObjectDecoder(
@@ -65,6 +62,17 @@ class StringMapToObjectDecoder(
     override fun decodeFloat(): Float = (decodeValue() as Double).toFloat()
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
+        if (descriptor.kind is PolymorphicKind.SEALED) {
+            return StringMapToObjectDecoder(
+                data = mapOf(
+                    "type" to data["type"],
+                    "value" to data
+                ),
+                serializersModule = serializersModule,
+                ignoreUnknownProperties = ignoreUnknownProperties
+            )
+        }
+
         if (key == null) {
             return this
         }
@@ -75,12 +83,6 @@ class StringMapToObjectDecoder(
         @Suppress("UNCHECKED_CAST")
         when (valueDescriptor) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(
-                data = value as StringMap,
-                ignoreUnknownProperties = ignoreUnknownProperties,
-                serializersModule = this.serializersModule,
-            )
-
-            PolymorphicKind.SEALED -> return StringMapToObjectDecoder(
                 data = value as StringMap,
                 ignoreUnknownProperties = ignoreUnknownProperties,
                 serializersModule = this.serializersModule,
