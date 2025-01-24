@@ -28,7 +28,11 @@ class StringMapToObjectDecoder(
 
     private val skippedValues = mutableSetOf<String>()
 
-    override fun decodeSequentially() = false
+    override fun decodeSequentially(): Boolean {
+        // We cannot guarantee the order in which the
+        // elements are returned from the Database
+        return false
+    }
 
     override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = data.size
 
