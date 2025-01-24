@@ -64,7 +64,6 @@ class StringMapToObjectDecoder(
     override fun decodeByte(): Byte = (decodeValue() as Long).toByte()
     override fun decodeFloat(): Float = (decodeValue() as Double).toFloat()
 
-    @Suppress("UNCHECKED_CAST")
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         if (key == null) {
             return this
@@ -73,6 +72,7 @@ class StringMapToObjectDecoder(
         val value = data[key]
         val valueDescriptor = descriptor.kind
 
+        @Suppress("UNCHECKED_CAST")
         when (valueDescriptor) {
             StructureKind.CLASS -> return StringMapToObjectDecoder(
                 data = value as StringMap,
