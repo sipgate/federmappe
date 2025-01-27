@@ -18,7 +18,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
-class FirestoreTimestampToDecodableTimestampTest {
+class FirestoreTimestampNormalizationTest {
 
     @Test
     fun timestampWithNanosecondPrecisionIsConvertedSuccessfully() {
