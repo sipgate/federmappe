@@ -62,17 +62,26 @@ class FirestoreIntegrationTest {
         }
     }
 
-    @Test
-    fun simpleUserParsing(): Unit = runTest {
-        @Serializable
-        data class User(
-            val id: String,
-            @Serializable(with = InstantComponentSerializer::class)
-            val createdAt: Instant,
-        )
+    @Serializable
+    data class SimpleUser(
+        val id: String,
+        @Serializable(with = InstantComponentSerializer::class)
+        val createdAt: Instant,
+    )
 
-        val user = firestore.collection("$tempNamespace-users").get()
-            .await().toObjects<User>()
+    @Test
+    fun simpleUserParsingWithConvenienceWrapper(): Unit = runTest {
+        val simpleUser = firestore.collection("$tempNamespace-users")
+            .get().await().toObjects<SimpleUser>()
+
+        assertTrue(simpleUser.isNotEmpty())
+    }
+
+    @Test
+    fun simpleUserParsingManual(): Unit = runTest {
+        val user = firestore.collection("$tempNamespace-users")
+            .get().await()
+            .map { it.data.normalizeStringMap().toObjectWithSerializer<SimpleUser>() }
 
         assertTrue(user.isNotEmpty())
     }
@@ -94,8 +103,7 @@ class FirestoreIntegrationTest {
     @Test
     fun fullUserParsing(): Unit = runTest {
         val user = firestore.collection("${tempNamespace}-users")
-            .get().await()
-            .map { it.data.normalizeStringMap().toObjectWithSerializer<Entity>() }
+            .get().await().toObjects<Entity>()
 
         assertTrue(user.isNotEmpty())
         assertIs<FullUser>(user.first())
