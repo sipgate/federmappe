@@ -10,6 +10,7 @@ import com.google.firebase.initialize
 import de.sipgate.federmappe.common.toObjectWithSerializer
 import de.sipgate.federmappe.firestore.integration.FirestoreIntegrationTest.Entity.FullUser
 import de.sipgate.federmappe.firestore.normalizeStringMap
+import de.sipgate.federmappe.firestore.toObject
 import de.sipgate.federmappe.firestore.toObjects
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
@@ -29,6 +30,8 @@ class FirestoreIntegrationTest {
 
     companion object {
         private val tempNamespace = UUID.randomUUID().toString()
+
+        private lateinit var rootUserId: String
 
         private val firebaseApp by lazy {
             Firebase.initialize(
@@ -59,6 +62,7 @@ class FirestoreIntegrationTest {
                 )
             ).await()
             root.update("id", root.id).await()
+            rootUserId = root.id
         }
     }
 
@@ -70,7 +74,23 @@ class FirestoreIntegrationTest {
     )
 
     @Test
+    fun simpleUserParsingManual(): Unit = runTest {
+        val user = firestore.document("$tempNamespace-users/$rootUserId")
+            .get().await().data?.normalizeStringMap()?.toObjectWithSerializer<SimpleUser>()
+
+        assertIs<SimpleUser>(user)
+    }
+
+    @Test
     fun simpleUserParsingWithConvenienceWrapper(): Unit = runTest {
+        val user = firestore.document("$tempNamespace-users/$rootUserId")
+            .get().await().toObject<SimpleUser>()
+
+        assertIs<SimpleUser>(user)
+    }
+
+    @Test
+    fun simpleUserListParsingWithConvenienceWrapper(): Unit = runTest {
         val simpleUser = firestore.collection("$tempNamespace-users")
             .get().await().toObjects<SimpleUser>()
 
@@ -78,7 +98,7 @@ class FirestoreIntegrationTest {
     }
 
     @Test
-    fun simpleUserParsingManual(): Unit = runTest {
+    fun simpleUserListParsingManual(): Unit = runTest {
         val user = firestore.collection("$tempNamespace-users")
             .get().await()
             .map { it.data.normalizeStringMap().toObjectWithSerializer<SimpleUser>() }
