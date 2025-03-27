@@ -36,7 +36,7 @@ android {
             localDevices {
                 create("pixel2api30") {
                     device = "Pixel 2"
-                    apiLevel = 30
+                    sdkVersion = 30
                     systemImageSource = "aosp-atd"
                 }
             }
