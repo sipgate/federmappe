@@ -6,7 +6,6 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJavaInstant
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -18,8 +17,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
+import kotlin.time.ExperimentalTime
+import kotlin.time.toJavaInstant
 
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalTime::class)
 class DecodableTimestampToJavaDateTest {
 
     private val date = createFakeInstant(1)
@@ -157,10 +158,9 @@ class DecodableTimestampToJavaDateTest {
         assertIs<TestClass>(result)
     }
 
-    private fun createFakeInstant(day: Int) = LocalDateTime(
-        year = 2000,
+    private fun createFakeInstant(day: Int) = LocalDateTime(year = 2000,
         month = Month.JANUARY,
-        dayOfMonth = day,
+        day = day,
         hour = 1,
         minute = 1,
         second = 1,
