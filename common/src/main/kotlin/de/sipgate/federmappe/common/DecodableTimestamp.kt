@@ -1,6 +1,7 @@
 package de.sipgate.federmappe.common
 
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 
 typealias DecodableTimestamp = StringMap
@@ -11,6 +12,7 @@ fun createDecodableTimestamp(seconds: Long, nanoseconds: Int = 0): DecodableTime
         "nanosecondsOfSecond" to nanoseconds.toLong(),
     )
 
+@ExperimentalTime
 fun createDecodableTimestamp(instant: Instant): DecodableTimestamp =
     mapOf(
         "epochSeconds" to instant.epochSeconds,

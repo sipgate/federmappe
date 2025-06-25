@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package de.sipgate.federmappe.firestore.integration
 
 import android.content.Context
@@ -7,6 +9,7 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.initialize
+import de.sipgate.federmappe.common.serializers.InstantComponentSerializer
 import de.sipgate.federmappe.common.toObjectWithSerializer
 import de.sipgate.federmappe.firestore.integration.FirestoreIntegrationTest.Entity.FullUser
 import de.sipgate.federmappe.firestore.normalizeStringMap
@@ -14,8 +17,6 @@ import de.sipgate.federmappe.firestore.toObject
 import de.sipgate.federmappe.firestore.toObjects
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantComponentSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,6 +25,8 @@ import org.junit.Test
 import java.util.UUID
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalSerializationApi::class)
 class FirestoreIntegrationTest {

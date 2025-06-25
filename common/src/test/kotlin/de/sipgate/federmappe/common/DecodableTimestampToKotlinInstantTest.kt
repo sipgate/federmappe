@@ -1,12 +1,10 @@
 package de.sipgate.federmappe.common
 
 import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
-import de.sipgate.federmappe.common.serializers.TimestampToDateSerializer
-import kotlinx.datetime.Instant
+import de.sipgate.federmappe.common.serializers.InstantComponentSerializer
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.serializers.InstantComponentSerializer
 import kotlinx.datetime.toInstant
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -18,8 +16,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalTime::class)
 class DecodableTimestampToKotlinInstantTest {
 
     private val date = createFakeInstant(1)
@@ -108,7 +108,7 @@ class DecodableTimestampToKotlinInstantTest {
             serializer.deserialize(
                 StringMapToObjectDecoder(
                     data,
-                    serializersModule = SerializersModule { contextual(TimestampToDateSerializer) },
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
                 ),
             )
 
@@ -145,13 +145,19 @@ class DecodableTimestampToKotlinInstantTest {
     fun deserializeDecodableTimestampWithMissingNanosecondPrecision() {
         // Arrange
         @Serializable
-        data class TestClass(@Serializable(with = InstantComponentSerializer::class) val a: Instant)
+        data class TestClass(@Contextual val a: Instant)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to mapOf("epochSeconds" to date.epochSeconds))
 
         // Act
-        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
+                ),
+            )
 
         // Assert
         assertEquals(date, result.a)
@@ -159,10 +165,9 @@ class DecodableTimestampToKotlinInstantTest {
     }
 
 
-    private fun createFakeInstant(day: Int) = LocalDateTime(
-        year = 2000,
+    private fun createFakeInstant(day: Int) = LocalDateTime(year = 2000,
         month = Month.JANUARY,
-        dayOfMonth = day,
+        day = day,
         hour = 1,
         minute = 1,
         second = 1,

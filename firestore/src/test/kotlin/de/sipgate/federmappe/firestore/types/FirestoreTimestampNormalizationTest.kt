@@ -2,11 +2,9 @@ package de.sipgate.federmappe.firestore.types
 
 import com.google.firebase.Timestamp
 import de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder
+import de.sipgate.federmappe.common.serializers.InstantComponentSerializer
 import de.sipgate.federmappe.firestore.normalizeStringMap
 import de.sipgate.federmappe.firestore.normalizeStringMapNullable
-import kotlinx.datetime.Instant
-import kotlinx.datetime.serializers.InstantComponentSerializer
-import kotlinx.datetime.toJavaInstant
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -17,7 +15,11 @@ import java.util.Date
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.time.toJavaInstant
 
+@OptIn(ExperimentalTime::class)
 class FirestoreTimestampNormalizationTest {
 
     @Test
@@ -68,8 +70,8 @@ class FirestoreTimestampNormalizationTest {
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
-                    data = data,
-                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                    data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
                 ),
             )
 
@@ -130,8 +132,8 @@ class FirestoreTimestampNormalizationTest {
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
-                    data = data,
-                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                    data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
                 ),
             )
 
@@ -169,8 +171,8 @@ class FirestoreTimestampNormalizationTest {
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
-                    data = data,
-                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                    data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
                 ),
             )
 
@@ -208,8 +210,8 @@ class FirestoreTimestampNormalizationTest {
         val result =
             serializer.deserialize(
                 StringMapToObjectDecoder(
-                    data = data,
-                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) },
+                    data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
                 ),
             )
 
