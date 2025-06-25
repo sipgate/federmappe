@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -25,8 +26,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_11
+        }
     }
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -91,14 +94,14 @@ tasks.withType<Test>().configureEach {
 
 val Project.versionString: String
     get() {
-    val versionProperties = File(project.rootDir, "version.properties")
-    return versionProperties.inputStream().use { inputStream ->
-        Properties().run {
-            load(inputStream)
-            "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
+        val versionProperties = File(project.rootDir, "version.properties")
+        return versionProperties.inputStream().use { inputStream ->
+            Properties().run {
+                load(inputStream)
+                "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
+            }
         }
     }
-}
 
 fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 
