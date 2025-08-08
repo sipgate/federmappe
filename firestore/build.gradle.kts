@@ -12,7 +12,7 @@ version = "0.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0"}"
 
 android {
     namespace = "de.sipgate.federmappe.firestore"
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig.minSdk = 23
 
     buildTypes {
