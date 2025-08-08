@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
@@ -7,7 +5,7 @@ plugins {
     signing
 }
 
-version = versionString
+version = "0.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0"}"
 
 dependencies {
     compileOnly(libs.kotlinx.serialization)
@@ -24,19 +22,6 @@ tasks.withType<Test>().configureEach {
 
     outputs.upToDateWhen { false }
 }
-
-val Project.versionString: String
-    get() {
-        val versionProperties = File(project.rootDir, "version.properties")
-        return versionProperties.inputStream().use { inputStream ->
-            Properties().run {
-                load(inputStream)
-                "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
-            }
-        }
-    }
-
-fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 
 publishing {
     publications.register<MavenPublication>("release") {

@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.library)
@@ -9,7 +8,7 @@ plugins {
     signing
 }
 
-version = versionString
+version = "0.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0"}"
 
 android {
     namespace = "de.sipgate.federmappe.firestore"
@@ -91,19 +90,6 @@ tasks.withType<Test>().configureEach {
 
     outputs.upToDateWhen { false }
 }
-
-val Project.versionString: String
-    get() {
-        val versionProperties = File(project.rootDir, "version.properties")
-        return versionProperties.inputStream().use { inputStream ->
-            Properties().run {
-                load(inputStream)
-                "${parseInt("majorVersion")}.${parseInt("minorVersion")}.${parseInt("patchVersion")}"
-            }
-        }
-    }
-
-fun Properties.parseInt(key: String) = (this[key] as String).toInt()
 
 publishing {
     publications.register<MavenPublication>("release") {
