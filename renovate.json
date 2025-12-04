@@ -3,5 +3,7 @@
   "extends": [
     "config:recommended",
     "mergeConfidence:all-badges"
-  ]
+  ],
+  "automerge": true,
+  "platformAutomerge": true,
 }
