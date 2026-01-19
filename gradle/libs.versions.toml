@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.3.0"
-agp = "8.13.2"
+agp = "9.0.0"
 
 firebase-firestore = "25.1.4"
 firebase-database = "22.0.1"
@@ -15,7 +15,7 @@ kotlinx-coroutines = "1.10.2"
 [libraries]
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebase-database" }
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
