@@ -116,4 +116,18 @@ internal class SealedTypeTests {
         assertIs<BaseType.A>(result)
         assertEquals("some string", result.label)
     }
+
+    @Test
+    fun deserializeSealedTypeDoesNotThrowOnUnknownPropertiesRegardlessOfFlag() {
+        @Serializable
+        data class TestClass(val a: BaseType)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>(
+            "a" to mapOf("type" to "A", "label" to "some string", "extra" to "unknown")
+        )
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = false))
+        assertIs<BaseType.A>(result.a)
+    }
 }
