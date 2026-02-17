@@ -103,4 +103,32 @@ class StringMapDecoderOptionalsTests {
 
         assertIs<SerializationException>(result)
     }
+
+    @Test
+    fun usesMapValueOverDefaultWhenPresent() {
+        @Serializable
+        data class TestClass(val a: String = "default")
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to "overridden")
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertEquals("overridden", result.a)
+    }
+
+    @Test
+    fun usesDefaultValueWhenFieldIsMissing() {
+        @Serializable
+        data class TestClass(val a: String = "default")
+
+        val serializer = serializer<TestClass>()
+        val data = emptyMap<String, Any?>()
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertEquals("default", result.a)
+    }
 }
