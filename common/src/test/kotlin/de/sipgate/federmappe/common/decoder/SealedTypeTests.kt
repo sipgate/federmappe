@@ -102,4 +102,18 @@ internal class SealedTypeTests {
         assertIs<InnerData>(inner)
         assertEquals("it works!", inner.inner)
     }
+
+    @Test
+    fun deserializeRootLevelSealedType() {
+        val serializer = serializer<BaseType>()
+        val data = mapOf<String, Any?>(
+            "type" to "A",
+            "label" to "some string"
+        )
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<BaseType.A>(result)
+        assertEquals("some string", result.label)
+    }
 }
