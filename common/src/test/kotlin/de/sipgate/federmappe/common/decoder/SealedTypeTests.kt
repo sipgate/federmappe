@@ -9,6 +9,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -169,5 +170,36 @@ internal class SealedTypeTests {
 
         assertIs<SerializationException>(result)
         assertEquals(expectedError, result.message)
+    }
+
+    @Test
+    fun deserializeNullableSealedTypeSetToNull() {
+        @Serializable
+        data class TestClass(val a: BaseType?)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to null)
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertNull(result.a)
+    }
+
+    @Test
+    fun deserializeNullableSealedTypeWithValue() {
+        @Serializable
+        data class TestClass(val a: BaseType?)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>(
+            "a" to mapOf("type" to "A", "label" to "some string")
+        )
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertIs<BaseType.A>(result.a)
+        assertEquals("some string", result.a.label)
     }
 }
