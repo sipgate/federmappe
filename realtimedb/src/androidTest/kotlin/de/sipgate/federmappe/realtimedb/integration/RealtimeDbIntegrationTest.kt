@@ -19,8 +19,9 @@ import org.junit.Test
 import java.util.UUID
 import kotlin.test.assertTrue
 import kotlin.test.fail
+import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class, ExperimentalTime::class)
 class RealtimeDbIntegrationTest {
 
     companion object {
