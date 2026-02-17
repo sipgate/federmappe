@@ -91,4 +91,16 @@ class StringMapDecoderOptionalsTests {
         assertEquals("a", result.first)
         assertEquals("b", result.second)
     }
+
+    @Test
+    fun failsWhenRequiredFieldIsMissing() {
+        val serializer = serializer<TwoNonOptionalFields>()
+        val data = mapOf<String, Any?>("first" to "a")
+
+        val result = assertFails {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+
+        assertIs<SerializationException>(result)
+    }
 }
