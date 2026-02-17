@@ -465,4 +465,76 @@ class StringMapDecoderTypeSafetyTest {
             serializer.deserialize(StringMapToObjectDecoder(data))
         }
     }
+
+    @Test
+    fun testClassCastExceptionIsThrownWhenStringIsExpectedButInputIsBoolean() {
+        @Serializable
+        data class TestData(val value: String)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertFailsWith<ClassCastException> {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+    }
+
+    @Test
+    fun testClassCastExceptionIsThrownWhenStringIsExpectedButInputIsDouble() {
+        @Serializable
+        data class TestData(val value: String)
+
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertFailsWith<ClassCastException> {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+    }
+
+    @Test
+    fun testClassCastExceptionIsThrownWhenShortIsExpectedButInputIsString() {
+        @Serializable
+        data class TestData(val value: Short)
+
+        val data = mapOf("value" to "String")
+        val serializer = serializer<TestData>()
+        assertFailsWith<ClassCastException> {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+    }
+
+    @Test
+    fun testClassCastExceptionIsThrownWhenShortIsExpectedButInputIsBoolean() {
+        @Serializable
+        data class TestData(val value: Short)
+
+        val data = mapOf("value" to true)
+        val serializer = serializer<TestData>()
+        assertFailsWith<ClassCastException> {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+    }
+
+    @Test
+    fun testClassCastExceptionIsThrownWhenShortIsExpectedButInputIsDouble() {
+        @Serializable
+        data class TestData(val value: Short)
+
+        val data = mapOf("value" to 0.0)
+        val serializer = serializer<TestData>()
+        assertFailsWith<ClassCastException> {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+    }
+
+    @Test
+    fun testClassCastExceptionIsThrownWhenShortIsExpectedButInputIsMap() {
+        @Serializable
+        data class TestData(val value: Short)
+
+        val data = mapOf<String, Map<String, String>>("value" to emptyMap())
+        val serializer = serializer<TestData>()
+        assertFailsWith<ClassCastException> {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+    }
 }
