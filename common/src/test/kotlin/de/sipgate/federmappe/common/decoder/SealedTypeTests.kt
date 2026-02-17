@@ -3,9 +3,11 @@ package de.sipgate.federmappe.common.decoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.serializer
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -129,5 +131,24 @@ internal class SealedTypeTests {
 
         val result = serializer.deserialize(StringMapToObjectDecoder(data, ignoreUnknownProperties = false))
         assertIs<BaseType.A>(result.a)
+    }
+
+    @Test
+    fun deserializeFailsWithUnknownTypeDiscriminator() {
+        @Serializable
+        data class TestClass(val a: BaseType)
+
+        val expectedError = "Serializer for subclass 'UnknownSubtype' is not found in the polymorphic scope of 'BaseType'"
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>(
+            "a" to mapOf("type" to "UnknownSubtype", "label" to "some string")
+        )
+
+        val result = assertFails {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+
+        assertIs<SerializationException>(result)
+        assertEquals(expectedError, result.message?.splitToSequence(".")?.first())
     }
 }
