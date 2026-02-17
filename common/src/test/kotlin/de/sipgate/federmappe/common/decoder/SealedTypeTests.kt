@@ -20,11 +20,11 @@ internal class SealedTypeTests {
 
         @Serializable
         @SerialName("A")
-        data class A(val value: String) : BaseType
+        data class A(val label: String) : BaseType
 
         @Serializable
         @SerialName("B")
-        data class B(val value: Boolean) : BaseType
+        data class B(val flag: Boolean) : BaseType
 
 
         @Serializable
@@ -42,7 +42,7 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "A",
-                "value" to "some string"
+                "label" to "some string"
             )
         )
 
@@ -52,7 +52,7 @@ internal class SealedTypeTests {
         // Assert
         assertIs<TestClass>(result)
         assertIs<BaseType.A>(result.a)
-        assertEquals("some string", result.a.value)
+        assertEquals("some string", result.a.label)
     }
 
     @Test
@@ -65,7 +65,7 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "B",
-                "value" to true
+                "flag" to true
             )
         )
 
@@ -75,7 +75,7 @@ internal class SealedTypeTests {
         // Assert
         assertIs<TestClass>(result)
         assertIs<BaseType.B>(result.a)
-        assertTrue(result.a.value)
+        assertTrue(result.a.flag)
     }
 
     @Test
