@@ -219,4 +219,33 @@ class FirestoreTimestampNormalizationTest {
         assertEquals(expectedInstant, result.nested?.createdAt)
         assertIs<MockLocalDataClass>(result)
     }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    @Test
+    fun nullNestedObjectIsDecodedToNullableNestedClassCorrectly() {
+        @Serializable
+        data class MockNestedDataClass(
+            @Contextual
+            val createdAt: Instant
+        )
+
+        @Serializable
+        data class MockLocalDataClass(
+            @Contextual
+            val nested: MockNestedDataClass?
+        )
+
+        val serializer = serializer<MockLocalDataClass>()
+        val data = mapOf<String, Any?>("nested" to null).normalizeStringMapNullable()
+
+        val result =
+            serializer.deserialize(
+                StringMapToObjectDecoder(
+                    data,
+                    serializersModule = SerializersModule { contextual(InstantComponentSerializer) }
+                ),
+            )
+
+        assertEquals(null, result.nested)
+    }
 }
