@@ -2,9 +2,11 @@ package de.sipgate.federmappe.common.decoder
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.serializer
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -68,5 +70,50 @@ class EnumListTests {
         assertIs<TestClass>(result)
         assertNull(result.a)
         assertEquals("a is missing", result.b)
+    }
+
+    @Test
+    fun testNullableListDecodesWithValues() {
+        @Serializable
+        data class TestClass(val a: List<SomeValue>?)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to listOf("A", "B"))
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertEquals(listOf(SomeValue.A, SomeValue.B), result.a)
+    }
+
+    @Test
+    fun testStringListFailsOnUnknownEnumValue() {
+        @Serializable
+        data class TestClass(val a: List<SomeValue>)
+
+        val expectedError = "Couldn't find matching de.sipgate.federmappe.common.decoder.EnumListTests.SomeValue enum for value UNKNOWN"
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to listOf("A", "UNKNOWN"))
+
+        val result = assertFails {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+
+        assertIs<SerializationException>(result)
+        assertEquals(expectedError, result.message)
+    }
+
+    @Test
+    fun testEmptyListDecodes() {
+        @Serializable
+        data class TestClass(val a: List<SomeValue>)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to emptyList<String>())
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertTrue(result.a.isEmpty())
     }
 }
