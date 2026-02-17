@@ -63,13 +63,12 @@ class StringMapToObjectDecoder(
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         if (descriptor.kind is PolymorphicKind.SEALED) {
+            @Suppress("UNCHECKED_CAST")
+            val source = (if (key != null) data[key] as? StringMap else null) ?: data
             return StringMapToObjectDecoder(
-                data = mapOf(
-                    "type" to data["type"],
-                    "value" to data
-                ),
+                data = mapOf("type" to source["type"], "value" to source),
                 serializersModule = serializersModule,
-                ignoreUnknownProperties = ignoreUnknownProperties
+                ignoreUnknownProperties = true
             )
         }
 

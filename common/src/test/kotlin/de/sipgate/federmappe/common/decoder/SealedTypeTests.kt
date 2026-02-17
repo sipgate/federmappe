@@ -4,13 +4,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
-@Ignore("Fails decoding nested structures")
 @OptIn(ExperimentalSerializationApi::class)
 internal class SealedTypeTests {
 
@@ -44,7 +42,7 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "A",
-                "value" to mapOf("value" to "some string")
+                "value" to "some string"
             )
         )
 
@@ -67,7 +65,7 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "B",
-                "value" to mapOf("value" to true)
+                "value" to true
             )
         )
 
@@ -90,11 +88,7 @@ internal class SealedTypeTests {
         val data = mapOf<String, Any?>(
             "a" to mapOf(
                 "type" to "C",
-                "value" to mapOf(
-                    "innerValue" to mapOf(
-                        "inner" to "it works!"
-                    )
-                )
+                "innerValue" to mapOf("inner" to "it works!")
             )
         )
 
