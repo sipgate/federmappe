@@ -198,7 +198,7 @@ class FirestoreTimestampNormalizationTest {
         @Serializable
         data class MockLocalDataClass(
             @Contextual
-            val nested: MockNestedDataClass
+            val nested: MockNestedDataClass?
         )
 
         val serializer = serializer<MockLocalDataClass>()
@@ -216,7 +216,7 @@ class FirestoreTimestampNormalizationTest {
             )
 
         // Assert
-        assertEquals(expectedInstant, result.nested.createdAt)
+        assertEquals(expectedInstant, result.nested?.createdAt)
         assertIs<MockLocalDataClass>(result)
     }
 }
