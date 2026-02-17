@@ -316,4 +316,32 @@ class BooleanTests {
         assertNull(result.a)
         assertIs<TestClass>(result)
     }
+
+    @Test
+    fun deserializeBasicDataClassWithDefaultBooleanValue() {
+        @Serializable
+        data class TestClass(val a: Boolean = true)
+
+        val serializer = serializer<TestClass>()
+        val data = emptyMap<String, Any?>()
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertIs<TestClass>(result)
+        assertTrue(result.a)
+    }
+
+    @Test
+    fun deserializeNullableMapOfNullableStringAndBooleanBeingNull() {
+        @Serializable
+        data class TestClass(val a: Map<String?, Boolean>?)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to null)
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertNull(result.a)
+        assertIs<TestClass>(result)
+    }
 }
