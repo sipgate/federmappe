@@ -151,4 +151,23 @@ internal class SealedTypeTests {
         assertIs<SerializationException>(result)
         assertEquals(expectedError, result.message?.splitToSequence(".")?.first())
     }
+
+    @Test
+    fun deserializeFailsWhenTypeKeyIsMissing() {
+        @Serializable
+        data class TestClass(val a: BaseType)
+
+        val expectedError = "error decoding type"
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>(
+            "a" to mapOf("label" to "some string")
+        )
+
+        val result = assertFails {
+            serializer.deserialize(StringMapToObjectDecoder(data))
+        }
+
+        assertIs<SerializationException>(result)
+        assertEquals(expectedError, result.message)
+    }
 }
