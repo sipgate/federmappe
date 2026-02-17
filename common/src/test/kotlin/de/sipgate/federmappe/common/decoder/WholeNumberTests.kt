@@ -199,4 +199,17 @@ class WholeNumberTests {
         assertEquals(99, result.a)
         assertIs<TestClass>(result)
     }
+
+    @Test
+    fun testDownCastingToIntWithOverflow() {
+        @Serializable
+        data class TestClass(val a: Int)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to Long.MAX_VALUE)
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertEquals(Long.MAX_VALUE.toInt(), result.a) // asserts silent truncation
+    }
 }
