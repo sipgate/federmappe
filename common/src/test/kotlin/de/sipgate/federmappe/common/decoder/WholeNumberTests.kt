@@ -212,4 +212,30 @@ class WholeNumberTests {
 
         assertEquals(Long.MAX_VALUE.toInt(), result.a) // asserts silent truncation
     }
+
+    @Test
+    fun testDownCastingToNullableInt() {
+        @Serializable
+        data class TestClass(val a: Int?)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to 45767L)
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertEquals(45767, result.a)
+    }
+
+    @Test
+    fun testDownCastingToNullableIntSetToNull() {
+        @Serializable
+        data class TestClass(val a: Int?)
+
+        val serializer = serializer<TestClass>()
+        val data = mapOf<String, Any?>("a" to null)
+
+        val result = serializer.deserialize(StringMapToObjectDecoder(data))
+
+        assertNull(result.a)
+    }
 }
