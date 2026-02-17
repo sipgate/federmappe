@@ -10,7 +10,6 @@ import de.sipgate.federmappe.common.serializers.UnixSecondInstantSerializer
 import de.sipgate.federmappe.realtimedb.toObjects
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import org.junit.AfterClass
@@ -20,6 +19,7 @@ import java.util.UUID
 import kotlin.test.assertTrue
 import kotlin.test.fail
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalSerializationApi::class, ExperimentalTime::class)
 class RealtimeDbIntegrationTest {

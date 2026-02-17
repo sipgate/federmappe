@@ -26,7 +26,7 @@ import kotlin.time.Instant
 object InstantComponentSerializer : KSerializer<Instant> {
 
     override val descriptor: SerialDescriptor =
-        buildClassSerialDescriptor("kotlinx.datetime.Instant/components") {
+        buildClassSerialDescriptor("kotlin.time.Instant/components") {
             element<Long>("epochSeconds")
             element<Long>("nanosecondsOfSecond", isOptional = true)
         }
