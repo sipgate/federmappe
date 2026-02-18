@@ -4,7 +4,7 @@ agp = "9.0.1"
 
 firebase-firestore = "25.1.4"
 firebase-database = "22.0.1"
-kotlinx-datetime = "0.7.1-0.6.x-compat"
+kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.10.0"
 mockk = "1.14.9"
 
