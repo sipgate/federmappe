@@ -15,9 +15,14 @@ settings:
       enabled: true
   android:
     namespace: "de.sipgate.federmappe.common"
+  publishing:
+    name: common
 
 test-settings:
   kotlin:
     optIns:
       - kotlinx.serialization.ExperimentalSerializationApi
       - kotlin.time.ExperimentalTime
+
+apply:
+  - ../publish.module-template.yaml

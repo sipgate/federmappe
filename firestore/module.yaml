@@ -21,9 +21,14 @@ settings:
     namespace: "de.sipgate.federmappe.firestore"
     minSdk: 23
 #    testInstrumentationRunner: "androidx.test.runner.AndroidJUnitRunner"
+  publishing:
+    name: firestore
 
 test-settings:
   kotlin:
     optIns:
       - kotlinx.serialization.ExperimentalSerializationApi
       - kotlin.time.ExperimentalTime
+
+apply:
+  - ../publish.module-template.yaml

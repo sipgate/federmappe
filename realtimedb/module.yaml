@@ -30,3 +30,8 @@ settings:
   android:
     namespace: "de.sipgate.federmappe.realtimedb"
     minSdk: 23
+  publishing:
+    name: realtimedb
+
+apply:
+  - ../publish.module-template.yaml
