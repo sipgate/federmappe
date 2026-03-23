@@ -1,0 +1,29 @@
+product:
+  type: lib
+  platforms:
+    - android
+
+dependencies:
+  - ../common: exported
+  
+  - $libs.firebase.firestore
+  
+  - $libs.kotlinx.datetime
+
+test-dependencies:
+  - $libs.kotlinx.coroutines.test
+
+settings:
+  kotlin:
+    serialization:
+      enabled: true
+  android:
+    namespace: "de.sipgate.federmappe.firestore"
+    minSdk: 23
+#    testInstrumentationRunner: "androidx.test.runner.AndroidJUnitRunner"
+
+test-settings:
+  kotlin:
+    optIns:
+      - kotlinx.serialization.ExperimentalSerializationApi
+      - kotlin.time.ExperimentalTime

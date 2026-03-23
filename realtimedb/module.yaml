@@ -1,0 +1,32 @@
+product:
+  type: lib
+  platforms:
+    - android
+
+dependencies:
+  - ../common: exported
+  
+  - $libs.firebase.database
+  
+  - $libs.kotlinx.datetime
+
+test-dependencies:
+  - $libs.androidx.test.core
+  - $libs.androidx.test.runner
+  - $libs.kotlinx.coroutines.test
+  - $libs.mockk.android
+  - $libs.mockk.agent
+
+test-settings:
+  kotlin:
+    optIns:
+      - kotlinx.serialization.ExperimentalSerializationApi
+      - kotlin.time.ExperimentalTime
+
+settings:
+  kotlin:
+    serialization:
+      enabled: true
+  android:
+    namespace: "de.sipgate.federmappe.realtimedb"
+    minSdk: 23

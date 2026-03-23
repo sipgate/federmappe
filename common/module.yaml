@@ -1,0 +1,17 @@
+product:
+  type: lib
+  platforms:
+    - android
+
+dependencies:
+  - $libs.kotlinx.datetime
+
+test-dependencies:
+  - $libs.mockk.agent
+
+settings:
+  kotlin:
+    serialization:
+      enabled: true
+  android:
+    namespace: "de.sipgate.federmappe.common"
