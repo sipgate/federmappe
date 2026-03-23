@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common.decoder
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -12,7 +11,6 @@ import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalSerializationApi::class)
 internal class SealedTypeTests {
 
     @Serializable

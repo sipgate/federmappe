@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common.decoder
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import kotlin.test.Test
@@ -10,7 +9,6 @@ import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalSerializationApi::class)
 class BooleanTests {
     @Test
     fun deserializeBasicDataClassWithBooleanFieldSetToTrue() {

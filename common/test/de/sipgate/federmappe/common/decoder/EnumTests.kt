@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common.decoder
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import kotlin.test.Test
@@ -14,7 +13,6 @@ enum class TestEnum {
     B,
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 class EnumTests {
     @Test
     fun deserializeDataClassWithEnum() {

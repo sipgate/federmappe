@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common.decoder
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -23,7 +22,6 @@ enum class CustomTestEnum {
 
 private val expectedError = "Couldn't find matching de.sipgate.federmappe.common.decoder.CustomTestEnum enum for value A"
 
-@OptIn(ExperimentalSerializationApi::class)
 class ComplexEnumTests {
     @Test
     fun deserializeDataClassWithEnum() {

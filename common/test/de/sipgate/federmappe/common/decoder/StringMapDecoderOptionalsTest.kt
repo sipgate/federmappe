@@ -1,6 +1,5 @@
 package de.sipgate.federmappe.common.decoder
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.serializer
@@ -9,7 +8,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertIs
 
-@OptIn(ExperimentalSerializationApi::class)
 class StringMapDecoderOptionalsTests {
 
     @Serializable
