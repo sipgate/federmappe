@@ -16,6 +16,7 @@ settings:
   android:
     namespace: "de.sipgate.federmappe.common"
   publishing:
+    enabled: true
     name: common
 
 test-settings:

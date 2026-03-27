@@ -22,6 +22,7 @@ settings:
     minSdk: 23
 #    testInstrumentationRunner: "androidx.test.runner.AndroidJUnitRunner"
   publishing:
+    enabled: true
     name: firestore
 
 test-settings:

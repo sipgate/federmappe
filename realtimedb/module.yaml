@@ -31,6 +31,7 @@ settings:
     namespace: "de.sipgate.federmappe.realtimedb"
     minSdk: 23
   publishing:
+    enabled: true
     name: realtimedb
 
 apply:
