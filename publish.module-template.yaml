@@ -7,6 +7,14 @@ repositories:
       file: local.properties
       usernameKey: alphadev.username
       passwordKey: alphadev.password
+  - id: github
+    url: {{ env['PUBLISH_REPO'] }}
+    resolve: false
+    publish: true
+    credentials:
+      file: local.properties
+      usernameKey: github.username
+      passwordKey: github.password
 
 settings:
   publishing:

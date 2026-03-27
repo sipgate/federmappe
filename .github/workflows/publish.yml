@@ -22,7 +22,7 @@ jobs:
           output_file: publish.module-template.yaml
         env:
           PUBLISH_GROUP: de.sipgate.federmappe
-          PUBLISH_VERSION: 1.0.${{github.run_number}}
+          PUBLISH_VERSION: 0.0.${{github.run_number}}
 
       - name: Run Build
         run: ./amper build
@@ -34,8 +34,11 @@ jobs:
         run: |
           echo "alphadev.username=GitHub" > local.properties
           echo "alphadev.password=$ALPHADEV_TOKEN" >> local.properties
+          echo "github.username=sipgate" >> local.properties
+          echo "github.password=$GH_TOKEN" >> local.properties
         env:
           ALPHADEV_TOKEN: ${{ secrets.ALPHADEV_DEPLOY_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release snapshot
         id: release-snapshot
@@ -48,5 +51,8 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Publish
+      - name: Publish alphaDev
         run: ./amper publish alphaDev
+
+      - name: Publish GitHub
+        run: ./amper publish github
