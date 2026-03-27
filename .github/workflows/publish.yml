@@ -21,6 +21,7 @@ jobs:
           template: publish.module-template.yaml.j2
           output_file: publish.module-template.yaml
         env:
+          PUBLISH_REPO: https://maven.pkg.github.com/${{ github.repository }}
           PUBLISH_GROUP: de.sipgate.federmappe
           PUBLISH_VERSION: 0.0.${{github.run_number}}
 
