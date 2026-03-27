@@ -8,7 +8,7 @@ repositories:
       usernameKey: alphadev.username
       passwordKey: alphadev.password
   - id: github
-    url: {{ env['PUBLISH_REPO'] }}
+    url: https://maven.pkg.github.com/sipgate/federmappe
     resolve: false
     publish: true
     credentials:
