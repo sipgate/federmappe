@@ -9,12 +9,12 @@ import kotlinx.serialization.serializer
 typealias StringMap = Map<String, Any?>
 
 @ExperimentalSerializationApi
-inline fun <reified T : Any> de.sipgate.federmappe.common.StringMap.toObjectWithSerializer(
+inline fun <reified T : Any> StringMap.toObjectWithSerializer(
     serializer: KSerializer<T> = serializer<T>(),
-    customSerializers: SerializersModule = _root_ide_package_.de.sipgate.federmappe.common.DefaultSerializersModule,
+    customSerializers: SerializersModule = DefaultSerializersModule,
     ignoreUnknownProperties: Boolean = true,
 ): T = serializer.deserialize(
-    _root_ide_package_.de.sipgate.federmappe.common.decoder.StringMapToObjectDecoder(
+    StringMapToObjectDecoder(
         this,
         ignoreUnknownProperties = ignoreUnknownProperties,
         serializersModule = customSerializers,

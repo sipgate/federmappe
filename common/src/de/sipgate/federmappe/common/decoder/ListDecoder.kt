@@ -9,8 +9,6 @@ import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
-import kotlin.also
-import kotlin.collections.toCollection
 
 @ExperimentalSerializationApi
 class ListDecoder(
@@ -33,7 +31,7 @@ class ListDecoder(
         }
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
-        _root_ide_package_.de.sipgate.federmappe.common.decoder.decodeEnum(enumDescriptor, ::decodeValue)
+        decodeEnum(enumDescriptor, ::decodeValue)
 
     override fun decodeNotNullMark(): Boolean =
         when {

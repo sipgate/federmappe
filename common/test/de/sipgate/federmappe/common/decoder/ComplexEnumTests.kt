@@ -27,24 +27,24 @@ class ComplexEnumTests {
     fun deserializeDataClassWithEnum() {
         // Arrange
         @Serializable
-        data class TestClassA(val a: de.sipgate.federmappe.common.decoder.CustomTestEnum)
+        data class TestClassA(val a: CustomTestEnum)
 
         val serializer = serializer<TestClassA>()
-        val data = mapOf<String, Any?>("a" to _root_ide_package_.de.sipgate.federmappe.common.decoder.CustomTestEnum.A)
+        val data = mapOf<String, Any?>("a" to CustomTestEnum.A)
 
         // Act
         val result = assertFails { serializer.deserialize(StringMapToObjectDecoder(data)) }
 
         // Assert
         assertIs<SerializationException>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.expectedError, result.message)
+        assertEquals(expectedError, result.message)
     }
 
     @Test
     fun deserializeDataClassWithEnumValue() {
         // Arrange
         @Serializable
-        data class TestClassA(val a: de.sipgate.federmappe.common.decoder.CustomTestEnum)
+        data class TestClassA(val a: CustomTestEnum)
 
         val serializer = serializer<TestClassA>()
         val data = mapOf<String, Any?>("a" to "A")
@@ -54,14 +54,14 @@ class ComplexEnumTests {
 
         // Assert
         assertIs<SerializationException>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.expectedError, result.message)
+        assertEquals(expectedError, result.message)
     }
 
     @Test
     fun deserializeEnumWithCustomSerialName() {
         // Arrange
         @Serializable
-        data class TestClassA(val a: de.sipgate.federmappe.common.decoder.CustomTestEnum)
+        data class TestClassA(val a: CustomTestEnum)
 
         val serializer = serializer<TestClassA>()
         val data = mapOf<String, Any?>("a" to "avalue")
@@ -71,6 +71,6 @@ class ComplexEnumTests {
 
         // Assert
         assertIs<TestClassA>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.CustomTestEnum.A, result.a)
+        assertEquals(CustomTestEnum.A, result.a)
     }
 }

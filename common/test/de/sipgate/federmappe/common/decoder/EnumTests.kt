@@ -18,7 +18,7 @@ class EnumTests {
     fun deserializeDataClassWithEnum() {
         // Arrange
         @Serializable
-        data class TestClass(val a: de.sipgate.federmappe.common.decoder.TestEnum)
+        data class TestClass(val a: TestEnum)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to "A")
@@ -28,14 +28,14 @@ class EnumTests {
 
         // Assert
         assertIs<TestClass>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.TestEnum.A, result.a)
+        assertEquals(TestEnum.A, result.a)
     }
 
     @Test
     fun deserializeDataClassWithNullableEnum() {
         // Arrange
         @Serializable
-        data class TestClass(val a: de.sipgate.federmappe.common.decoder.TestEnum?)
+        data class TestClass(val a: TestEnum?)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to "A")
@@ -45,14 +45,14 @@ class EnumTests {
 
         // Assert
         assertIs<TestClass>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.TestEnum.A, result.a)
+        assertEquals(TestEnum.A, result.a)
     }
 
     @Test
     fun deserializeDataClassWithNullEnum() {
         // Arrange
         @Serializable
-        data class TestClass(val a: de.sipgate.federmappe.common.decoder.TestEnum?)
+        data class TestClass(val a: TestEnum?)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to null)
@@ -69,7 +69,7 @@ class EnumTests {
     fun deserializeDataClassWithInnerEnum() {
         // Arrange
         @Serializable
-        data class TestClass2(val a: de.sipgate.federmappe.common.decoder.TestEnum)
+        data class TestClass2(val a: TestEnum)
 
         @Serializable
         data class TestClass(val a: TestClass2)
@@ -82,14 +82,14 @@ class EnumTests {
 
         // Assert
         assertIs<TestClass>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.TestEnum.A, result.a.a)
+        assertEquals(TestEnum.A, result.a.a)
     }
 
     @Test
     fun deserializeDataClassWithMapWithInnerEnum() {
         // Arrange
         @Serializable
-        data class TestClass(val a: Map<String, de.sipgate.federmappe.common.decoder.TestEnum>)
+        data class TestClass(val a: Map<String, TestEnum>)
 
         val serializer = serializer<TestClass>()
         val data = mapOf<String, Any?>("a" to mapOf("a" to "A"))
@@ -99,14 +99,14 @@ class EnumTests {
 
         // Assert
         assertIs<TestClass>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.TestEnum.A, result.a.values.first())
+        assertEquals(TestEnum.A, result.a.values.first())
     }
 
     @Test
     fun deserializeDataClassWithDefaultEnumValue() {
         // Arrange
         @Serializable
-        data class TestClass(val a: de.sipgate.federmappe.common.decoder.TestEnum = _root_ide_package_.de.sipgate.federmappe.common.decoder.TestEnum.B)
+        data class TestClass(val a: TestEnum = TestEnum.B)
 
         val serializer = serializer<TestClass>()
         val data = emptyMap<String, Any?>()
@@ -116,6 +116,6 @@ class EnumTests {
 
         // Assert
         assertIs<TestClass>(result)
-        assertEquals(_root_ide_package_.de.sipgate.federmappe.common.decoder.TestEnum.B, result.a)
+        assertEquals(TestEnum.B, result.a)
     }
 }
