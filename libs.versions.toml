@@ -6,7 +6,7 @@ mockk = "1.14.9"
 
 androidx-test = "1.7.0"
 androidx-test-runner = "1.7.0"
-kotlinx-coroutines = "1.10.2"
+kotlinx-coroutines = "1.11.0"
 
 [libraries]
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore" }
