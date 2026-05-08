@@ -6,4 +6,11 @@
   ],
   "automerge": true,
   "platformAutomerge": true,
+  "packageRules": [
+    {
+      "matchPackageNames": ["org.jetbrains.kotlinx:kotlinx-datetime"],
+      "matchNewValue": "/-compat$/",
+      "enabled": false
+    }
+  ]
 }
