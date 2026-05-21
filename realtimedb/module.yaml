@@ -31,7 +31,7 @@ settings:
     namespace: "de.sipgate.federmappe.realtimedb"
     minSdk: 23
   publishing:
-    name: realtimedb
+    artifactId: realtimedb
 
 apply:
   - ../publish.module-template.yaml

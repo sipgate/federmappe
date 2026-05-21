@@ -22,7 +22,7 @@ settings:
     minSdk: 23
 #    testInstrumentationRunner: "androidx.test.runner.AndroidJUnitRunner"
   publishing:
-    name: firestore
+    artifactId: firestore
 
 test-settings:
   kotlin:
