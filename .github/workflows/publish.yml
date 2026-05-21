@@ -26,10 +26,10 @@ jobs:
           PUBLISH_VERSION: 0.0.${{github.run_number}}
 
       - name: Run Build
-        run: ./amper build
+        run: ./kotlin build
 
       - name: Run Tests
-        run: ./amper test
+        run: ./kotlin test
 
       - name: Set up credentials
         run: |
@@ -53,7 +53,7 @@ jobs:
           prerelease: false
 
       - name: Publish alphaDev
-        run: ./amper publish alphaDev
+        run: ./kotlin publish alphaDev
 
       - name: Publish GitHub
-        run: ./amper publish github
+        run: ./kotlin publish github
