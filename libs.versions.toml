@@ -1,6 +1,6 @@
 [versions]
 firebase-firestore = "25.1.4"
-firebase-database = "22.0.1"
+firebase-database = "22.0.2"
 kotlinx-datetime = "0.8.0"
 mockk = "1.14.11"
 
