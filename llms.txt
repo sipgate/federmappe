@@ -1,0 +1,297 @@
+# Federmappe
+
+> Read-only Firebase object mapper for Kotlin on Android. Maps Firestore documents and Realtime Database snapshots to Kotlin data classes via kotlinx.serialization — code generated at compile time, no reflection. Supports single-value reads, list reads, and (via a thin Flow wrapper) reactive subscriptions, with configurable per-value error handling. Android-only, because the Firebase Firestore Android SDK is a required dependency.
+
+## Overview
+
+- **What it is**: extension functions that turn Firebase SDK snapshot types into `@Serializable` Kotlin objects using the Kotlin Serialization compiler plugin. The library is strictly **read-only** — it deserializes; it does not write.
+- **What it is not**: a full Firebase wrapper. You still use the Firebase SDK to fetch documents, run queries, and attach listeners; Federmappe only handles the object mapping.
+- **Platform support**: Android only (`minSdk 23`). This is a hard constraint of the underlying `firebase-firestore-ktx` dependency, not a design choice.
+- **Modules**: three Gradle/Amper modules, published as separate artifacts:
+  - `de.sipgate:federmappe.firestore` — extensions for `DocumentSnapshot` / `QuerySnapshot`
+  - `de.sipgate:federmappe.realtimedb` — extensions for `DataSnapshot` / `DatabaseReference`
+  - `de.sipgate.federmappe:common` — shared mapping core (transitively included, exported by both)
+- **License**: available in the repository LICENSE file.
+
+## Setup
+
+Artifacts are hosted on GitHub Packages, which requires authenticated downloads. Create a personal access token with the `read:packages` permission, then:
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        maven {
+            setUrl("https://maven.pkg.github.com/sipgate/federmappe")
+            credentials {
+                username = "your github username"
+                password = "a personal token with read:packages permission"
+            }
+        }
+    }
+}
+```
+
+Firestore:
+
+```kotlin
+dependencies {
+    implementation("de.sipgate:federmappe.firestore:0.0.23")
+}
+```
+
+Realtime Database:
+
+```kotlin
+dependencies {
+    implementation("de.sipgate:federmappe.realtimedb:0.0.23")
+}
+```
+
+## Basic usage
+
+Define your model as a plain `@Serializable` data class. `@SerialName` maps property names to database keys, defaults make fields optional, and enums/sealed classes/nested types are supported:
+
+```kotlin
+enum class Universe {
+    @SerialName("starwars") StarWars,
+    @SerialName("startrek") StarTrek
+}
+
+@Serializable
+data class Spaceship(
+    val name: String,
+    @SerialName("max_occupants") val maxOccupants: Long,
+    val universe: Universe? = null,
+    val hasWeapons: Boolean = false
+)
+```
+
+Single-value read from Firestore:
+
+```kotlin
+val voyager = firestore.collection("spaceships")
+    .document("NCC-74656")
+    .get()
+    .await()
+    .toObject<Spaceship> { ex ->
+        // your error handling; return a fallback value or null, or rethrow
+    }
+```
+
+Single-value read from Realtime Database (suspend, fetches then maps):
+
+```kotlin
+val voyager = database.getReference("spaceships/NCC-74656")
+    .toObject<Spaceship>()
+```
+
+## API reference
+
+### Error handling model (all entry points)
+
+Every mapping function accepts an optional `errorHandler`. The type is:
+
+```kotlin
+typealias ErrorHandler<T> = (Throwable) -> T?
+```
+
+- **Default**: `{ throw it }` — exceptions propagate to the caller.
+- **Custom**: return a fallback value (non-null) or `null` to swallow the error and continue.
+- Applies to *deserialization* failures (schema mismatch, missing required fields, …), not to Firebase SDK failures of the fetch itself — those surface through the SDK's own Task/coroutine APIs.
+
+### Firestore (`de.sipgate.federmappe.firestore`)
+
+```kotlin
+// DocumentSnapshot → single object
+inline fun <reified T : Any> DocumentSnapshot.toObject(
+    customSerializers: SerializersModule = DefaultSerializersModule,
+    errorHandler: ErrorHandler<T> = { throw it },
+): T?
+
+// QuerySnapshot → list of objects
+inline fun <reified T : Any> QuerySnapshot.toObjects(
+    customSerializers: SerializersModule = DefaultSerializersModule,
+    crossinline errorHandler: ErrorHandler<T> = { throw it },
+): List<T?>
+```
+
+- `toObject` returns `null` when the document has no data.
+- Unknown properties in the document are **always ignored** (hardcoded behavior via the common core's default).
+- `toObjects` preserves element count: a document that fails to deserialize maps to a `null` entry when the error handler returns `null`. Use `mapNotNull` on the result to drop those.
+
+### Realtime Database (`de.sipgate.federmappe.realtimedb`)
+
+```kotlin
+// DataSnapshot (already fetched) → single object
+inline fun <reified T : Any> DataSnapshot.toObject(
+    customSerializers: SerializersModule = EmptySerializersModule(),
+    ignoreUnknownProperties: Boolean = false,
+    crossinline errorHandler: ErrorHandler<T> = { throw it },
+): T?
+
+// DatabaseReference → single object (suspend; fetches via get().await())
+suspend inline fun <reified T : Any> DatabaseReference.toObject(
+    ignoreUnknownProperties: Boolean = false,
+    crossinline errorHandler: ErrorHandler<T> = { throw it },
+): T?
+
+// DatabaseReference → list of children objects (suspend)
+suspend inline fun <reified T : Any> DatabaseReference.toObjects(
+    ignoreUnknownProperties: Boolean = false,
+    crossinline errorHandler: ErrorHandler<T> = { throw it },
+): List<T>
+
+// Lower-level helpers
+fun DataSnapshot.toObjectMap(): Pair<String, Any>
+fun Pair<String, Any>.unwrapRoot(): Map<String, Any>
+```
+
+- Unlike Firestore, `ignoreUnknownProperties` is opt-in here (**defaults to `false`**, i.e. unknown keys throw unless the handler catches).
+- `DatabaseReference.toObjects` maps the reference's children and drops entries the error handler resolves to `null` (`mapNotNull`).
+- `toObjectMap` recursively converts a `DataSnapshot` into nested string-keyed maps — the representation the common core deserializes from.
+
+### Common core (`de.sipgate.federmappe.common`)
+
+```kotlin
+typealias StringMap = Map<String, Any?>
+
+inline fun <reified T : Any> StringMap.toObjectWithSerializer(
+    serializer: KSerializer<T> = serializer<T>(),
+    customSerializers: SerializersModule = DefaultSerializersModule,
+    ignoreUnknownProperties: Boolean = true,
+): T
+
+typealias ErrorHandler<T> = (Throwable) -> T?
+```
+
+The shared engine: a `StringMapToObjectDecoder` bridges Firebase's dynamically-typed snapshot data to kotlinx.serialization. You normally reach it through the Firestore/RealtimeDB extensions above, but it can be used directly on any `Map<String, Any?>` (useful in tests).
+
+### Built-in serializers (`DefaultSerializersModule`)
+
+The default serializers module registered for Firestore mapping provides contextual serializers for:
+
+- **`java.util.Date`** (`TimestampToDateSerializer`): deserializes a Firebase Timestamp (`epochSeconds` / `nanosecondsOfSecond`) to `Date`. Note: sub-second precision is discarded (seconds × 1000).
+- **`java.net.URI`** (`UriSerializer`): maps to/from its string representation.
+
+**Custom serializers**: pass your own `SerializersModule` to override or extend. To keep the defaults and add more, include `DefaultSerializersModule` in yours:
+
+```kotlin
+val serializersModule = SerializersModule {
+    contextual(InstantComponentSerializer) // kotlinx-datetime Instant
+    include(DefaultSerializersModule)
+}
+```
+
+The RealtimeDB entry points default to an **empty** serializers module — pass one explicitly if you need contextual serializers there.
+
+## Reactive subscriptions (recommended wrapper pattern)
+
+Federmappe itself ships no subscription API — only the mapping. For reactive streams, wrap Firebase's native listeners in `callbackFlow` using Federmappe's `toObject`/`toObjects`. This is the pattern the library is designed for:
+
+```kotlin
+// Firestore: document → Flow<T?>
+inline fun <reified T : Any> DocumentReference.subscribeWithFlow(
+    crossinline errorHandler: (Throwable) -> T? = { throw it },
+): Flow<T?> = callbackFlow {
+    val listener = addSnapshotListener { documentSnapshot, exception ->
+        if (documentSnapshot != null && documentSnapshot.exists()) {
+            trySend(documentSnapshot.toObject<T>(errorHandler = errorHandler))
+        } else {
+            trySend(null) // document not found
+        }
+        if (exception != null) errorHandler(exception)
+    }
+    awaitClose { listener.remove() }
+}
+
+// Firestore: query → Flow<List<T>>
+inline fun <reified T : Any> Query.subscribeWithFlow(
+    crossinline errorHandler: (Throwable) -> T? = { throw it },
+): Flow<List<T>> = callbackFlow {
+    val listener = addSnapshotListener { querySnapshot, exception ->
+        if (querySnapshot != null) {
+            trySend(querySnapshot.toObjects<T>(errorHandler).filterNotNull())
+        } else {
+            trySend(emptyList())
+        }
+        if (exception != null) errorHandler(exception)
+    }
+    awaitClose { listener.remove() }
+}
+
+// Realtime Database: reference → Flow<T?>
+inline fun <reified T : Any> DatabaseReference.subscribeToObject(
+    ignoreUnknownProperties: Boolean = false,
+    crossinline errorHandler: (Throwable) -> T? = { throw it },
+): Flow<T?> = callbackFlow {
+    val valueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            errorHandler(error.toException())
+            close()
+        }
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            trySend(
+                dataSnapshot.toObject<T>(
+                    errorHandler = errorHandler,
+                    ignoreUnknownProperties = ignoreUnknownProperties,
+                )
+            )
+        }
+    }
+    addValueEventListener(valueEventListener)
+    awaitClose { removeEventListener(valueEventListener) }
+}
+
+// Realtime Database: reference → Flow<Map<K, T>> keyed by child key
+inline fun <reified T : Any> DatabaseReference.subscribeToObjectMap(
+    ignoreUnknownProperties: Boolean = false,
+    crossinline errorHandler: (Throwable) -> T? = { throw it },
+): Flow<Map<String, T>> = callbackFlow {
+    val valueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            errorHandler(error.toException())
+            close()
+        }
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            trySend(
+                dataSnapshot.children.mapNotNull { child ->
+                    child.key?.let { key ->
+                        child.toObject<T>(errorHandler, ignoreUnknownProperties)?.let { key to it }
+                    }
+                }.toMap()
+            )
+        }
+    }
+    addValueEventListener(valueEventListener)
+    awaitClose { removeEventListener(valueEventListener) }
+}
+```
+
+Design notes for this pattern:
+
+- Firestore listeners receive `exception` in the same callback as the snapshot; Realtime DB signals failure through `onCancelled` — close the flow there after running the error handler.
+- Remember that with a swallowing error handler (`return null`), a failing update becomes `null` (or is dropped) **silently** — log in your handler if you need observability.
+- `awaitClose` removes the listener; keep a reference to `ListenerRegistration` (Firestore) / `ValueEventListener` (Realtime DB) for cleanup.
+
+## Supported data shapes
+
+Used in production for: primitives, lists, nested types, sealed classes, enums (with `@SerialName`), nullable properties, and properties with default values. Missing required fields throw `SerializationException` (subject to the error handler).
+
+## Development
+
+- Build tool: Amper/Kotlin toolchain (`module.yaml` per module), not Gradle.
+- Unit tests: `./gradlew test` (or the Amper equivalent).
+- Integration tests require the Firebase Emulator Suite:
+
+```shell
+firebase emulators:exec --project demo-test --only database,firestore './gradlew pixel2api30Check --no-parallel'
+```
+
+## Limitations
+
+- Read-only: no serialization *to* Firebase (write) support.
+- Android only; no iOS/JVM/JS targets.
+- Firestore mapping always ignores unknown properties; Realtime DB requires opting in.
+- Timestamp→Date conversion loses sub-second precision.
+- Requires opting into `@ExperimentalSerializationApi` (the public API is annotated accordingly).
+```
