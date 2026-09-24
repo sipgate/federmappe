@@ -5,6 +5,10 @@ import kotlinx.serialization.serializer
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
+/**
+ * Type mismatches that stay mismatches. Feeding a number field another number type is a conversion
+ * rather than a conflict — those cases live in [NumberTypeToleranceTests].
+ */
 class StringMapDecoderTypeSafetyTest {
 
     @Test
@@ -188,57 +192,9 @@ class StringMapDecoderTypeSafetyTest {
     }
 
     @Test
-    fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsInt() {
-        @Serializable
-        data class TestData(val value: Long)
-
-        val data = mapOf("value" to 0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsInt() {
-        @Serializable
-        data class TestData(val value: Float)
-
-        val data = mapOf("value" to 0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsInt() {
-        @Serializable
-        data class TestData(val value: Double)
-
-        val data = mapOf("value" to 0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsInt() {
         @Serializable
         data class TestData(val value: Char)
-
-        val data = mapOf("value" to 0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsInt() {
-        @Serializable
-        data class TestData(val value: Byte)
 
         val data = mapOf("value" to 0)
         val serializer = serializer<TestData>()
@@ -273,30 +229,6 @@ class StringMapDecoderTypeSafetyTest {
 
 
     @Test
-    fun testClassCastExceptionIsThrownWhenDoubleIsExpectedButInputIsLong() {
-        @Serializable
-        data class TestData(val value: Double)
-
-        val data = mapOf("value" to 0L)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenFloatIsExpectedButInputIsLong() {
-        @Serializable
-        data class TestData(val value: Float)
-
-        val data = mapOf("value" to 0L)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsLong() {
         @Serializable
         data class TestData(val value: Char)
@@ -321,45 +253,9 @@ class StringMapDecoderTypeSafetyTest {
     }
 
     @Test
-    fun testClassCastExceptionIsThrownWhenLongIsExpectedButInputIsDouble() {
-        @Serializable
-        data class TestData(val value: Long)
-
-        val data = mapOf("value" to 0.0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenIntIsExpectedButInputIsDouble() {
-        @Serializable
-        data class TestData(val value: Int)
-
-        val data = mapOf("value" to 0.0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
     fun testClassCastExceptionIsThrownWhenCharIsExpectedButInputIsDouble() {
         @Serializable
         data class TestData(val value: Char)
-
-        val data = mapOf("value" to 0.0)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenByteIsExpectedButInputIsDouble() {
-        @Serializable
-        data class TestData(val value: Byte)
 
         val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
@@ -506,18 +402,6 @@ class StringMapDecoderTypeSafetyTest {
         data class TestData(val value: Short)
 
         val data = mapOf("value" to true)
-        val serializer = serializer<TestData>()
-        assertFailsWith<ClassCastException> {
-            serializer.deserialize(StringMapToObjectDecoder(data))
-        }
-    }
-
-    @Test
-    fun testClassCastExceptionIsThrownWhenShortIsExpectedButInputIsDouble() {
-        @Serializable
-        data class TestData(val value: Short)
-
-        val data = mapOf("value" to 0.0)
         val serializer = serializer<TestData>()
         assertFailsWith<ClassCastException> {
             serializer.deserialize(StringMapToObjectDecoder(data))
