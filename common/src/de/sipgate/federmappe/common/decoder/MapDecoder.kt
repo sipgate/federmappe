@@ -5,7 +5,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
-import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
@@ -18,7 +17,7 @@ class MapDecoder(
     private val map: StringMap,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-) : AbstractDecoder() {
+) : NumberTolerantDecoder() {
     private val flattenedData =
         map.entries.fold(emptyList<Any?>()) { acc, (key, value) ->
             acc + listOf(key, value)

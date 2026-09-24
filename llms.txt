@@ -166,6 +166,8 @@ typealias ErrorHandler<T> = (Throwable) -> T?
 
 The shared engine: a `StringMapToObjectDecoder` bridges Firebase's dynamically-typed snapshot data to kotlinx.serialization. You normally reach it through the Firestore/RealtimeDB extensions above, but it can be used directly on any `Map<String, Any?>` (useful in tests).
 
+**Numbers**: Firebase picks the number type per value — a whole number arrives as `Long`, a fractional one as `Double`, and `Int`/`Float` are never handed out at all. The decoders convert rather than cast, so `Byte`, `Short`, `Int`, `Long`, `Float` and `Double` each accept either input and you can model a field with the type your domain wants. Narrowing is silent (`1500.5` into a `Long` field yields `1500`), and a value that is not a number at all throws a `SerializationException`.
+
 ### Built-in serializers (`DefaultSerializersModule`)
 
 The default serializers module registered for Firestore mapping provides contextual serializers for:

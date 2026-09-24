@@ -8,7 +8,6 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
-import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
@@ -18,7 +17,7 @@ class StringMapToObjectDecoder(
     private val data: StringMap,
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     private val ignoreUnknownProperties: Boolean = false,
-) : AbstractDecoder(), TypeAwareDecoder {
+) : NumberTolerantDecoder(), TypeAwareDecoder {
     private val keysIterator = data.sortByPrio().keys.iterator()
     private var index: Int? = null
     private var key: String? = null
@@ -55,11 +54,6 @@ class StringMapToObjectDecoder(
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int =
         decodeEnum(enumDescriptor, ::decodeValue)
-
-    override fun decodeInt(): Int = (decodeValue() as Long).toInt()
-    override fun decodeShort(): Short = (decodeValue() as Long).toShort()
-    override fun decodeByte(): Byte = (decodeValue() as Long).toByte()
-    override fun decodeFloat(): Float = (decodeValue() as Double).toFloat()
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         if (descriptor.kind is PolymorphicKind.SEALED) {
