@@ -10,6 +10,8 @@ test-dependencies:
   - $libs.mockk.agent
 
 settings:
+  jvm:
+    release: 17
   kotlin:
     serialization:
       enabled: true

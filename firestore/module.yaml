@@ -14,6 +14,8 @@ test-dependencies:
   - $libs.kotlinx.coroutines.test
 
 settings:
+  jvm:
+    release: 17
   kotlin:
     serialization:
       enabled: true
