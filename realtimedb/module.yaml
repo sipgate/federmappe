@@ -18,14 +18,14 @@ test-dependencies:
   - $libs.mockk.agent
 
 test-settings:
-  jvm:
-    release: 17
   kotlin:
     optIns:
       - kotlinx.serialization.ExperimentalSerializationApi
       - kotlin.time.ExperimentalTime
 
 settings:
+  jvm:
+    release: 17
   kotlin:
     serialization:
       enabled: true
