@@ -1,0 +1,20 @@
+name: Kotlin Toolchain Auto-Update
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if version is unchanged'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  update-kotlin-toolchain:
+    uses: alphadev-net/action-workflows/.github/workflows/update-kotlin-toolchain.yml@main
+    with:
+      force_update: ${{ inputs.force_update || false }}
+    permissions:
+      contents: write
